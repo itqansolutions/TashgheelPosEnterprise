@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 
         // Create Tenant (7 days trial)
         const trialEndsAt = new Date();
-        trialEndsAt.setDate(trialEndsAt.getDate() + 7);
+        trialEndsAt.setDate(trialEndsAt.getDate() + 3);
 
         tenant = new Tenant({
             businessName,
