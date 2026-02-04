@@ -6,7 +6,29 @@ This guide outlines the steps to deploy the application to [Railway.app](https:/
 
 - GitHub account
 - Railway account
-- MongoDB Connection String (Atlas or Railway Plugin)
+- MongoDB Connection String (Atlas). **See instructions below.**
+
+## 1. Setup MongoDB Atlas (Database)
+
+Since you are taking screenshots of MongoDB Atlas, here is how to get your connection string:
+
+1.  **Create Project**: Click **Next** to finish creating the project `tashgaheelRestaurantsonline`.
+2.  **Create Deployment**:
+    - Choose **M0 (Free)** tier.
+    - Provider: **AWS**, Region: **N. Virginia (us-east-1)** (or nearest).
+    - Click **Create**.
+3.  **Security Quickstart**:
+    - **Username/Password**: Create a user (e.g., `admin`) and a password (e.g., `MySecurePass123`). **SAVE THESE!**
+    - **IP Access List**: Select **"Allow Access from Anywhere"** (0.0.0.0/0). This is crucial for Railway to connect.
+    - Click **Finish and Close**.
+4.  **Get Connection String**:
+    - click **Connect** on your cluster card.
+    - Select **Drivers**.
+    - Copy the string. It looks like:
+      `mongodb+srv://admin:<password>@cluster0.abcde.mongodb.net/?retryWrites=true&w=majority`
+    - **Replace `<password>`** with the password you created in step 3.
+
+## Environment Variables
 
 ## Environment Variables
 
