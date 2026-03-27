@@ -5,7 +5,9 @@
     "main": "server/index.js",
     "scripts": {
         "start": "node server/index.js",
-        "dev": "nodemon server/index.js"
+        "dev": "nodemon server/index.js",
+        "tw:build": "node node_modules/tailwindcss/lib/cli.js -i ./css/tailwind.input.css -o ./css/tailwind.css --minify",
+        "build": "node node_modules/tailwindcss/lib/cli.js -i ./css/tailwind.input.css -o ./css/tailwind.css --minify"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
@@ -17,7 +19,8 @@
         "nodemailer": "^6.9.7"
     },
     "devDependencies": {
-        "nodemon": "^3.0.1"
+        "nodemon": "^3.0.1",
+        "tailwindcss": "^3.4.19"
     },
     "engines": {
         "node": "20.x"
