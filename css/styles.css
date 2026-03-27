@@ -1,4 +1,4 @@
-﻿/* Ali Karam POS System - Complete Styles */
+/* Ali Karam POS System - Complete Styles */
 /* Compatible with Windows 7+ browsers */
 
 /* Reset and Base Styles */
@@ -1883,7 +1883,9 @@ body.rtl .cart-item button img {
     max-height: 85vh;
     overflow-y: auto;
   }
-}/* ====================================================
+}
+
+/* ====================================================
    Tashgheel POS Enterprise â€” Theme Override
    Modernizes all inner-app pages using brand palette.
    Loaded AFTER styles.css so these rules take priority.
