@@ -2,160 +2,149 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <title data-i18n-key="register_title">Register - Tashgheel POS</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/translations.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            flex-direction: column;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title data-i18n-key="register_title">Register - Tashgheel POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-purple-light': '#667eea',
+            'brand-purple':       '#764ba2',
+            'brand-purple-dark':  '#5a387e',
+            'brand-blue':         '#3498db',
+            'brand-blue-dark':    '#2980b9',
+            'brand-green':        '#27ae60',
+            'brand-green-dark':   '#229954',
+            'brand-red':          '#e74c3c',
+            'brand-red-dark':     '#c0392b',
+            'brand-dark':         '#2c3e50',
+            'brand-dark-2':       '#34495e',
+            'brand-orange':       '#f39c12',
+          }
         }
-
-        .language-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .register-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .register-container h2 {
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-            text-align: right;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #666;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        .btn-register {
-            width: 100%;
-            padding: 0.8rem;
-            background: #764ba2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-register:hover {
-            background: #5a387e;
-        }
-
-        .login-link {
-            margin-top: 1rem;
-            display: block;
-            color: #764ba2;
-            text-decoration: none;
-        }
-    </style>
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/translations.js"></script>
 </head>
 
-<body>
-    <div class="language-switcher">
-        <button class="lang-btn" onclick="setLanguage('en')">English</button>
-        <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
-    </div>
+<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-brand-purple-light to-brand-purple font-sans m-0">
 
-    <div class="register-container">
-        <h2 data-i18n-key="register_title">تسجيل حساب جديد</h2>
-        <form id="registerForm">
-            <div class="form-group">
-                <label data-i18n-key="business_name">اسم النشاط التجاري</label>
-                <input type="text" id="businessName" required>
-            </div>
-            <div class="form-group">
-                <label data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label data-i18n-key="phone">رقم الهاتف</label>
-                <input type="tel" id="phone" required>
-            </div>
-            <div class="form-group">
-                <label data-i18n-key="username_manager">اسم المستخدم (للمدير)</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="form-group">
-                <label data-i18n-key="password">كلمة المرور</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit" class="btn-register" data-i18n-key="start_trial_btn">بدء الفترة التجريبية (3
-                أيام)</button>
-        </form>
-        <a href="index.html" class="login-link" data-i18n-key="have_account">لديك حساب بالفعل؟ تسجيل الدخول</a>
-    </div>
+  <!-- Language Switcher -->
+  <div class="absolute top-5 right-5 flex gap-2">
+    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('ar')">العربية</button>
+  </div>
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+  <!-- Register Card -->
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
+    <h2 class="text-2xl font-bold text-brand-dark mb-6" data-i18n-key="register_title">تسجيل حساب جديد</h2>
 
-            const data = {
-                businessName: document.getElementById('businessName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value
-            };
+    <form id="registerForm" class="text-right">
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="business_name">اسم النشاط التجاري</label>
+        <input
+          type="text"
+          id="businessName"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors box-border"
+        >
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
+        <input
+          type="email"
+          id="email"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors box-border"
+        >
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="phone">رقم الهاتف</label>
+        <input
+          type="tel"
+          id="phone"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors box-border"
+        >
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="username_manager">اسم المستخدم (للمدير)</label>
+        <input
+          type="text"
+          id="username"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors box-border"
+        >
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="password">كلمة المرور</label>
+        <input
+          type="password"
+          id="password"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors box-border"
+        >
+      </div>
 
-            try {
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+      <button
+        type="submit"
+        class="w-full py-3 bg-brand-purple text-white rounded-lg text-base font-semibold cursor-pointer hover:bg-brand-purple-dark transition-colors mt-2"
+        data-i18n-key="start_trial_btn"
+      >بدء الفترة التجريبية (3 أيام)</button>
 
-                const result = await response.json();
+      <div id="registerMsg" class="mt-3 text-sm min-h-[1.25rem]"></div>
+    </form>
 
-                if (response.ok) {
-                    localStorage.setItem('token', result.token);
-                    localStorage.setItem('currentUser', JSON.stringify(result.user));
-                    alert(getTranslation('register_success'));
-                    window.location.href = 'pos.html';
-                } else {
-                    alert(result.msg || getTranslation('register_error'));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert(getTranslation('connection_error'));
-            }
+    <a href="index.html" class="mt-5 block text-brand-purple text-sm hover:text-brand-purple-dark hover:underline transition-colors" data-i18n-key="have_account">
+      لديك حساب بالفعل؟ تسجيل الدخول
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msgDiv = document.getElementById('registerMsg');
+
+      const data = {
+        businessName: document.getElementById('businessName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-    </script>
+
+        const result = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('currentUser', JSON.stringify(result.user));
+          msgDiv.textContent = '✅ ' + (getTranslation('register_success') || 'تم التسجيل بنجاح');
+          msgDiv.className = 'mt-3 text-sm min-h-[1.25rem] text-brand-green';
+          setTimeout(() => { window.location.href = 'pos.html'; }, 1000);
+        } else {
+          msgDiv.textContent = '❌ ' + (result.msg || getTranslation('register_error') || 'حدث خطأ');
+          msgDiv.className = 'mt-3 text-sm min-h-[1.25rem] text-brand-red';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        msgDiv.textContent = '❌ ' + (getTranslation('connection_error') || 'خطأ في الاتصال');
+        msgDiv.className = 'mt-3 text-sm min-h-[1.25rem] text-brand-red';
+      }
+    });
+  </script>
 </body>
 
 </html>

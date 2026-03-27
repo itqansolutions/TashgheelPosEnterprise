@@ -1,8 +1,18 @@
+# Dependencies
 node_modules/
+
+# Environment
 .env
+.env.local
 
-
-.DS_Store
+# Logs
 *.log
-*.backup
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
 tmp/
+*.backup

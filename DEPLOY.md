@@ -66,7 +66,8 @@ Configure the following environment variables in your Railway project settings:
     - Go to the "Variables" tab in your new service.
     - Add the variables listed above.
 
-4.  **Verify Build**:
+4.  **Verif
+y Build**:
     - Railway should automatically detect `package.json` and run `npm install` and `npm start`.
     - Check the "Deployments" tab for logs.
 

@@ -6,7 +6,7 @@ module.exports = async function (req, res, next) {
     if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
         req.user = decoded.user;
         req.tenantId = decoded.user.tenantId;
 

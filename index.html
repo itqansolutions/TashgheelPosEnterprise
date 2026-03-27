@@ -6,130 +6,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="favicon.png">
   <title data-i18n-key="app_title">Tashgeel POS System - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-purple-light': '#667eea',
+            'brand-purple':       '#764ba2',
+            'brand-purple-dark':  '#5a387e',
+            'brand-blue':         '#3498db',
+            'brand-blue-dark':    '#2980b9',
+            'brand-green':        '#27ae60',
+            'brand-green-dark':   '#229954',
+            'brand-red':          '#e74c3c',
+            'brand-red-dark':     '#c0392b',
+            'brand-dark':         '#2c3e50',
+            'brand-dark-2':       '#34495e',
+            'brand-orange':       '#f39c12',
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="css/styles.css">
   <script src="js/translations.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-      flex-direction: column;
-    }
-
-    .language-switcher {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .login-container {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .login-container h1 {
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-
-    .subtitle {
-      color: #666;
-      margin-bottom: 2rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-      text-align: right;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #666;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 0.8rem;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-      font-size: 1rem;
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 0.8rem;
-      background: #764ba2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 1rem;
-    }
-
-    .btn-login:hover {
-      background: #5a387e;
-    }
-
-    .register-link {
-      margin-top: 1.5rem;
-      display: block;
-      color: #764ba2;
-      text-decoration: none;
-    }
-
-    .error {
-      color: red;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
 </head>
 
-<body>
-  <div class="language-switcher">
-    <button class="lang-btn" onclick="setLanguage('en')">English</button>
-    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
+<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-brand-purple-light to-brand-purple font-sans m-0">
+
+  <!-- Language Switcher -->
+  <div class="absolute top-5 right-5 flex gap-2" id="langSwitcher">
+    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('ar')">العربية</button>
   </div>
 
-  <div class="login-container">
-    <h1 data-i18n-key="app_title">Tashgheel POS</h1>
-    <p class="subtitle" data-i18n-key="login_subtitle">تسجيل الدخول</p>
+  <!-- Login Card -->
+  <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center">
+    <h1 class="text-3xl font-bold text-brand-dark mb-2" data-i18n-key="app_title">Tashgheel POS</h1>
+    <p class="text-gray-500 mb-8 text-sm" data-i18n-key="login_subtitle">تسجيل الدخول</p>
 
-    <form id="loginForm">
-      <div class="form-group">
-        <label data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
-        <input type="email" id="businessEmail" required placeholder="example@business.com">
+    <form id="loginForm" class="text-right">
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
+        <input
+          type="email"
+          id="businessEmail"
+          required
+          placeholder="example@business.com"
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+        >
       </div>
-      <div class="form-group">
-        <label data-i18n-key="username">اسم المستخدم</label>
-        <input type="text" id="username" required placeholder="admin">
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="username">اسم المستخدم</label>
+        <input
+          type="text"
+          id="username"
+          required
+          placeholder="admin"
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+        >
       </div>
-      <div class="form-group">
-        <label data-i18n-key="password">كلمة المرور</label>
-        <input type="password" id="password" required>
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="password">كلمة المرور</label>
+        <input
+          type="password"
+          id="password"
+          required
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+        >
       </div>
-      <button type="submit" class="btn-login" data-i18n-key="login_btn">دخول</button>
-      <div id="loginError" class="error"></div>
+
+      <button
+        type="submit"
+        class="w-full py-3 bg-brand-purple text-white rounded-lg text-base font-semibold cursor-pointer hover:bg-brand-purple-dark transition-colors mt-2"
+        data-i18n-key="login_btn"
+      >دخول</button>
+
+      <div id="loginError" class="text-brand-red mt-3 text-sm min-h-[1.25rem]"></div>
     </form>
 
-    <a href="register.html" class="register-link" data-i18n-key="no_account">ليس لديك حساب؟ سجل الآن (تجربة مجانية)</a>
+    <a href="register.html" class="mt-6 block text-brand-purple text-sm hover:text-brand-purple-dark hover:underline transition-colors" data-i18n-key="no_account">
+      ليس لديك حساب؟ سجل الآن (تجربة مجانية)
+    </a>
 
-    <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-      <a href="super-admin.html" style="color: #333; text-decoration: none; font-size: 0.9rem;"
-        data-i18n-key="super_admin_login">🔐 Super Admin Login</a>
+    <div class="mt-5 border-t border-gray-100 pt-5">
+      <a href="super-admin.html" class="text-gray-500 no-underline text-sm hover:text-brand-dark transition-colors" data-i18n-key="super_admin_login">
+        🔐 Super Admin Login
+      </a>
     </div>
   </div>
 
