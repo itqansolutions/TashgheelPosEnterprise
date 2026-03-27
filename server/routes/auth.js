@@ -84,25 +84,24 @@ Trial Ends: ${trialEndsAt.toLocaleString()}
                 id: user._id,
                 tenantId: tenant._id,
                 role: user.role,
-                username: user.username // Added username
+                username: user.username
             }
         };
 
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
-            if (err) throw err;
-            res.json({
-                token,
-                user: {
-                    username: user.username,
-                    role: user.role,
-                    fullName: user.fullName
-                }
-            });
+        // Synchronous jwt.sign — errors are caught by the outer try-catch
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+        res.json({
+            token,
+            user: {
+                username: user.username,
+                role: user.role,
+                fullName: user.fullName
+            }
         });
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ msg: 'Server error' });
+        console.error('[REGISTER ERROR]', err.stack || err.message);
+        res.status(500).json({ msg: 'Server error', detail: err.message });
     }
 });
 
@@ -162,18 +161,17 @@ router.post('/login', async (req, res) => {
                 id: user._id,
                 tenantId: tenant._id,
                 role: user.role,
-                username: user.username // Added username
+                username: user.username
             }
         };
 
-        jwt.sign(payload, process.env.JWT_SECRET || 'secret123', { expiresIn: '1d' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token, user: { username: user.username, role: user.role, fullName: user.fullName } });
-        });
+        // Synchronous jwt.sign — errors are caught by the outer try-catch
+        const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret123', { expiresIn: '1d' });
+        res.json({ token, user: { username: user.username, role: user.role, fullName: user.fullName } });
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ msg: 'Server error' });
+        console.error('[LOGIN ERROR]', err.stack || err.message);
+        res.status(500).json({ msg: 'Server error', detail: err.message });
     }
 });
 
