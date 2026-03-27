@@ -1,0 +1,290 @@
+/* ====================================================
+   Tashgheel POS Enterprise — Theme Override
+   Modernizes all inner-app pages using brand palette.
+   Loaded AFTER styles.css so these rules take priority.
+   ==================================================== */
+
+/* ── Google Font ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+/* ── Global background ───────────────────────────── */
+body { background: #f0f2f8; }
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(160deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 4px 0 20px rgba(118, 75, 162, 0.3);
+  border-right: none;
+}
+
+.sidebar-header {
+  padding: 24px 20px 20px;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+}
+
+.sidebar-header h2,
+.sidebar-header #posSystemTitle {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Enterprise Edition badge inside sidebar */
+.sidebar-header p,
+.sidebar-header #licensedVersion {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 12px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* Sidebar-header text used as page name (e.g. Receipts, Backup) */
+.sidebar-header[data-i18n],
+.sidebar-header[data-i18n-key] {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 24px 20px;
+}
+
+/* Nav items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.8) !important;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s, padding-left 0.2s;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff !important;
+  padding-left: 24px;
+  border-left-color: rgba(255,255,255,0.6);
+}
+
+.nav-item.active {
+  background: rgba(255,255,255,0.22);
+  color: #fff !important;
+  font-weight: 700;
+  border-left: 3px solid #fff;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.15);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+}
+
+/* ── TOP BAR ──────────────────────────────────────── */
+.top-bar {
+  background: #fff;
+  padding: 16px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-bottom: 2px solid #f0f2f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-bar h1 {
+  color: #2c3e50;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+/* ── CARDS ────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  border: 1px solid #eef0f6;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #fff;
+  border-bottom: 2px solid #f0f2f8;
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── BUTTONS ──────────────────────────────────────── */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 10px 20px;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(118,75,162,0.3);
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7b8ff5 0%, #8a5bbf 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(118,75,162,0.4);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  box-shadow: 0 3px 10px rgba(39,174,96,0.25);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3ed97f 0%, #2ebd6d 100%);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 3px 10px rgba(231,76,60,0.25);
+}
+
+.btn-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(231,76,60,0.35);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  box-shadow: 0 3px 8px rgba(243,156,18,0.25);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #7f8c8d 0%, #636e72 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* ── DATA TABLES ──────────────────────────────────── */
+.data-table,
+.report-table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.data-table thead th,
+.report-table thead th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.83rem;
+  letter-spacing: 0.4px;
+  padding: 13px 16px;
+  border: none;
+}
+
+.data-table tbody tr:hover,
+.report-table tbody tr:hover {
+  background: rgba(102,126,234,0.05);
+  transition: background 0.15s;
+}
+
+/* ── CART (POS right panel) ───────────────────────── */
+.cart-section {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* ── LANGUAGE SWITCHER ────────────────────────────── */
+.lang-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  padding: 7px 14px;
+  box-shadow: 0 2px 8px rgba(118,75,162,0.3);
+  border: none;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.lang-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(118,75,162,0.4);
+  background: linear-gradient(135deg, #7b8ff5 0%, #8a5bbf 100%);
+}
+
+/* ── TRIAL BANNER ─────────────────────────────────── */
+a[href*="tel"][style*="color:white"] {
+  color: #fff !important;
+}
+
+/* ── SEARCH BOX ───────────────────────────────────── */
+.search-box {
+  border: 2px solid #e8eaf0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 0.88rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.search-box:focus {
+  border-color: #764ba2;
+}
+
+/* ── TAB BUTTONS ──────────────────────────────────── */
+.tab.active,
+.tab.report-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #fff !important;
+  border-color: #764ba2 !important;
+}
+
+/* ── USER ROLE BADGE ──────────────────────────────── */
+.user-role {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+}
+
+/* ── FOOTER ───────────────────────────────────────── */
+.footer {
+  background: #fff;
+  border-top: 2px solid #f0f2f8;
+  color: #7f8c8d;
+  font-size: 0.78rem;
+}
