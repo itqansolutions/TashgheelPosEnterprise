@@ -2214,14 +2214,15 @@ a[href*="tel"][style*="color:white"] {
   
   .top-bar {
     padding: 10px 15px !important;
-    position: sticky;
-    top: 0;
-    z-index: 999;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
     gap: 12px !important;
     height: auto !important;
+    background: #fff !important;
   }
   
   .top-bar > div {
@@ -2230,12 +2231,31 @@ a[href*="tel"][style*="color:white"] {
     align-items: center !important;
     width: 100% !important;
     gap: 8px !important;
+    margin: 0 !important;
+  }
+  
+  .top-bar span, .top-bar .user-role {
+    display: block !important;
+    width: auto !important;
+    margin: 2px 0 !important;
+    text-align: center !important;
   }
   
   .top-bar h1 { 
     font-size: 1.2rem !important; 
-    margin: 5px 0 !important;
+    margin: 5px 0 10px 0 !important;
     width: 100% !important;
+    text-align: center !important;
+  }
+
+  /* Trial Banner Stacking */
+  [style*="background: orange"], [style*="background:orange"], .trial-banner {
+    flex-direction: column !important;
+    display: flex !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 5px !important;
+    padding: 10px !important;
   }
 
   .language-switcher {
@@ -2251,12 +2271,14 @@ a[href*="tel"][style*="color:white"] {
     gap: 10px !important;
     width: 100% !important;
     align-items: center !important;
+    z-index: 1001 !important;
   }
   
   .lang-btn {
-    width: 80% !important;
+    width: 90% !important;
     text-align: center !important;
-    padding: 10px !important;
+    padding: 12px !important;
+    margin: 5px 0 !important;
   }
   
   .rtl .language-switcher {
@@ -2264,9 +2286,15 @@ a[href*="tel"][style*="color:white"] {
     right: 0 !important;
   }
 
-  .sidebar { width: 220px !important; }
-  .sidebar-opened .sidebar { transform: translateX(220px) !important; }
-  .rtl.sidebar-opened .sidebar { transform: translateX(-220px) !important; }
+  /* Sidebar Items Stacking (Optional but for clarity) */
+  .nav-item {
+    padding: 15px !important;
+    justify-content: flex-start !important;
+  }
+
+  .sidebar { width: 260px !important; }
+  .sidebar-opened .sidebar { transform: translateX(260px) !important; }
+  .rtl.sidebar-opened .sidebar { transform: translateX(-260px) !important; }
   
   .content-area { padding: 10px; }
   
