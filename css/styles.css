@@ -2213,15 +2213,62 @@ a[href*="tel"][style*="color:white"] {
   }
   
   .top-bar {
-    padding: 10px 15px;
+    padding: 10px 15px !important;
     position: sticky;
     top: 0;
     z-index: 999;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 12px !important;
+    height: auto !important;
   }
   
-  .top-bar h1 { font-size: 1.2rem; }
+  .top-bar > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
   
-  .content-area { padding: 15px; }
+  .top-bar h1 { 
+    font-size: 1.2rem !important; 
+    margin: 5px 0 !important;
+    width: 100% !important;
+  }
+
+  .language-switcher {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 15px !important;
+    background: #f8f9fa !important;
+    border-bottom: 2px solid #eee !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+  
+  .lang-btn {
+    width: 80% !important;
+    text-align: center !important;
+    padding: 10px !important;
+  }
+  
+  .rtl .language-switcher {
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  .sidebar { width: 220px !important; }
+  .sidebar-opened .sidebar { transform: translateX(220px) !important; }
+  .rtl.sidebar-opened .sidebar { transform: translateX(-220px) !important; }
+  
+  .content-area { padding: 10px; }
   
   /* POS Stacking */
   .pos-layout {
