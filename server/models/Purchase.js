@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const purchaseSchema = new mongoose.Schema({
     tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true },
+    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     supplierId: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier', required: true },
     receiptId: { type: String, required: true },
     date: { type: Date, default: Date.now },

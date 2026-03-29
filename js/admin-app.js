@@ -106,9 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
         userTableBody.innerHTML = '';
         users.forEach((user) => {
           const row = document.createElement('tr');
+          const storesNames = user.role === 'admin' ? getTranslation('all_stores') : (user.allowedStores && user.allowedStores.length > 0
+            ? user.allowedStores.map(sId => {
+                const s = (window.allStores || []).find(st => st._id === sId);
+                return s ? s.name : sId;
+              }).join(', ')
+            : '-');
+
           row.innerHTML = `
                 <td>${user.username}</td>
+                <td>${user.fullName || user.username}</td>
                 <td>${user.role}</td>
+                <td style="font-size: 0.8em;">${storesNames}</td>
                 <td><button onclick="handleDeleteUser('${user._id}')" class="btn btn-danger">🗑️</button></td>
               `;
           userTableBody.appendChild(row);
@@ -144,16 +153,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const role = roleSelect.value;
 
     if (!username || !password) return alert('Fill all fields');
+    const token = localStorage.getItem('token');
 
     try {
-      const token = localStorage.getItem('token');
+      const allowedStores = Array.from(document.querySelectorAll('#user-stores-picker input:checked')).map(cb => cb.value);
+
       const response = await fetch(`${API_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-auth-token': token
         },
-        body: JSON.stringify({ username, password, role })
+        body: JSON.stringify({ username, password, fullName: document.getElementById('new-fullname').value, role, allowedStores })
       });
 
       if (response.ok) {
@@ -256,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadSettings();
-  loadUsers();
+  // loadUsers(); // Called by loadStoresForUsers
   loadCustomers();
 
   // === License Info ===
@@ -312,7 +323,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadLicenseInfo();
-  // applyTranslations() is called by translations.js on DOMContentLoaded
 });
+
+async function loadStoresForUsers() {
+  const picker = document.getElementById('user-stores-picker');
+  if (!picker) return;
+
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/stores`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const storesList = await response.json();
+    window.allStores = storesList; // Shared for table rendering
+
+    picker.innerHTML = '';
+    storesList.forEach(store => {
+      const div = document.createElement('div');
+      div.className = 'checkbox-item';
+      div.innerHTML = `
+        <label>
+          <input type="checkbox" value="${store._id}"> ${store.name}
+        </label>
+      `;
+      picker.appendChild(div);
+    });
+    loadUsers();
+  } catch (error) {
+    console.error('Error loading stores:', error);
+    loadUsers();
+  }
+}
+
+let allStores = [];
+loadStoresForUsers();
 
 // applyTranslations() is handled by translations.js

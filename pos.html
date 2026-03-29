@@ -126,6 +126,7 @@
         <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
         <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
         <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
         <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
         <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
 </nav>
@@ -282,9 +283,13 @@
   <div id="openShiftModal" class="modal" style="display:none; background:rgba(0,0,0,0.9);">
     <div class="modal-content" style="text-align:center;">
       <h2 data-i18n="open_shift">Open Shift</h2>
+      <div style="margin-bottom:15px;">
+        <label data-i18n="select_store" style="display:block; margin-bottom:5px;">Select Store</label>
+        <select id="storeSelect" style="padding:10px; width:200px; font-size:1em;"></select>
+      </div>
       <p data-i18n="enter_start_cash">Please enter the starting cash amount to begin.</p>
       <input type="number" id="startCashInput" placeholder="0.00"
-        style="font-size:1.5em; padding:10px; width:150px; text-align:center; margin:20px 0;">
+        style="font-size:1.5em; padding:10px; width:150px; text-align:center; margin-bottom:20px;">
       <br>
       <button onclick="submitOpenShift()" class="btn btn-success btn-lg" data-i18n="start_shift">Start Shift</button>
     </div>

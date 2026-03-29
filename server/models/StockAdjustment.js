@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const stockAdjustmentSchema = new mongoose.Schema({
     tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true },
+    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     date: { type: Date, default: Date.now },
     adjustedBy: { type: String, required: true },
     items: [{

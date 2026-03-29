@@ -51,11 +51,37 @@ window.printContent = function (html) {
 async function checkOpenShift() {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/shifts/current`, {
+    const shiftRes = await fetch(`${API_URL}/shifts/current`, {
       headers: { 'x-auth-token': token }
     });
 
-    const shift = await response.json();
+    const shift = await shiftRes.json();
+
+    // Load available stores for this user
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const storesRes = await fetch(`${API_URL}/stores`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const allStores = await storesRes.json();
+    
+    // Filter stores based on user permissions
+    let allowedStores = [];
+    if (user.role === 'admin') {
+        allowedStores = allStores;
+    } else {
+        allowedStores = allStores.filter(s => (user.allowedStores || []).includes(s._id));
+    }
+
+    const storeSelect = document.getElementById('storeSelect');
+    if (storeSelect) {
+        storeSelect.innerHTML = '';
+        allowedStores.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s._id;
+            opt.textContent = s.name;
+            storeSelect.appendChild(opt);
+        });
+    }
 
     // Get current user safely from storage, fallback to DOM if needed, but storage is source of truth
     let currentUser = 'User';
@@ -158,7 +184,10 @@ function enablePOS() {
 
 async function submitOpenShift() {
   const startCash = parseFloat(document.getElementById('startCashInput').value);
+  const storeId = document.getElementById('storeSelect').value;
+  
   if (isNaN(startCash)) return alert('Please enter valid start cash');
+  if (!storeId) return alert('Please select a store');
 
   try {
     const token = localStorage.getItem('token');
@@ -168,7 +197,7 @@ async function submitOpenShift() {
         'Content-Type': 'application/json',
         'x-auth-token': token
       },
-      body: JSON.stringify({ startCash })
+      body: JSON.stringify({ startCash, storeId })
     });
 
     if (response.ok) {
@@ -478,8 +507,8 @@ async function loadProducts() {
     if (!response.ok) throw new Error('Failed to fetch products');
 
     const products = await response.json();
-    allProducts = products;
-    filteredProducts = products;
+    allProducts = products.filter(p => p.active !== false); // Filter only active products
+    filteredProducts = allProducts;
     renderProducts();
 
     if (products.length === 0) {

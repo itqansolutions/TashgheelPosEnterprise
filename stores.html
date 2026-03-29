@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="nav_stores">Warehouses - Tashgheel POS</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 data-i18n="app_name">Tashgheel POS</h2>
+            </div>
+            <nav>
+        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
+        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="nav-item active" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
+</nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1 data-i18n="nav_stores">Warehouses</h1>
+                <div class="user-info">
+                    <span id="currentUser"></span>
+                    <button id="addStoreBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> <span data-i18n="add_store">Add Store</span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="table-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="store_name">Store Name</th>
+                            <th data-i18n="location">Location</th>
+                            <th data-i18n="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="storesTableBody">
+                        <!-- Stores will be loaded here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Store Modal -->
+    <div id="storeModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" data-i18n="add_store">Add Store</h2>
+            <form id="storeForm">
+                <input type="hidden" id="storeId">
+                <div class="form-group">
+                    <label for="storeName" data-i18n="store_name">Store Name</label>
+                    <input type="text" id="storeName" required>
+                </div>
+                <div class="form-group">
+                    <label for="storeLocation" data-i18n="location">Location</label>
+                    <input type="text" id="storeLocation">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="closeModal" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-i18n="save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/stores-app.js"></script>
+</body>
+</html>

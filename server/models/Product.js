@@ -9,7 +9,12 @@ const productSchema = new mongoose.Schema({
     cost: { type: Number, default: 0 },
     stock: { type: Number, default: 0 },
     minStock: { type: Number, default: 0 },
+    stores: [{
+        storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
+        stock: { type: Number, default: 0 }
+    }],
     trackStock: { type: Boolean, default: true },
+    active: { type: Boolean, default: true },
     category: String,
     categoryEn: String,
     createdAt: { type: Date, default: Date.now }

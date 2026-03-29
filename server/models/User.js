@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ['admin', 'manager', 'cashier'], default: 'cashier' },
     fullName: { type: String, required: true },
     active: { type: Boolean, default: true },
+    allowedStores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Store' }],
     createdAt: { type: Date, default: Date.now }
 });
 

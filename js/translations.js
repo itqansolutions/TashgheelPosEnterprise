@@ -30,6 +30,7 @@ const translations = {
         nav_suppliers: "🏢 Suppliers",
         nav_customers: "👥 Customers",
         nav_purchases: "📥 Purchases",
+        nav_stores: "🏢 Warehouses",
         nav_admin: "⚙️ Admin Panel",
         nav_backup: "💾 Backup",
 
@@ -284,7 +285,20 @@ const translations = {
         remaining_adds_debt: "Remaining amount adds to supplier debt.",
         submit_purchase: "Submit Purchase",
         pay_credit: "📝 Credit",
-        receipt: "Receipt"
+        receipt: "Receipt",
+        received_by: "Received By",
+
+        // STORES
+        add_store: "Add Store",
+        edit_store: "Edit Store",
+        store_name: "Store Name",
+        location: "Location",
+        select_store: "Select Store",
+        allowed_stores: "Allowed Stores",
+        active_status: "Status",
+        active: "Active",
+        inactive: "Inactive",
+        all_stores: "All Stores"
     },
     ar: {
         // Navigation
@@ -297,6 +311,7 @@ const translations = {
         nav_suppliers: "🏢 الموردين",
         nav_customers: "👥 العملاء",
         nav_purchases: "📥 المشتريات",
+        nav_stores: "🏢 المخازن",
         nav_admin: "⚙️ الإدارة",
         nav_backup: "💾 النسخ الاحتياطي",
 
@@ -548,7 +563,20 @@ const translations = {
         remaining_adds_debt: "المبلغ المتبقي يضاف على مديونية المورد.",
         submit_purchase: "تأكيد الشراء",
         pay_credit: "📝 آجل",
-        receipt: "إيصال"
+        receipt: "إيصال",
+        received_by: "استلم بواسطة",
+
+        // STORES
+        add_store: "إضافة مخزن",
+        edit_store: "تعديل مخزن",
+        store_name: "اسم المخزن",
+        location: "الموقع",
+        select_store: "اختر المخزن",
+        allowed_stores: "المخازن المسموحة",
+        active_status: "الحالة",
+        active: "مفعل",
+        inactive: "معطل",
+        all_stores: "جميع المخازن"
     }
 };
 

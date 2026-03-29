@@ -17,6 +17,78 @@ const AuditLog = require('../models/AuditLog');
 const Supplier = require('../models/Supplier');
 const Purchase = require('../models/Purchase');
 const LedgerTransaction = require('../models/LedgerTransaction');
+const Store = require('../models/Store');
+
+// ================= STORES (WAREHOUSES) =================
+
+// @route   GET /api/stores
+// @desc    Get all stores
+// @access  Private
+router.get('/stores', auth, async (req, res) => {
+    try {
+        const stores = await Store.find({ tenantId: req.tenantId }).sort({ createdAt: -1 });
+        res.json(stores);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST /api/stores
+// @desc    Add new store
+// @access  Private
+router.post('/stores', auth, async (req, res) => {
+    try {
+        const newStore = new Store({
+            tenantId: req.tenantId,
+            ...req.body
+        });
+        const store = await newStore.save();
+        res.json(store);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT /api/stores/:id
+// @desc    Update store
+// @access  Private
+router.put('/stores/:id', auth, async (req, res) => {
+    try {
+        let store = await Store.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!store) return res.status(404).json({ msg: 'Store not found' });
+
+        const { name, location } = req.body;
+        if (name) store.name = name;
+        if (location !== undefined) store.location = location;
+
+        await store.save();
+        res.json(store);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   DELETE /api/stores/:id
+// @desc    Delete store
+// @access  Private
+router.delete('/stores/:id', auth, async (req, res) => {
+    try {
+        // Here we could add logic to check if store has stock before deleting, 
+        // but for now we just delete.
+        const store = await Store.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!store) return res.status(404).json({ msg: 'Store not found' });
+
+        await Store.deleteOne({ _id: req.params.id });
+        res.json({ msg: 'Store removed' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // CUSTOMERS
 
 // @route   GET /api/customers
@@ -233,9 +305,13 @@ router.get('/products', auth, async (req, res) => {
 // @access  Private
 router.post('/products', auth, async (req, res) => {
     try {
+        const { cost, stock, ...otherData } = req.body;
         const newProduct = new Product({
             tenantId: req.tenantId,
-            ...req.body
+            ...otherData,
+            cost: 0,
+            stock: 0,
+            stores: []
         });
         const product = await newProduct.save();
         res.json(product);
@@ -254,15 +330,14 @@ router.put('/products/:id', auth, async (req, res) => {
         if (!product) return res.status(404).json({ msg: 'Product not found' });
 
         // Update fields
-        const { name, barcode, price, cost, stock, category, minStock, trackStock } = req.body;
+        const { name, barcode, price, category, minStock, trackStock, active } = req.body;
         if (name) product.name = name;
-        if (barcode !== undefined) product.barcode = barcode; // Allow clearing barcode
+        if (barcode !== undefined) product.barcode = barcode;
         if (price !== undefined) product.price = price;
-        if (cost !== undefined) product.cost = cost;
-        if (stock !== undefined) product.stock = stock;
         if (category) product.category = category;
         if (minStock !== undefined) product.minStock = minStock;
         if (trackStock !== undefined) product.trackStock = trackStock;
+        if (active !== undefined) product.active = active;
 
         await product.save();
         res.json(product);
@@ -315,6 +390,7 @@ router.post('/sales', auth, async (req, res) => {
 
         const newSale = new Sale({
             tenantId: req.tenantId,
+            storeId: shift.storeId, // Link sale to shift's store
             receiptId,
             shiftId: shift._id,
             date: new Date(),
@@ -365,7 +441,18 @@ router.post('/sales', auth, async (req, res) => {
             }
 
             if (product && product.trackStock !== false) {
+                // Update global stock
                 product.stock -= item.qty;
+
+                // Update per-store stock
+                if (!product.stores) product.stores = [];
+                let storeStock = product.stores.find(s => s.storeId.toString() === shift.storeId.toString());
+                if (storeStock) {
+                    storeStock.stock -= item.qty;
+                } else {
+                    product.stores.push({ storeId: shift.storeId, stock: -item.qty });
+                }
+
                 await product.save();
             }
         }
@@ -721,7 +808,7 @@ router.get('/users', auth, async (req, res) => {
 // @access  Private
 router.post('/users', auth, async (req, res) => {
     try {
-        const { username, password, role } = req.body;
+        const { username, password, role, allowedStores } = req.body;
 
         // Check if user exists
         let user = await User.findOne({ username, tenantId: req.tenantId });
@@ -734,7 +821,8 @@ router.post('/users', auth, async (req, res) => {
             username,
             passwordHash: 'temp', // Will be overwritten
             fullName: username, // Default to username since frontend doesn't provide it yet
-            role
+            role,
+            allowedStores: allowedStores || []
         });
 
         const salt = await bcrypt.genSalt(10);
@@ -745,6 +833,32 @@ router.post('/users', auth, async (req, res) => {
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Server Error: ' + err.message });
+    }
+});
+
+// @route   PUT /api/users/:id
+// @desc    Update user
+// @access  Private
+router.put('/users/:id', auth, async (req, res) => {
+    try {
+        let user = await User.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+        const { role, allowedStores, password, active } = req.body;
+        if (role) user.role = role;
+        if (allowedStores !== undefined) user.allowedStores = allowedStores;
+        if (active !== undefined) user.active = active;
+        
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            user.passwordHash = await bcrypt.hash(password, salt);
+        }
+
+        await user.save();
+        res.json({ msg: 'User updated successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
     }
 });
 
@@ -839,10 +953,12 @@ router.delete('/categories/:id', auth, async (req, res) => {
 // @access  Private
 router.post('/inventory/adjust', auth, async (req, res) => {
     try {
-        const { items } = req.body; // items: [{ productId, newStock, reason }]
+        const { items, storeId } = req.body; // items: [{ productId, newStock, reason }]
+        if (!storeId) return res.status(400).json({ msg: 'Store is required for stock adjustment' });
 
         const adjustmentRecord = {
             tenantId: req.tenantId,
+            storeId,
             adjustedBy: req.user.username,
             date: new Date(),
             items: []
@@ -856,7 +972,18 @@ router.post('/inventory/adjust', auth, async (req, res) => {
                 const difference = newStock - oldStock;
 
                 if (difference !== 0) {
+                    // Update global stock
                     product.stock = newStock;
+
+                    // Update per-store stock
+                    if (!product.stores) product.stores = [];
+                    let storeStock = product.stores.find(s => s.storeId.toString() === storeId.toString());
+                    if (storeStock) {
+                        storeStock.stock += difference;
+                    } else {
+                        product.stores.push({ storeId, stock: difference });
+                    }
+
                     await product.save();
 
                     adjustmentRecord.items.push({
@@ -1027,14 +1154,25 @@ router.post('/shifts/open', auth, async (req, res) => {
             return res.status(400).json({ msg: 'Shift already open' });
         }
 
-        const { startCash } = req.body;
+        const { startCash, storeId } = req.body;
+
+        if (!storeId) {
+            return res.status(400).json({ msg: 'Store is required to open a shift' });
+        }
 
         // Fetch user to get username (since it might not be in token)
         const user = await User.findById(req.user.id);
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
+        // Validate store access for non-admins
+        if (user.role !== 'admin' && user.allowedStores && user.allowedStores.length > 0) {
+            const hasAccess = user.allowedStores.some(s => s.toString() === storeId);
+            if (!hasAccess) return res.status(403).json({ msg: 'Access denied to this store' });
+        }
+
         const newShift = new Shift({
             tenantId: req.tenantId,
+            storeId,
             cashier: user.username,
             startCash,
             status: 'open'
@@ -1348,6 +1486,7 @@ router.post('/purchases', auth, async (req, res) => {
 
         const newPurchase = new Purchase({
             tenantId: req.tenantId,
+            storeId: req.body.storeId, // Target store for receiving goods
             supplierId,
             receiptId,
             date: new Date(),
@@ -1388,10 +1527,31 @@ router.post('/purchases', auth, async (req, res) => {
             }
 
             if (product && product.trackStock !== false) {
-                product.stock += item.qty; // Buying increases stock
+                // Update global stock
+                product.stock += item.qty;
+
+                // Update moving average cost (simple implementation)
+                // If weight average is needed: ((oldStock * oldCost) + (newQty * newCost)) / (oldStock + newQty)
+                const oldStock = Math.max(0, product.stock - item.qty);
+                const oldCost = product.cost || 0;
+                const newQty = item.qty;
+                const newCost = item.cost || 0;
                 
-                // Optional: MIGHT want to update moving average cost here, but skipping for safety unless explicitly needed
-                // product.cost = item.cost;
+                if (oldStock + newQty > 0) {
+                    product.cost = ((oldStock * oldCost) + (newQty * newCost)) / (oldStock + newQty);
+                } else {
+                    product.cost = newCost;
+                }
+
+                // Update per-store stock
+                if (!product.stores) product.stores = [];
+                let storeStock = product.stores.find(s => s.storeId.toString() === req.body.storeId.toString());
+                if (storeStock) {
+                    storeStock.stock += item.qty;
+                } else {
+                    product.stores.push({ storeId: req.body.storeId, stock: item.qty });
+                }
+
                 await product.save();
             }
         }

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const shiftSchema = new mongoose.Schema({
     tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true },
+    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: true },
     cashier: { type: String, required: true },
     startTime: { type: Date, default: Date.now },
     endTime: Date,
