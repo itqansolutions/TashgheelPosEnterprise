@@ -2218,9 +2218,9 @@ a[href*="tel"][style*="color:white"] {
     top: 0 !important;
     z-index: 1000 !important;
     flex-direction: column !important;
-    align-items: center !important;
+    align-items: stretch !important; /* Stack items but stretch to allow burger align-self */
     text-align: center !important;
-    gap: 12px !important;
+    gap: 8px !important;
     height: auto !important;
     background: #fff !important;
   }
@@ -2230,7 +2230,7 @@ a[href*="tel"][style*="color:white"] {
     flex-direction: column !important;
     align-items: center !important;
     width: 100% !important;
-    gap: 8px !important;
+    gap: 5px !important;
     margin: 0 !important;
   }
   
@@ -2286,15 +2286,24 @@ a[href*="tel"][style*="color:white"] {
     right: 0 !important;
   }
 
-  /* Sidebar Items Stacking (Optional but for clarity) */
-  .nav-item {
-    padding: 15px !important;
-    justify-content: flex-start !important;
+  .sidebar { 
+    width: 280px !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
-
-  .sidebar { width: 260px !important; }
-  .sidebar-opened .sidebar { transform: translateX(260px) !important; }
-  .rtl.sidebar-opened .sidebar { transform: translateX(-260px) !important; }
+  .sidebar-opened .sidebar { transform: translateX(280px) !important; }
+  .rtl.sidebar-opened .sidebar { transform: translateX(-280px) !important; }
+  
+  .nav-item {
+    display: flex !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 15px 20px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  }
   
   .content-area { padding: 10px; }
   

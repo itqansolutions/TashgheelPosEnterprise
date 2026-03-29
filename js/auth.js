@@ -162,6 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const burgerBtn = document.createElement('button');
         burgerBtn.className = 'mobile-menu-toggle';
         burgerBtn.innerHTML = '☰';
+        
+        // Dynamic positioning based on RTL
+        const isRTL = document.dir === 'rtl' || document.documentElement.dir === 'rtl' || document.body.classList.contains('rtl');
+        
         burgerBtn.style.cssText = `
             display: none; 
             background: #3498db; 
@@ -171,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             border-radius: 4px; 
             font-size: 1.2rem; 
             cursor: pointer;
-            margin-right: 15px;
+            margin-${isRTL ? 'left' : 'right'}: 15px;
+            align-self: ${isRTL ? 'flex-end' : 'flex-start'};
         `;
         
         // Prepend to topBar or insert before first child
