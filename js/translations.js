@@ -33,6 +33,12 @@ const translations = {
         nav_stores: "🏢 Warehouses",
         nav_admin: "⚙️ Admin Panel",
         nav_backup: "💾 Backup",
+        allowed_stores: "Allowed Warehouses",
+        allowed_pages: "Page Permissions",
+        all_stores: "All Warehouses",
+        all_pages: "All Pages",
+        stores: "Warehouses",
+        pages: "Pages",
 
         // Reports Nav
         nav_reports_sales: "📊 Sales Reports",
@@ -316,6 +322,12 @@ const translations = {
         nav_stores: "🏢 المخازن",
         nav_admin: "⚙️ الإدارة",
         nav_backup: "💾 النسخ الاحتياطي",
+        allowed_stores: "المخازن المسموحة",
+        allowed_pages: "صلاحيات الصفحات",
+        all_stores: "كل المخازن",
+        all_pages: "كل الصفحات",
+        stores: "المخازن",
+        pages: "الصفحات",
 
         // Common
         app_name: "تسهيل POS",

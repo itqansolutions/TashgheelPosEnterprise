@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     fullName: { type: String, required: true },
     active: { type: Boolean, default: true },
     allowedStores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Store' }],
+    allowedPages: [{ type: String }],
     createdAt: { type: Date, default: Date.now }
 });
 

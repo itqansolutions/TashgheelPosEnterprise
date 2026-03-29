@@ -808,7 +808,7 @@ router.get('/users', auth, async (req, res) => {
 // @access  Private
 router.post('/users', auth, async (req, res) => {
     try {
-        const { username, password, role, allowedStores } = req.body;
+        const { username, password, role, allowedStores, allowedPages } = req.body;
 
         // Check if user exists
         let user = await User.findOne({ username, tenantId: req.tenantId });
@@ -822,7 +822,8 @@ router.post('/users', auth, async (req, res) => {
             passwordHash: 'temp', // Will be overwritten
             fullName: username, // Default to username since frontend doesn't provide it yet
             role,
-            allowedStores: allowedStores || []
+            allowedStores: allowedStores || [],
+            allowedPages: allowedPages || []
         });
 
         const salt = await bcrypt.genSalt(10);
@@ -844,9 +845,10 @@ router.put('/users/:id', auth, async (req, res) => {
         let user = await User.findOne({ _id: req.params.id, tenantId: req.tenantId });
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
-        const { role, allowedStores, password, active } = req.body;
+        const { role, allowedStores, allowedPages, password, active } = req.body;
         if (role) user.role = role;
         if (allowedStores !== undefined) user.allowedStores = allowedStores;
+        if (allowedPages !== undefined) user.allowedPages = allowedPages;
         if (active !== undefined) user.active = active;
         
         if (password) {

@@ -167,7 +167,16 @@ router.post('/login', async (req, res) => {
 
         // Synchronous jwt.sign — errors are caught by the outer try-catch
         const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret123', { expiresIn: '1d' });
-        res.json({ token, user: { username: user.username, role: user.role, fullName: user.fullName } });
+        res.json({ 
+            token, 
+            user: { 
+                username: user.username, 
+                role: user.role, 
+                fullName: user.fullName,
+                allowedStores: user.allowedStores,
+                allowedPages: user.allowedPages
+            } 
+        });
 
     } catch (err) {
         console.error('[LOGIN ERROR]', err.stack || err.message);

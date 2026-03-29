@@ -62,10 +62,8 @@ function getCurrentUser() {
 // Check if session is valid
 function isSessionValid() {
     const token = localStorage.getItem('token');
-    // Ideally we should verify token with backend, but for now check existence
     if (!token) return false;
 
-    // Check if token is expired (simple check)
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         if (payload.exp * 1000 < Date.now()) {
@@ -95,21 +93,62 @@ function hasPermission(requiredRole) {
     return userLevel >= requiredLevel;
 }
 
+// New: Check page-level permission
+function canAccessPage(pageName) {
+    const user = getCurrentUser();
+    if (!user) return false;
+    if (user.role === 'admin') return true; // Admin has all permissions
+    if (!user.allowedPages || user.allowedPages.length === 0) return false;
+    return user.allowedPages.includes(pageName);
+}
+
 // Export functions
 window.login = login;
 window.logout = logout;
 window.confirmLogout = confirmLogout;
 window.getCurrentUser = getCurrentUser;
 window.hasPermission = hasPermission;
+window.canAccessPage = canAccessPage;
 window.isSessionValid = isSessionValid;
 
-// Redirect if not logged in (except on login/register pages)
+// Redirect if not logged in or doesn't have page permission
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
-    if (!path.includes('index.html') && !path.includes('register.html') && !path.includes('subscription.html')) {
+    const page = path.substring(path.lastIndexOf('/') + 1);
+    
+    // Auth exceptions
+    const exceptions = ['index.html', 'register.html', 'subscription.html', ''];
+    if (!exceptions.includes(page)) {
         if (!isSessionValid()) {
             window.location.href = 'index.html';
+            return;
+        }
+
+        // Granular page permission check
+        const user = getCurrentUser();
+        if (user && user.role !== 'admin') {
+            const allowedPages = user.allowedPages || [];
+            // If accessing a restricted page
+            if (page && page.endsWith('.html') && !allowedPages.includes(page)) {
+                // Special case for POS - it's usually the landing page for cashiers
+                if (page !== 'pos.html') {
+                   alert('Access Denied: You do not have permission to view this page.');
+                   window.location.href = 'pos.html';
+                }
+            }
         }
     }
-});
 
+    // Sidebar Visibility Enhancement
+    const sidebarItems = document.querySelectorAll('.nav-item');
+    const user = getCurrentUser();
+    if (user && user.role !== 'admin') {
+        const allowedPages = user.allowedPages || [];
+        sidebarItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href.endsWith('.html') && !allowedPages.includes(href)) {
+                item.style.display = 'none'; // Hide unauthorized sidebar links
+            }
+        });
+    }
+});
