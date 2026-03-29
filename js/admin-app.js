@@ -332,7 +332,7 @@ async function loadStoresForUsers() {
   try {
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}/stores`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'x-auth-token': token }
     });
     const storesList = await response.json();
     window.allStores = storesList; // Shared for table rendering

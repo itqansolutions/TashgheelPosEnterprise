@@ -60,16 +60,18 @@ async function checkOpenShift() {
     // Load available stores for this user
     const user = JSON.parse(localStorage.getItem('currentUser'));
     const storesRes = await fetch(`${API_URL}/stores`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 'x-auth-token': token }
     });
     const allStores = await storesRes.json();
     
     // Filter stores based on user permissions
     let allowedStores = [];
-    if (user.role === 'admin') {
-        allowedStores = allStores;
-    } else {
-        allowedStores = allStores.filter(s => (user.allowedStores || []).includes(s._id));
+    if (Array.isArray(allStores)) {
+        if (user.role === 'admin') {
+            allowedStores = allStores;
+        } else {
+            allowedStores = allStores.filter(s => (user.allowedStores || []).includes(s._id));
+        }
     }
 
     const storeSelect = document.getElementById('storeSelect');

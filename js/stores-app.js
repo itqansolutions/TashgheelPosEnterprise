@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadStores = async () => {
         try {
             const res = await fetch('/api/stores', {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 'x-auth-token': token }
             });
             stores = await res.json();
             renderStores();
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await fetch(`/api/stores/${id}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'x-auth-token': token }
                 });
                 loadStores();
             } catch (err) {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'x-auth-token': token
                 },
                 body: JSON.stringify(storeData)
             });
