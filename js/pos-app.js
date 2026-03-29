@@ -112,7 +112,7 @@ function enableReadOnlyMode(ownerName) {
   enablePOS(); // First enable everything
 
   // Disable transaction buttons
-  const buttonsToDisable = ['cashBtn', 'cardBtn', 'mobileBtn', 'holdBtn', 'clearCartBtn', 'closeShiftBtn', 'scanBtn'];
+  const buttonsToDisable = ['cashBtn', 'cardBtn', 'mobileBtn', 'creditBtn', 'holdBtn', 'clearCartBtn', 'closeShiftBtn', 'scanBtn'];
   buttonsToDisable.forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.disabled = true;
@@ -430,7 +430,7 @@ z - index: 999;
 `;
         banner.innerHTML = `
           ⚠️ Trial Version: ${data.daysRemaining} days remaining. 
-          < a href = "tel:+201126522373" style = "color:white;text-decoration:underline;margin-left:10px;" > Contact to Activate</a >
+          <a href = "tel:+201126522373" style = "color:white;text-decoration:underline;margin-left:10px;" > Contact to Activate</a>
   `;
         document.body.prepend(banner);
       }
@@ -560,6 +560,29 @@ async function loadSalesmen() {
     }
   } catch (error) {
     console.error('Error loading salesmen:', error);
+  }
+}
+
+async function loadCustomers() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}/customers`, {
+      headers: { 'x-auth-token': token }
+    });
+    if (response.ok) {
+      const customers = await response.json();
+      const select = document.getElementById("customerSelect");
+      if (!select) return;
+      select.innerHTML = `<option value="">--</option>`;
+      customers.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c._id;
+        opt.textContent = `${c.name} (Bal: ${c.balance.toFixed(2)})`;
+        select.appendChild(opt);
+      });
+    }
+  } catch (error) {
+    console.error('Error loading customers:', error);
   }
 }
 
@@ -868,6 +891,15 @@ async function processSale(method) {
     date: new Date()
   };
 
+  if (method === 'credit') {
+    const customerSelect = document.getElementById("customerSelect");
+    if (!customerSelect || !customerSelect.value) {
+      alert(t("Please select a customer for credit sale", "الرجاء اختيار عميل للبيع بالآجل"));
+      return;
+    }
+    saleData.customerId = customerSelect.value;
+  }
+
   showLoading();
 
   const payButton = document.getElementById('payButton');
@@ -1036,6 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   loadCategories();
   loadSalesmen();
+  loadCustomers();
 
   renderHeldOrders();
   if (heldTransactions.length > 0) {

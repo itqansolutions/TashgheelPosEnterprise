@@ -14,7 +14,9 @@ const Category = require('../models/Category');
 const StockAdjustment = require('../models/StockAdjustment');
 const Shift = require('../models/Shift');
 const AuditLog = require('../models/AuditLog');
-
+const Supplier = require('../models/Supplier');
+const Purchase = require('../models/Purchase');
+const LedgerTransaction = require('../models/LedgerTransaction');
 // CUSTOMERS
 
 // @route   GET /api/customers
@@ -57,6 +59,81 @@ router.delete('/customers/:id', auth, async (req, res) => {
 
         await Customer.deleteOne({ _id: req.params.id });
         res.json({ msg: 'Customer removed' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT /api/customers/:id
+// @desc    Update customer
+// @access  Private
+router.put('/customers/:id', auth, async (req, res) => {
+    try {
+        let customer = await Customer.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!customer) return res.status(404).json({ msg: 'Customer not found' });
+
+        const { name, phone, email, address, loyaltyPoints, balance } = req.body;
+        if (name) customer.name = name;
+        if (phone) customer.phone = phone;
+        if (email !== undefined) customer.email = email;
+        if (address !== undefined) customer.address = address;
+        if (loyaltyPoints !== undefined) customer.loyaltyPoints = loyaltyPoints;
+        if (balance !== undefined) customer.balance = balance;
+
+        await customer.save();
+        res.json(customer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET /api/customers/:id/statement
+// @desc    Get customer ledger statement
+// @access  Private
+router.get('/customers/:id/statement', auth, async (req, res) => {
+    try {
+        const transactions = await LedgerTransaction.find({
+            tenantId: req.tenantId,
+            entityType: 'customer',
+            entityId: req.params.id
+        }).sort({ date: -1 });
+        res.json(transactions);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST /api/customers/:id/pay
+// @desc    Receive payment from customer
+// @access  Private
+router.post('/customers/:id/pay', auth, async (req, res) => {
+    try {
+        const { amount, notes } = req.body;
+        if (!amount || amount <= 0) return res.status(400).json({ msg: 'Valid amount missing' });
+
+        let customer = await Customer.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!customer) return res.status(404).json({ msg: 'Customer not found' });
+
+        // Payment reduces the customer's debt
+        customer.balance -= amount;
+        await customer.save();
+
+        const ledgerTx = new LedgerTransaction({
+            tenantId: req.tenantId,
+            entityType: 'customer',
+            entityId: customer._id,
+            type: 'payment',
+            amount: -amount, // Negative because it reduces the balance owed
+            date: new Date(),
+            cashier: req.user.username,
+            notes: notes || 'Customer Payment'
+        });
+        await ledgerTx.save();
+
+        res.json({ msg: 'Payment successful', balance: customer.balance, transaction: ledgerTx });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -244,6 +321,7 @@ router.post('/sales', auth, async (req, res) => {
             method: paymentMethod, // Map paymentMethod to method
             cashier: req.user.username, // Set cashier from logged-in user
             salesman,
+            customerId: req.body.customerId || undefined,
             total,
             taxAmount: req.body.taxAmount || 0,
             taxName: req.body.taxName,
@@ -252,6 +330,31 @@ router.post('/sales', auth, async (req, res) => {
         });
 
         const sale = await newSale.save();
+
+        if (paymentMethod === 'credit') {
+            if (!req.body.customerId) {
+                // If we somehow bypassed the check
+                return res.status(400).json({ msg: 'Customer ID is required for credit sales' });
+            }
+            const customer = await Customer.findOne({ _id: req.body.customerId, tenantId: req.tenantId });
+            if (customer) {
+                customer.balance += total;
+                await customer.save();
+
+                const ledgerTx = new LedgerTransaction({
+                    tenantId: req.tenantId,
+                    entityType: 'customer',
+                    entityId: customer._id,
+                    type: 'sale',
+                    amount: total,
+                    referenceId: sale._id,
+                    date: new Date(),
+                    cashier: req.user.username,
+                    notes: 'Credit Sale - Receipt: ' + receiptId
+                });
+                await ledgerTx.save();
+            }
+        }
 
         // Update stock
         for (const item of items) {
@@ -1100,6 +1203,215 @@ router.get('/audit-logs', auth, async (req, res) => {
             .sort({ timestamp: -1 })
             .limit(100);
         res.json(logs);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// SUPPLIERS
+
+// @route   GET /api/suppliers
+// @desc    Get all suppliers
+// @access  Private
+router.get('/suppliers', auth, async (req, res) => {
+    try {
+        const suppliers = await Supplier.find({ tenantId: req.tenantId });
+        res.json(suppliers);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST /api/suppliers
+// @desc    Add new supplier
+// @access  Private
+router.post('/suppliers', auth, async (req, res) => {
+    try {
+        const newSupplier = new Supplier({
+            tenantId: req.tenantId,
+            ...req.body
+        });
+        const supplier = await newSupplier.save();
+        res.json(supplier);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT /api/suppliers/:id
+// @desc    Update supplier
+// @access  Private
+router.put('/suppliers/:id', auth, async (req, res) => {
+    try {
+        let supplier = await Supplier.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!supplier) return res.status(404).json({ msg: 'Supplier not found' });
+
+        const { name, phone, address, balance } = req.body;
+        if (name) supplier.name = name;
+        if (phone) supplier.phone = phone;
+        if (address !== undefined) supplier.address = address;
+        if (balance !== undefined) supplier.balance = balance;
+
+        await supplier.save();
+        res.json(supplier);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   DELETE /api/suppliers/:id
+// @desc    Delete supplier
+// @access  Private
+router.delete('/suppliers/:id', auth, async (req, res) => {
+    try {
+        const supplier = await Supplier.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!supplier) return res.status(404).json({ msg: 'Supplier not found' });
+
+        await Supplier.deleteOne({ _id: req.params.id });
+        res.json({ msg: 'Supplier removed' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET /api/suppliers/:id/statement
+// @desc    Get supplier ledger statement
+// @access  Private
+router.get('/suppliers/:id/statement', auth, async (req, res) => {
+    try {
+        const transactions = await LedgerTransaction.find({
+            tenantId: req.tenantId,
+            entityType: 'supplier',
+            entityId: req.params.id
+        }).sort({ date: -1 });
+        res.json(transactions);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST /api/suppliers/:id/pay
+// @desc    Make payment to supplier
+// @access  Private
+router.post('/suppliers/:id/pay', auth, async (req, res) => {
+    try {
+        const { amount, notes } = req.body;
+        if (!amount || amount <= 0) return res.status(400).json({ msg: 'Valid amount missing' });
+
+        let supplier = await Supplier.findOne({ _id: req.params.id, tenantId: req.tenantId });
+        if (!supplier) return res.status(404).json({ msg: 'Supplier not found' });
+
+        // Payment reduces our debt to the supplier
+        supplier.balance -= amount;
+        await supplier.save();
+
+        const ledgerTx = new LedgerTransaction({
+            tenantId: req.tenantId,
+            entityType: 'supplier',
+            entityId: supplier._id,
+            type: 'payment',
+            amount: -amount, // Negative because it reduces the balance
+            date: new Date(),
+            cashier: req.user.username,
+            notes: notes || 'Payment to Supplier'
+        });
+        await ledgerTx.save();
+
+        res.json({ msg: 'Payment successful', balance: supplier.balance, transaction: ledgerTx });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// PURCHASES
+
+// @route   POST /api/purchases
+// @desc    Create a new purchase (buy stock from supplier)
+// @access  Private
+router.post('/purchases', auth, async (req, res) => {
+    try {
+        const { supplierId, items, total, cashPaid } = req.body;
+        
+        const supplier = await Supplier.findOne({ _id: supplierId, tenantId: req.tenantId });
+        if (!supplier) return res.status(404).json({ msg: 'Supplier not found' });
+
+        // Generate a pseudo-receiptId for purchase
+        const purchaseCount = await Purchase.countDocuments({ tenantId: req.tenantId });
+        const receiptId = 'PUR-' + (purchaseCount + 1);
+
+        const newPurchase = new Purchase({
+            tenantId: req.tenantId,
+            supplierId,
+            receiptId,
+            date: new Date(),
+            total,
+            cashPaid: cashPaid || 0,
+            items,
+            cashier: req.user.username
+        });
+
+        const purchase = await newPurchase.save();
+
+        // 1. Update Supplier Balance & Ledger
+        let owedAmount = total - (cashPaid || 0);
+
+        if (owedAmount > 0) {
+            supplier.balance += owedAmount;
+            await supplier.save();
+
+            const ledgerTx = new LedgerTransaction({
+                tenantId: req.tenantId,
+                entityType: 'supplier',
+                entityId: supplier._id,
+                type: 'purchase',
+                amount: owedAmount,
+                referenceId: purchase._id,
+                date: new Date(),
+                cashier: req.user.username,
+                notes: 'Purchase - Receipt: ' + receiptId + (cashPaid > 0 ? ` (Total: ${total}, Paid: ${cashPaid})` : '')
+            });
+            await ledgerTx.save();
+        }
+
+        // 2. Update stock
+        for (const item of items) {
+            let product = await Product.findOne({ _id: item.productId, tenantId: req.tenantId });
+            if (!product && item.code) {
+                product = await Product.findOne({ barcode: item.code, tenantId: req.tenantId });
+            }
+
+            if (product && product.trackStock !== false) {
+                product.stock += item.qty; // Buying increases stock
+                
+                // Optional: MIGHT want to update moving average cost here, but skipping for safety unless explicitly needed
+                // product.cost = item.cost;
+                await product.save();
+            }
+        }
+
+        res.json({ purchase, supplierBalance: supplier.balance });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET /api/purchases
+// @desc    Get all purchases
+// @access  Private
+router.get('/purchases', auth, async (req, res) => {
+    try {
+        const purchases = await Purchase.find({ tenantId: req.tenantId })
+            .populate('supplierId', 'name phone')
+            .sort({ date: -1 });
+        res.json(purchases);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

@@ -27,6 +27,9 @@ const translations = {
         nav_reports: "📈 Reports",
         nav_salesmen: "🧑‍💼 Salesmen",
         nav_expenses: "📋 Expenses",
+        nav_suppliers: "🏢 Suppliers",
+        nav_customers: "👥 Customers",
+        nav_purchases: "📥 Purchases",
         nav_admin: "⚙️ Admin Panel",
         nav_backup: "💾 Backup",
 
@@ -252,6 +255,36 @@ const translations = {
         register_success: "Registration successful! Redirecting...",
         register_error: "Error during registration",
         connection_error: "Connection failed",
+
+        // Suppliers & Customers
+        suppliers_list: "Suppliers List",
+        add_supplier: "Add Supplier",
+        customers_list: "Customers List",
+        add_customer: "Add Customer",
+        supplier: "Supplier",
+        customer: "Customer",
+        balance: "Balance",
+        current_balance: "Current Balance",
+        make_payment: "Make Payment",
+        receive_payment: "Receive Payment",
+        pay: "Pay",
+        account_statement: "Account Statement",
+        debit: "Debit (+ Debt)",
+        credit: "Credit (- Payment)",
+        type: "Type",
+        notes: "Notes",
+
+        // Purchases
+        create_purchase: "Create Purchase",
+        add_items: "Add Items",
+        purchase_cart: "Purchase Cart",
+        recent_purchases: "Recent Purchases",
+        cash_paid: "Paid",
+        cash_paid_now: "Cash Paid Now",
+        remaining_adds_debt: "Remaining amount adds to supplier debt.",
+        submit_purchase: "Submit Purchase",
+        pay_credit: "📝 Credit",
+        receipt: "Receipt"
     },
     ar: {
         // Navigation
@@ -261,6 +294,9 @@ const translations = {
         nav_reports: "📈 التقارير",
         nav_salesmen: "🧑‍💼 البائعين",
         nav_expenses: "📋 المصاريف",
+        nav_suppliers: "🏢 الموردين",
+        nav_customers: "👥 العملاء",
+        nav_purchases: "📥 المشتريات",
         nav_admin: "⚙️ الإدارة",
         nav_backup: "💾 النسخ الاحتياطي",
 
@@ -483,6 +519,36 @@ const translations = {
         register_success: "تم التسجيل بنجاح! جاري التوجيه...",
         register_error: "حدث خطأ أثناء التسجيل",
         connection_error: "فشل الاتصال بالخادم",
+
+        // Suppliers & Customers
+        suppliers_list: "قائمة الموردين",
+        add_supplier: "إضافة مورد",
+        customers_list: "قائمة العملاء",
+        add_customer: "إضافة عميل",
+        supplier: "المورد",
+        customer: "العميل",
+        balance: "الرصيد",
+        current_balance: "الرصيد الحالي",
+        make_payment: "تسجيل دفعة",
+        receive_payment: "استلام دفعة",
+        pay: "دفع/استلام",
+        account_statement: "كشف حساب",
+        debit: "مدين (+ المديونية)",
+        credit: "دائن (- السداد)",
+        type: "النوع",
+        notes: "ملاحظات",
+
+        // Purchases
+        create_purchase: "إنشاء مشتريات",
+        add_items: "إضافة أصناف",
+        purchase_cart: "سلة المشتريات",
+        recent_purchases: "المشتريات السابقة",
+        cash_paid: "المدفوع",
+        cash_paid_now: "نقد مدفوع الآن",
+        remaining_adds_debt: "المبلغ المتبقي يضاف على مديونية المورد.",
+        submit_purchase: "تأكيد الشراء",
+        pay_credit: "📝 آجل",
+        receipt: "إيصال"
     }
 };
 

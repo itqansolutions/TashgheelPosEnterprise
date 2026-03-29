@@ -4,8 +4,9 @@ const saleSchema = new mongoose.Schema({
     tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true },
     receiptId: { type: String, required: true }, // e.g., receipt_123456
     shiftId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shift' },
+    customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
     date: { type: Date, default: Date.now },
-    method: { type: String, enum: ['cash', 'card', 'mobile', 'split'], required: true },
+    method: { type: String, enum: ['cash', 'card', 'mobile', 'split', 'credit'], required: true },
     splitPayments: [{
         method: { type: String, enum: ['cash', 'card', 'mobile'] },
         amount: Number

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="nav_customers">👥 Customers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <script src="js/auth.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/customers-app.js" defer></script>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <button class="lang-btn" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 id="posSystemTitle" data-i18n="app_title">🏪Tasgheel POS System</h2>
+        <p id="licensedVersion" data-i18n="enhanced_edition">Enterprise Edition</p>
+      </div>
+      <nav>
+        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
+        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="nav-item active" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
+</nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger" onclick="confirmLogout()" id="logoutBtn" data-i18n="logout">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h1 data-i18n="nav_customers">Customers</h1>
+      </header>
+
+      <section class="content-area">
+        <!-- Add Customer Form -->
+        <form id="customer-form" class="card">
+          <h2 data-i18n="add_customer">Add Customer</h2>
+          <input type="hidden" id="customer-id" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-i18n="name">Name</label>
+              <input type="text" id="customer-name" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="phone">Phone</label>
+              <input type="text" id="customer-phone" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="address">Address</label>
+              <input type="text" id="customer-address" />
+            </div>
+            <div class="form-group" style="align-self: flex-end;">
+              <button type="submit" class="btn btn-primary" data-i18n="save">Save</button>
+              <button type="button" class="btn btn-secondary" onclick="resetForm()" data-i18n="cancel">Cancel</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="card mt-20">
+          <h2 data-i18n="customers_list">Customers List</h2>
+          <table class="data-table mt-20">
+            <thead>
+              <tr>
+                <th data-i18n="name">Name</th>
+                <th data-i18n="phone">Phone</th>
+                <th data-i18n="address">Address</th>
+                <th data-i18n="balance">Balance</th>
+                <th data-i18n="actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="customers-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 data-i18n="make_payment">Receive Payment</h3>
+      <p><span data-i18n="customer">Customer</span>: <strong id="paymentCustomerName"></strong></p>
+      <p><span data-i18n="current_balance">Current Balance</span>: <strong id="paymentCustomerBalance"></strong></p>
+      <div class="form-group mt-20">
+        <label data-i18n="amount">Amount</label>
+        <input type="number" id="paymentAmount" min="0" required>
+      </div>
+      <div class="form-group">
+        <label data-i18n="notes">Notes</label>
+        <input type="text" id="paymentNotes">
+      </div>
+      <button onclick="submitPayment()" class="btn btn-success" data-i18n="pay">Receive</button>
+      <button onclick="closeModal('paymentModal')" class="btn btn-secondary" data-i18n="cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Statement Modal -->
+  <div id="statementModal" class="modal" style="display:none;">
+    <div class="modal-content" style="width:90%; max-width:800px; max-height: 80vh; overflow-y: auto;">
+      <h3 data-i18n="account_statement">Account Statement</h3>
+      <p><span data-i18n="customer">Customer</span>: <strong id="statementCustomerName"></strong></p>
+      <table class="data-table mt-20" id="statementTable">
+        <thead>
+          <tr>
+            <th data-i18n="date">Date</th>
+            <th data-i18n="type">Type</th>
+            <th data-i18n="notes">Notes</th>
+            <th data-i18n="debit">Debit (+ Debt)</th>
+            <th data-i18n="credit">Credit (- Payment)</th>
+          </tr>
+        </thead>
+        <tbody id="statement-body"></tbody>
+      </table>
+      <div class="mt-20">
+        <button onclick="printStatement()" class="btn btn-primary" data-i18n="print">Print</button>
+        <button onclick="closeModal('statementModal')" class="btn btn-secondary" data-i18n="close">Close</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -366,7 +366,7 @@ body.rtl .search-box {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 .login-form {
@@ -1902,8 +1902,8 @@ body { background: #f0f2f8; }
 /* â”€â”€ SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sidebar {
   width: 250px;
-  background: linear-gradient(160deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 4px 0 20px rgba(118, 75, 162, 0.3);
+  background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: 4px 0 20px rgba(15, 23, 42, 0.4);
   border-right: none;
 }
 

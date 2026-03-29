@@ -1,0 +1,216 @@
+const API_URL = '/api';
+
+let suppliers = [];
+let allProducts = [];
+let filteredProducts = [];
+let purchaseCart = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadSuppliers();
+    loadProducts();
+    loadRecentPurchases();
+
+    document.getElementById('productSearch').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        if (query.trim() === '') {
+            filteredProducts = [];
+        } else {
+            filteredProducts = allProducts.filter(p => 
+                (p.name && p.name.toLowerCase().includes(query)) ||
+                (p.code && String(p.code).toLowerCase().includes(query)) ||
+                (p.barcode && String(p.barcode).toLowerCase().includes(query))
+            ).slice(0, 10); // Limit to top 10 results
+        }
+        renderProductResults();
+    });
+});
+
+async function loadSuppliers() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/suppliers`, {
+            headers: { 'x-auth-token': token }
+        });
+        suppliers = await res.json();
+        
+        const select = document.getElementById('purchaseSupplier');
+        select.innerHTML = '<option value="">-- Select Supplier --</option>';
+        suppliers.forEach(supp => {
+            const opt = document.createElement('option');
+            opt.value = supp._id;
+            opt.textContent = supp.name + ` (Bal: ${supp.balance.toFixed(2)})`;
+            select.appendChild(opt);
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function loadProducts() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/products`, {
+            headers: { 'x-auth-token': token }
+        });
+        allProducts = await res.json();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function loadRecentPurchases() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/purchases`, {
+            headers: { 'x-auth-token': token }
+        });
+        const purchases = await res.json();
+        
+        const tbody = document.getElementById('purchases-body');
+        tbody.innerHTML = '';
+        
+        purchases.slice(0, 15).forEach(pur => { // Show last 15
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${new Date(pur.date).toLocaleString()}</td>
+                <td>${pur.receiptId}</td>
+                <td>${pur.supplierId ? pur.supplierId.name : '-'}</td>
+                <td>${pur.total.toFixed(2)}</td>
+                <td>${(pur.cashPaid || 0).toFixed(2)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function renderProductResults() {
+    const container = document.getElementById('productResults');
+    container.innerHTML = '';
+    
+    filteredProducts.forEach(prod => {
+        const div = document.createElement('div');
+        div.style.cssText = "padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;";
+        div.innerHTML = `
+            <div>
+                <strong>${prod.name}</strong> <small>(${prod.code || prod.barcode || '-'})</small><br>
+                <small>Current Stock: ${prod.stock} | Cost: ${prod.cost || 0}</small>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="addToPurchaseCart('${prod._id}')">Add</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addToPurchaseCart(productId) {
+    const prod = allProducts.find(p => p._id === productId);
+    if (!prod) return;
+
+    const existing = purchaseCart.find(item => item.productId === productId);
+    if (existing) {
+        existing.qty++;
+    } else {
+        purchaseCart.push({
+            productId: prod._id,
+            code: prod.barcode || prod.code,
+            name: prod.name,
+            qty: 1,
+            cost: prod.cost || 0
+        });
+    }
+    
+    document.getElementById('productSearch').value = '';
+    filteredProducts = [];
+    renderProductResults();
+    renderPurchaseCart();
+}
+
+function renderPurchaseCart() {
+    const container = document.getElementById('purchaseItems');
+    container.innerHTML = '';
+    
+    let total = 0;
+
+    purchaseCart.forEach((item, index) => {
+        total += item.qty * item.cost;
+        const div = document.createElement('div');
+        div.style.cssText = "margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 5px;";
+        
+        div.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <strong>${item.name}</strong>
+                <button onclick="removeFromPurchaseCart(${index})" class="btn-danger" style="padding:2px 5px; border-radius:3px;">X</button>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <div>
+                    <label>Qty:</label><br>
+                    <input type="number" min="1" value="${item.qty}" onchange="updateCartItem(${index}, 'qty', this.value)" style="width:60px;">
+                </div>
+                <div>
+                    <label>Cost Unit:</label><br>
+                    <input type="number" min="0" value="${item.cost}" onchange="updateCartItem(${index}, 'cost', this.value)" style="width:80px;">
+                </div>
+                <div style="text-align:right; flex:1;">
+                    <label>Sub:</label><br>
+                    <strong>${(item.qty * item.cost).toFixed(2)}</strong>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    document.getElementById('purchaseTotal').textContent = total.toFixed(2);
+}
+
+function updateCartItem(index, field, value) {
+    const val = parseFloat(value);
+    if (val >= 0) {
+        purchaseCart[index][field] = val;
+        renderPurchaseCart();
+    }
+}
+
+function removeFromPurchaseCart(index) {
+    purchaseCart.splice(index, 1);
+    renderPurchaseCart();
+}
+
+async function submitPurchase() {
+    const supplierId = document.getElementById('purchaseSupplier').value;
+    const cashPaid = parseFloat(document.getElementById('cashPaid').value) || 0;
+    
+    if (!supplierId) return alert('Please select a supplier');
+    if (purchaseCart.length === 0) return alert('Cart is empty');
+
+    const total = purchaseCart.reduce((acc, item) => acc + (item.qty * item.cost), 0);
+
+    const payload = {
+        supplierId,
+        items: purchaseCart,
+        total,
+        cashPaid
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/purchases`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            alert('Purchase submitted successfully');
+            purchaseCart = [];
+            document.getElementById('cashPaid').value = 0;
+            renderPurchaseCart();
+            loadSuppliers(); // refresh balances
+            loadRecentPurchases();
+        } else {
+            alert('Error submitting purchase');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}

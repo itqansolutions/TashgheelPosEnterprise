@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="nav_purchases">📥 Purchases</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <script src="js/auth.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/purchases-app.js" defer></script>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <button class="lang-btn" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 id="posSystemTitle" data-i18n="app_title">🏪Tasgheel POS System</h2>
+        <p id="licensedVersion" data-i18n="enhanced_edition">Enterprise Edition</p>
+      </div>
+      <nav>
+        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
+        <a href="purchases.html" class="nav-item active" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
+</nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger" onclick="confirmLogout()" id="logoutBtn" data-i18n="logout">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h1 data-i18n="nav_purchases">Purchases</h1>
+      </header>
+
+      <section class="content-area">
+        <div class="pos-layout" style="display:flex; gap:20px;">
+          <!-- Left side: Select Supplier and Add Items -->
+          <div class="card" style="flex: 2;">
+            <div class="card-header">
+              <h2 data-i18n="create_purchase">Create Purchase</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label data-i18n="supplier">Supplier</label>
+                  <select id="purchaseSupplier" required></select>
+                </div>
+              </div>
+              
+              <hr style="margin:20px 0;">
+
+              <h3 data-i18n="add_items">Add Items</h3>
+              <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                <input type="text" id="productSearch" placeholder="Search product..." class="search-box" style="flex:1;">
+              </div>
+              <div id="productResults" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;"></div>
+            </div>
+          </div>
+
+          <!-- Right side: Purchase Cart -->
+          <div class="cart" style="flex: 1;">
+            <h3 data-i18n="purchase_cart">Purchase Cart</h3>
+            <div id="purchaseItems" style="min-height: 200px;"></div>
+            <hr>
+            <div class="cart-summary mt-20">
+              <div class="cart-total"><span data-i18n="total">Total:</span> <span id="purchaseTotal" style="color:#27ae60">0.00</span></div>
+            </div>
+            
+            <div class="form-group mt-20">
+              <label data-i18n="cash_paid_now">Cash Paid Now (Optional)</label>
+              <input type="number" id="cashPaid" value="0" min="0">
+              <small data-i18n="remaining_adds_debt" style="color:#666; font-size: 0.8em;">Remaining amount adds to supplier debt.</small>
+            </div>
+
+            <button class="btn btn-success" style="width:100%; margin-top:20px;" onclick="submitPurchase()" data-i18n="submit_purchase">Submit Purchase</button>
+          </div>
+        </div>
+        
+        <!-- Recend Purchases Table -->
+        <div class="card mt-20">
+          <div class="card-header">
+            <h2 data-i18n="recent_purchases">Recent Purchases</h2>
+          </div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-i18n="date">Date</th>
+                  <th data-i18n="receipt">Receipt</th>
+                  <th data-i18n="supplier">Supplier</th>
+                  <th data-i18n="total">Total</th>
+                  <th data-i18n="cash_paid">Paid</th>
+                </tr>
+              </thead>
+              <tbody id="purchases-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+</body>
+</html>
