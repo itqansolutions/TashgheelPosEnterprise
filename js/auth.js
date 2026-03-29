@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             border-radius: 4px; 
             font-size: 1.2rem; 
             cursor: pointer;
-            margin-${isRTL ? 'left' : 'right'}: 15px;
-            align-self: ${isRTL ? 'flex-end' : 'flex-start'};
+            margin-inline-end: 15px; 
+            align-self: flex-start;
         `;
         
         // Prepend to topBar or insert before first child
