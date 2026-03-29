@@ -15,14 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Set user info
     const user = window.getCurrentUser ? window.getCurrentUser() : JSON.parse(localStorage.getItem('currentUser'));
     if (user) {
-        document.getElementById('currentUser').textContent = user.fullName || user.username;
-    }
-
-    // Load translations and sidebar
-    if (window.i18n) {
-        window.i18n.updatePage();
+        const userDisplay = document.getElementById('currentUser');
+        if (userDisplay) userDisplay.textContent = user.fullName || user.username;
     }
 
     const loadStores = async () => {
@@ -39,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderStores = () => {
         storesTableBody.innerHTML = '';
+        if (!Array.isArray(stores)) {
+            storesTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No data available</td></tr>';
+            return;
+        }
         stores.forEach(store => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -64,13 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('storeName').value = store.name;
             document.getElementById('storeLocation').value = store.location || '';
             modalTitle.setAttribute('data-i18n', 'edit_store');
-            if (window.i18n) window.i18n.updatePage();
+            if (window.applyTranslations) window.applyTranslations();
             storeModal.style.display = 'block';
         }
     };
 
     window.deleteStore = async (id) => {
-        const confirmMsg = document.documentElement.lang === 'ar' ? 'هل أنت متأكد من مسح هذا المخزن؟' : 'Are you sure you want to delete this store?';
+        const lang = localStorage.getItem('pos_language') || 'en';
+        const confirmMsg = lang === 'ar' ? 'هل أنت متأكد من مسح هذا المخزن؟' : 'Are you sure you want to delete this store?';
         if (confirm(confirmMsg)) {
             try {
                 await fetch(`/api/stores/${id}`, {
@@ -84,15 +86,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    addStoreBtn.onclick = () => {
-        storeForm.reset();
-        document.getElementById('storeId').value = '';
-        modalTitle.setAttribute('data-i18n', 'add_store');
-        if (window.i18n) window.i18n.updatePage();
-        storeModal.style.display = 'block';
-    };
+    if (addStoreBtn) {
+        addStoreBtn.onclick = () => {
+            storeForm.reset();
+            document.getElementById('storeId').value = '';
+            modalTitle.setAttribute('data-i18n', 'add_store');
+            if (window.applyTranslations) window.applyTranslations();
+            storeModal.style.display = 'block';
+        }
+    }
 
-    closeModal.onclick = () => storeModal.style.display = 'none';
+    if (closeModal) {
+        closeModal.onclick = () => storeModal.style.display = 'none';
+    }
 
     storeForm.onsubmit = async (e) => {
         e.preventDefault();
@@ -106,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const method = id ? 'PUT' : 'POST';
 
         try {
-            await fetch(url, {
+            const res = await fetch(url, {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,17 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(storeData)
             });
-            storeModal.style.display = 'none';
-            loadStores();
+            if (res.ok) {
+                storeModal.style.display = 'none';
+                loadStores();
+            } else {
+                const data = await res.json();
+                alert(data.msg || 'Error saving store');
+            }
         } catch (err) {
             console.error('Error saving store:', err);
         }
-    };
-
-    document.getElementById('logoutBtn').onclick = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = 'index.html';
     };
 
     loadStores();

@@ -299,7 +299,8 @@ const translations = {
         active_status: "Status",
         active: "Active",
         inactive: "Inactive",
-        all_stores: "All Stores"
+        all_stores: "All Stores",
+        manage_stores: "Manage Warehouses"
     },
     ar: {
         // Navigation
@@ -579,7 +580,8 @@ const translations = {
         active_status: "الحالة",
         active: "مفعل",
         inactive: "معطل",
-        all_stores: "جميع المخازن"
+        all_stores: "جميع المخازن",
+        manage_stores: "إدارة المخازن"
     }
 };
 
