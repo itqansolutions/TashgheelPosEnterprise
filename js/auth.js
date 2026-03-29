@@ -151,4 +151,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Mobile Sidebar Toggle Implementation ---
+    const topBar = document.querySelector('.top-bar');
+    const sidebar = document.querySelector('.sidebar');
+    const app = document.querySelector('.app');
+
+    if (topBar && sidebar && app) {
+        // Create Hamburger Button
+        const burgerBtn = document.createElement('button');
+        burgerBtn.className = 'mobile-menu-toggle';
+        burgerBtn.innerHTML = '☰';
+        burgerBtn.style.cssText = `
+            display: none; 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            font-size: 1.2rem; 
+            cursor: pointer;
+            margin-right: 15px;
+        `;
+        
+        // Prepend to topBar or insert before first child
+        topBar.prepend(burgerBtn);
+
+        burgerBtn.onclick = (e) => {
+            e.stopPropagation();
+            app.classList.toggle('sidebar-opened');
+        };
+
+        // Close sidebar when clicking main content or nav items on mobile
+        document.querySelector('.main-content').onclick = () => {
+            if (app.classList.contains('sidebar-opened')) {
+                app.classList.remove('sidebar-opened');
+            }
+        };
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth < 992) {
+                    app.classList.remove('sidebar-opened');
+                }
+            });
+        });
+
+        // Add CSS rule for visibility via JS or leave it to styles.css
+        // We'll handle visibility purely in CSS media queries to keep it clean.
+    }
 });

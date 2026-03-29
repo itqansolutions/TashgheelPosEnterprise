@@ -2175,3 +2175,82 @@ a[href*="tel"][style*="color:white"] {
   color: #7f8c8d;
   font-size: 0.78rem;
 }
+
+/* ====== MOBILE RESPONSIVENESS ====== */
+@media (max-width: 991px) {
+  .mobile-menu-toggle { display: block !important; }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    z-index: 10001;
+    transition: transform 0.3s ease;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+  }
+  
+  .rtl .sidebar {
+    left: auto;
+    right: -260px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+  }
+  
+  .sidebar-opened .sidebar {
+    transform: translateX(260px);
+  }
+  
+  .rtl.sidebar-opened .sidebar {
+    transform: translateX(-260px);
+  }
+  
+  .app { flex-direction: column; }
+  
+  .main-content {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  .top-bar {
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  
+  .top-bar h1 { font-size: 1.2rem; }
+  
+  .content-area { padding: 15px; }
+  
+  /* POS Stacking */
+  .pos-layout {
+    flex-direction: column !important;
+    min-width: 0 !important;
+    gap: 15px !important;
+  }
+  
+  .pos-layout > div:first-child,
+  .cart {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+  
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    max-height: 400px;
+  }
+  
+  /* Tables Responsiveness */
+  .card-body { overflow-x: auto; }
+  .data-table { min-width: 600px; }
+  
+  /* Stats / Forms */
+  .stats-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr !important; }
+  
+  .modal-content { width: 95% !important; margin: 10px; }
+  
+  .footer { position: static; margin-top: 20px; }
+}
