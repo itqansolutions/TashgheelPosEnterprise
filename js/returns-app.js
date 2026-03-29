@@ -1,6 +1,6 @@
 // returns-app.js
 
-const API_URL = '/api';
+// API_URL is provided by auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
   const searchForm = document.getElementById('return-form');

@@ -1,6 +1,6 @@
 // expenses-app.js
 
-const API_URL = '/api';
+// API_URL is provided by auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
   const lang = localStorage.getItem('pos_language') || 'en';

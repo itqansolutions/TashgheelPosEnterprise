@@ -1,6 +1,6 @@
 // receipts-app.js (Refactored for API)
 
-const API_URL = '/api';
+// API_URL is provided by auth.js
 let currentReturnReceipt = null;
 
 async function loadReceipts() {

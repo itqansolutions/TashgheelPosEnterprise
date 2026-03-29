@@ -1,4 +1,4 @@
-const API_URL = '/api';
+// API_URL is provided by auth.js
 
 let suppliers = [];
 let currentSupplierId = null;
