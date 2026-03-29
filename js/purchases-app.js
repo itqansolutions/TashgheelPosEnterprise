@@ -1,12 +1,15 @@
+// js/purchases-app.js
 // API_URL is provided by auth.js
 
 let suppliers = [];
+let stores = [];
 let allProducts = [];
 let filteredProducts = [];
 let purchaseCart = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     loadSuppliers();
+    loadStores();
     loadProducts();
     loadRecentPurchases();
 
@@ -17,9 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             filteredProducts = allProducts.filter(p => 
                 (p.name && p.name.toLowerCase().includes(query)) ||
-                (p.code && String(p.code).toLowerCase().includes(query)) ||
                 (p.barcode && String(p.barcode).toLowerCase().includes(query))
-            ).slice(0, 10); // Limit to top 10 results
+            ).slice(0, 10);
         }
         renderProductResults();
     });
@@ -38,7 +40,28 @@ async function loadSuppliers() {
         suppliers.forEach(supp => {
             const opt = document.createElement('option');
             opt.value = supp._id;
-            opt.textContent = supp.name + ` (Bal: ${supp.balance.toFixed(2)})`;
+            opt.textContent = supp.name;
+            select.appendChild(opt);
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function loadStores() {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/stores`, {
+            headers: { 'x-auth-token': token }
+        });
+        stores = await res.json();
+        
+        const select = document.getElementById('purchaseStore');
+        select.innerHTML = '<option value="">-- Select Warehouse --</option>';
+        stores.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s._id;
+            opt.textContent = s.name;
             select.appendChild(opt);
         });
     } catch (err) {
@@ -69,7 +92,7 @@ async function loadRecentPurchases() {
         const tbody = document.getElementById('purchases-body');
         tbody.innerHTML = '';
         
-        purchases.slice(0, 15).forEach(pur => { // Show last 15
+        purchases.slice(0, 15).forEach(pur => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${new Date(pur.date).toLocaleString()}</td>
@@ -92,12 +115,15 @@ function renderProductResults() {
     filteredProducts.forEach(prod => {
         const div = document.createElement('div');
         div.style.cssText = "padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;";
+        
+        const trackStockLabel = prod.trackStock !== false ? '<span style="color:green; font-size:0.8em;">(Inventory Tracked)</span>' : '<span style="color:orange; font-size:0.8em;">(Non-Stock/Service)</span>';
+        
         div.innerHTML = `
             <div>
-                <strong>${prod.name}</strong> <small>(${prod.code || prod.barcode || '-'})</small><br>
-                <small>Current Stock: ${prod.stock} | Cost: ${prod.cost || 0}</small>
+                <strong>${prod.name}</strong> ${trackStockLabel}<br>
+                <small>Barcode: ${prod.barcode || '-'} | Current Cost: ${prod.cost?.toFixed(2) || 0}</small>
             </div>
-            <button class="btn btn-sm btn-primary" onclick="addToPurchaseCart('${prod._id}')">Add</button>
+            <button class="btn btn-sm btn-primary" onclick="addToPurchaseCart('${prod._id}')">+</button>
         `;
         container.appendChild(div);
     });
@@ -113,7 +139,7 @@ function addToPurchaseCart(productId) {
     } else {
         purchaseCart.push({
             productId: prod._id,
-            code: prod.barcode || prod.code,
+            barcode: prod.barcode,
             name: prod.name,
             qty: 1,
             cost: prod.cost || 0
@@ -135,25 +161,25 @@ function renderPurchaseCart() {
     purchaseCart.forEach((item, index) => {
         total += item.qty * item.cost;
         const div = document.createElement('div');
-        div.style.cssText = "margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 5px;";
+        div.style.cssText = "margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;";
         
         div.innerHTML = `
             <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                <strong>${item.name}</strong>
-                <button onclick="removeFromPurchaseCart(${index})" class="btn-danger" style="padding:2px 5px; border-radius:3px;">X</button>
+                <strong style="font-size:1.1em;">${item.name}</strong>
+                <button onclick="removeFromPurchaseCart(${index})" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold;">🗑️</button>
             </div>
-            <div style="display:flex; gap:10px;">
-                <div>
-                    <label>Qty:</label><br>
-                    <input type="number" min="1" value="${item.qty}" onchange="updateCartItem(${index}, 'qty', this.value)" style="width:60px;">
+            <div style="display:flex; justify-content: space-between; align-items: center; gap: 15px;">
+                <div style="flex:1;">
+                    <label style="font-size:0.8em; color:#666;">Qty</label>
+                    <input type="number" min="1" value="${item.qty}" onchange="updateCartItem(${index}, 'qty', this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:4px;">
                 </div>
-                <div>
-                    <label>Cost Unit:</label><br>
-                    <input type="number" min="0" value="${item.cost}" onchange="updateCartItem(${index}, 'cost', this.value)" style="width:80px;">
+                <div style="flex:1;">
+                    <label style="font-size:0.8em; color:#666;">Unit Cost</label>
+                    <input type="number" min="0" value="${item.cost}" onchange="updateCartItem(${index}, 'cost', this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:4px;">
                 </div>
-                <div style="text-align:right; flex:1;">
-                    <label>Sub:</label><br>
-                    <strong>${(item.qty * item.cost).toFixed(2)}</strong>
+                <div style="text-align:right; min-width:80px;">
+                    <label style="font-size:0.8em; color:#666;">Subtotal</label><br>
+                    <strong style="color:#2c3e50;">${(item.qty * item.cost).toFixed(2)}</strong>
                 </div>
             </div>
         `;
@@ -178,15 +204,18 @@ function removeFromPurchaseCart(index) {
 
 async function submitPurchase() {
     const supplierId = document.getElementById('purchaseSupplier').value;
+    const storeId = document.getElementById('purchaseStore').value;
     const cashPaid = parseFloat(document.getElementById('cashPaid').value) || 0;
     
     if (!supplierId) return alert('Please select a supplier');
+    if (!storeId) return alert('Please select a destination warehouse');
     if (purchaseCart.length === 0) return alert('Cart is empty');
 
     const total = purchaseCart.reduce((acc, item) => acc + (item.qty * item.cost), 0);
 
     const payload = {
         supplierId,
+        storeId,
         items: purchaseCart,
         total,
         cashPaid
@@ -205,10 +234,11 @@ async function submitPurchase() {
             purchaseCart = [];
             document.getElementById('cashPaid').value = 0;
             renderPurchaseCart();
-            loadSuppliers(); // refresh balances
+            loadSuppliers(); 
             loadRecentPurchases();
         } else {
-            alert('Error submitting purchase');
+            const err = await res.json();
+            alert('Error: ' + (err.msg || 'Failed to submit purchase'));
         }
     } catch (err) {
         console.error(err);

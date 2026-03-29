@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Inventory Management - POS</title>
+  <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="css/tailwind.css">
+</head>
+
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>🏪 Tasgheel POS System</h2>
+        <p>Enterprise Edition</p>
+      </div>
+      <nav>
+        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="nav-item active" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
+</nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1 data-i18n="nav_inventory">Inventory Management</h1>
+      </header>
+
+      <section class="content-area">
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display:flex; gap:15px; align-items:center;">
+               <label data-i18n="warehouse" style="font-weight:bold;">Warehouse:</label>
+               <select id="warehouse-filter" style="width: 250px; padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
+                  <!-- Options are loaded by JS -->
+               </select>
+            </div>
+            <div style="display:flex; gap:10px;">
+               <input type="text" id="inventory-search" placeholder="Search product..." style="width: 300px; padding: 8px; border-radius: 5px; border: 1px solid #ddd;" data-i18n-placeholder="search_placeholder">
+               <button onclick="loadInventory()" class="btn btn-secondary">🔄</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-i18n="product">Product</th>
+                  <th data-i18n="barcode">Barcode</th>
+                  <th data-i18n="category">Category</th>
+                  <th data-i18n="cost">Unit Cost</th>
+                  <th data-i18n="current_stock">Current Stock</th>
+                  <th data-i18n="actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Stock Audit Modal -->
+  <div id="adjustModal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 400px;">
+      <h3 data-i18n="stock_adjustment">🛠️ Stock Adjustment</h3>
+      <div id="adjust-item-info" style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+         <strong id="adjust-product-name">Product Name</strong><br>
+         <span data-i18n="warehouse">Warehouse:</span> <span id="adjust-warehouse-name">Store Name</span>
+      </div>
+      <form id="adjust-form">
+        <input type="hidden" id="adjust-product-id">
+        <div class="form-group">
+          <label data-i18n="current_recorded_stock">Currently Recorded:</label>
+          <input type="number" id="adjust-old-stock" readonly style="background: #eee;">
+        </div>
+        <div class="form-group">
+          <label data-i18n="actual_physical_stock">Actual (Physical) Stock:</label>
+          <input type="number" id="adjust-new-stock" required min="0" placeholder="Enter physical count">
+        </div>
+        <div class="form-group">
+          <label data-i18n="reason">Reason:</label>
+          <select id="adjust-reason" class="form-control">
+             <option value="Audit" data-i18n="reason_audit">Stock Audit / Take</option>
+             <option value="Damage" data-i18n="reason_damage">Damage / Loss</option>
+             <option value="Gift" data-i18n="reason_gift">Gift / Sample</option>
+             <option value="Return" data-i18n="reason_return">Internal Return</option>
+          </select>
+        </div>
+        <div style="margin-top: 20px; text-align: right; display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeAdjustModal()" class="btn btn-secondary" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="btn btn-success" data-i18n="save_adjustment">Save Adjustment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Tashgheel POS© 2025 - Designed and developed by <strong>itqan</strong> |
+    <a href="tel:+201126522373">+201126522373 / +201155253886</a>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/inventory-app.js"></script>
+</body>
+</html>

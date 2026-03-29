@@ -30,6 +30,7 @@ const translations = {
         nav_suppliers: "🏢 Suppliers",
         nav_customers: "👥 Customers",
         nav_purchases: "📥 Purchases",
+        nav_inventory: "📊 Inventory",
         nav_stores: "🏢 Warehouses",
         nav_admin: "⚙️ Admin Panel",
         nav_backup: "💾 Backup",
@@ -306,7 +307,17 @@ const translations = {
         active: "Active",
         inactive: "Inactive",
         all_stores: "All Stores",
-        manage_stores: "Manage Warehouses"
+        manage_stores: "Manage Warehouses",
+        target_store: "Destination Warehouse",
+        stock_adjustment: "Stock Adjustment",
+        current_recorded_stock: "Currently Recorded",
+        actual_physical_stock: "Physical Count",
+        save_adjustment: "Save Adjustment",
+        reason_audit: "Stock Audit",
+        reason_damage: "Damage/Loss",
+        reason_gift: "Gift/Sample",
+        reason_return: "Internal Return",
+        track_inventory: "Track Inventory"
     },
     ar: {
         // Navigation
@@ -319,6 +330,7 @@ const translations = {
         nav_suppliers: "🏢 الموردين",
         nav_customers: "👥 العملاء",
         nav_purchases: "📥 المشتريات",
+        nav_inventory: "📊 المخزون",
         nav_stores: "🏢 المخازن",
         nav_admin: "⚙️ الإدارة",
         nav_backup: "💾 النسخ الاحتياطي",
@@ -593,7 +605,17 @@ const translations = {
         active: "مفعل",
         inactive: "معطل",
         all_stores: "جميع المخازن",
-        manage_stores: "إدارة المخازن"
+        manage_stores: "إدارة المخازن",
+        target_store: "المخزن المستهدف",
+        stock_adjustment: "تعديل المخزون",
+        current_recorded_stock: "المسجل حالياً",
+        actual_physical_stock: "الرصيد الفعلي (الجرد)",
+        save_adjustment: "حفظ التعديل",
+        reason_audit: "جرد دوري",
+        reason_damage: "تلف / فقد",
+        reason_gift: "هدايا / عينات",
+        reason_return: "مرتجع داخلي",
+        track_inventory: "تتبع المخزون"
     }
 };
 

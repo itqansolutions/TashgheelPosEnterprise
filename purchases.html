@@ -14,11 +14,6 @@
 </head>
 
 <body>
-  <div class="language-switcher">
-    <button class="lang-btn" onclick="setLanguage('en')">English</button>
-    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
-  </div>
-
   <div class="app">
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -28,6 +23,7 @@
       <nav>
         <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
         <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="nav-item" data-i18n="nav_inventory">📊 Inventory</a>
         <a href="purchases.html" class="nav-item active" data-i18n="nav_purchases">📥 Purchases</a>
         <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
         <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
@@ -51,16 +47,20 @@
 
       <section class="content-area">
         <div class="pos-layout" style="display:flex; gap:20px;">
-          <!-- Left side: Select Supplier and Add Items -->
+          <!-- Left side: Select Supplier, Store and Add Items -->
           <div class="card" style="flex: 2;">
             <div class="card-header">
               <h2 data-i18n="create_purchase">Create Purchase</h2>
             </div>
             <div class="card-body">
-              <div class="form-grid">
+              <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-group">
                   <label data-i18n="supplier">Supplier</label>
                   <select id="purchaseSupplier" required></select>
+                </div>
+                <div class="form-group">
+                   <label data-i18n="target_store">Destination Warehouse</label>
+                   <select id="purchaseStore" required></select>
                 </div>
               </div>
               
@@ -68,28 +68,33 @@
 
               <h3 data-i18n="add_items">Add Items</h3>
               <div style="display:flex; gap:10px; margin-bottom: 20px;">
-                <input type="text" id="productSearch" placeholder="Search product..." class="search-box" style="flex:1;">
+                <input type="text" id="productSearch" placeholder="Search product by name or barcode..." class="search-box" style="flex:1;">
               </div>
-              <div id="productResults" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;"></div>
+              <div id="productResults" style="max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; padding: 10px;"></div>
             </div>
           </div>
 
           <!-- Right side: Purchase Cart -->
-          <div class="cart" style="flex: 1;">
-            <h3 data-i18n="purchase_cart">Purchase Cart</h3>
-            <div id="purchaseItems" style="min-height: 200px;"></div>
+          <div class="cart" style="flex: 1; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+            <h3 data-i18n="purchase_cart" style="margin-top: 0;">Purchase Cart</h3>
+            <div id="purchaseItems" style="min-height: 200px; max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
+               <!-- Items populated by JS -->
+            </div>
             <hr>
             <div class="cart-summary mt-20">
-              <div class="cart-total"><span data-i18n="total">Total:</span> <span id="purchaseTotal" style="color:#27ae60">0.00</span></div>
+              <div class="cart-total" style="font-size: 1.4em; font-weight: bold; display: flex; justify-content: space-between;">
+                 <span data-i18n="total">Total:</span> 
+                 <span id="purchaseTotal" style="color:#2ecc71">0.00</span>
+              </div>
             </div>
             
             <div class="form-group mt-20">
-              <label data-i18n="cash_paid_now">Cash Paid Now (Optional)</label>
-              <input type="number" id="cashPaid" value="0" min="0">
-              <small data-i18n="remaining_adds_debt" style="color:#666; font-size: 0.8em;">Remaining amount adds to supplier debt.</small>
+              <label data-i18n="cash_paid_now" style="font-weight: bold;">Cash Paid Now (Optional)</label>
+              <input type="number" id="cashPaid" value="0" min="0" step="0.01" style="width: 100%; padding: 10px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px;">
+              <p data-i18n="remaining_adds_debt" style="color:#666; font-size: 0.85em; margin-top: 8px;">Remaining amount adds to supplier debt.</p>
             </div>
 
-            <button class="btn btn-success" style="width:100%; margin-top:20px;" onclick="submitPurchase()" data-i18n="submit_purchase">Submit Purchase</button>
+            <button class="btn btn-primary" style="width:100%; margin-top:20px; padding: 15px; font-size: 1.1em; font-weight: bold; background: #3498db;" onclick="submitPurchase()" data-i18n="submit_purchase">Submit Purchase</button>
           </div>
         </div>
         

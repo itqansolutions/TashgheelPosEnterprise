@@ -11,12 +11,6 @@
 </head>
 
 <body>
-  <!-- Language Switcher -->
-  <div class="language-switcher">
-    <button class="lang-btn" data-lang="en">EN</button>
-    <button class="lang-btn" data-lang="ar">AR</button>
-  </div>
-
   <div class="app">
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -27,6 +21,7 @@
       <nav>
         <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
         <a href="products.html" class="nav-item active" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="nav-item" data-i18n="nav_inventory">📊 Inventory</a>
         <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
         <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
         <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
@@ -39,7 +34,7 @@
         <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
 </nav>
       <div class="sidebar-footer">
-        <button class="btn btn-danger" onclick="confirmLogout()">Logout</button>
+        <button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button>
       </div>
     </aside>
 
@@ -55,48 +50,40 @@
           <div class="card-body">
             <form id="product-form" class="form-grid">
               <div class="form-group">
-                <label for="product-code" data-i18n="product_code">Product Code:</label>
-                <input type="text" id="product-code" required>
-              </div>
-
-              <div class="form-group">
                 <label for="product-name" data-i18n="product_name">Product Name:</label>
-                <input type="text" id="product-name" required>
-              </div>
-
-              <div class="form-group">
-                <label for="product-category" data-i18n="category">Category:</label>
-                <select id="product-category"></select>
+                <input type="text" id="product-name" required placeholder="Enter product name">
               </div>
 
               <div class="form-group">
                 <label for="product-barcode" data-i18n="barcode">Barcode (optional):</label>
-                <input type="text" id="product-barcode">
+                <input type="text" id="product-barcode" placeholder="Scan or type barcode">
               </div>
 
               <div class="form-group">
-                <label for="product-price" data-i18n="price">Price:</label>
-                <input type="number" id="product-price" step="0.01" required>
-              </div>
-
-              <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <input type="checkbox" id="product-unlimited" onchange="toggleStockFields()"
-                  style="width:auto; margin:0;">
-                <label for="product-unlimited" data-i18n="unlimited_stock" style="margin:0;">Unlimited Stock /
-                  Service</label>
-              </div>
-
-              <div class="form-group" id="cost-container">
-                <label for="product-cost" data-i18n="cost">Cost:</label>
-                <input type="number" id="product-cost" step="0.01">
-              </div>
-
-              <div class="form-group" id="stock-container">
-                <label for="product-stock" data-i18n="stock">Stock:</label>
-                <input type="number" id="product-stock" min="0">
+                <label for="product-category" data-i18n="category">Category:</label>
+                <div style="display:flex; gap:10px;">
+                   <select id="product-category" style="flex:1;"></select>
+                   <button type="button" onclick="openCategoryModal()" class="btn btn-secondary">📂</button>
+                </div>
               </div>
 
               <div class="form-group">
+                <label for="product-price" data-i18n="price">Sales Price:</label>
+                <input type="number" id="product-price" step="0.01" required placeholder="0.00">
+              </div>
+
+              <div class="form-group" style="display:flex; align-items:center; gap:20px; padding: 10px; background: #f8f9fa; border-radius: 8px; grid-column: span 2;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                   <input type="checkbox" id="product-track-stock" checked style="width:auto; margin:0;">
+                   <label for="product-track-stock" data-i18n="track_inventory" style="margin:0; font-weight:bold;">Track Inventory</label>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                   <input type="checkbox" id="product-active" checked style="width:auto; margin:0;">
+                   <label for="product-active" data-i18n="active" style="margin:0; font-weight:bold;">Active</label>
+                </div>
+              </div>
+
+              <div class="form-group" style="grid-column: span 2; margin-top: 10px;">
                 <button type="submit" class="btn btn-success" data-i18n="add_product">Add Product</button>
               </div>
             </form>
@@ -106,24 +93,17 @@
         <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <span data-i18n="product_list">Product List</span>
-            <div style="display:flex; gap:10px;">
-              <button onclick="openCategoryModal()" class="btn btn-secondary" data-i18n="manage_categories">📂
-                Categories</button>
-              <button onclick="openStockAudit()" class="btn btn-warning" data-i18n="stock_audit_btn">📋 Stock
-                Audit</button>
-            </div>
+            <input type="text" id="product-search" placeholder="Search products..." style="width: 300px; padding: 8px; border-radius: 5px; border: 1px solid #ddd;" data-i18n-placeholder="search_placeholder">
           </div>
           <div class="card-body">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th data-i18n="product_code">Code</th>
                   <th data-i18n="product">Product</th>
                   <th data-i18n="barcode">Barcode</th>
                   <th data-i18n="category">Category</th>
                   <th data-i18n="price">Price</th>
-                  <th data-i18n="cost">Cost</th>
-                  <th data-i18n="stock">Stock</th>
+                  <th data-i18n="status">Status</th>
                   <th data-i18n="actions">Actions</th>
                 </tr>
               </thead>
@@ -142,23 +122,19 @@
     <a href="tel:+201126522373">+201126522373 / +201155253886</a>
   </footer>
 
-  <!-- Category Management Modal -->
+  <!-- Categories Modal (Simplified) -->
   <div id="categoryModal" class="modal" style="display:none;">
-    <div class="modal-content" style="width: 500px;">
+    <div class="modal-content" style="width: 400px;">
       <h3 data-i18n="manage_categories">📂 Manage Categories</h3>
-
-      <form id="category-form-modal" style="display:flex; gap:10px; margin-bottom:15px;">
-        <input type="text" id="new-category-modal" placeholder="New Category Name" required
-          style="flex:1; padding:8px;">
+      <form id="category-form-modal" style="display:flex; gap:10px; margin: 15px 0;">
+        <input type="text" id="new-category-modal" placeholder="New Category" required style="flex:1;">
         <button type="submit" class="btn btn-primary" data-i18n="add">Add</button>
       </form>
-
-      <div style="max-height: 300px; overflow-y: auto; border: 1px solid #eee;">
+      <div style="max-height: 200px; overflow-y: auto;">
         <table class="data-table" style="margin:0;">
           <tbody id="category-list-body"></tbody>
         </table>
       </div>
-
       <div style="margin-top: 15px; text-align: right;">
         <button onclick="closeCategoryModal()" class="btn btn-danger" data-i18n="close">Close</button>
       </div>
@@ -167,122 +143,54 @@
 
   <!-- Edit Product Modal -->
   <div id="editProductModal" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content" style="max-width: 500px;">
       <div class="modal-header">
         <h3 data-i18n="edit_product">✏️ Edit Product</h3>
         <button onclick="closeEditProductModal()" class="modal-close">×</button>
       </div>
 
-      <form id="edit-product-form" class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <form id="edit-product-form" class="form-grid">
         <input type="hidden" id="edit-product-id">
 
         <div class="form-group" style="grid-column: span 2;">
           <label for="edit-product-name" data-i18n="product_name">Product Name:</label>
-          <input type="text" id="edit-product-name" required class="form-control" placeholder="Enter product name">
+          <input type="text" id="edit-product-name" required>
         </div>
 
         <div class="form-group">
           <label for="edit-product-barcode" data-i18n="barcode">Barcode:</label>
-          <input type="text" id="edit-product-barcode" class="form-control" placeholder="Scan or enter barcode">
+          <input type="text" id="edit-product-barcode">
         </div>
 
         <div class="form-group">
           <label for="edit-product-category" data-i18n="category">Category:</label>
-          <select id="edit-product-category" class="form-control"
-            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></select>
+          <select id="edit-product-category"></select>
         </div>
 
         <div class="form-group">
           <label for="edit-product-price" data-i18n="price">Price:</label>
-          <input type="number" id="edit-product-price" step="0.01" required class="form-control" placeholder="0.00">
+          <input type="number" id="edit-product-price" step="0.01" required>
         </div>
 
-        <div class="form-group" id="edit-cost-container">
-          <label for="edit-product-cost" data-i18n="cost">Cost:</label>
-          <input type="number" id="edit-product-cost" step="0.01" class="form-control" placeholder="0.00">
+        <div class="form-group" style="grid-column: span 1; display:flex; align-items:center; gap:8px;">
+           <input type="checkbox" id="edit-product-track-stock" style="width:auto;">
+           <label for="edit-product-track-stock" data-i18n="track_inventory">Track Inventory</label>
         </div>
 
-        <div class="form-group"
-          style="grid-column: span 2; background: #f9f9f9; padding: 15px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <label for="edit-product-unlimited" style="font-weight: bold; display: block; margin-bottom: 5px;"
-              data-i18n="unlimited_stock">Unlimited Stock / Service</label>
-            <small style="color: #666;">If checked, stock will not be tracked.</small>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="edit-product-unlimited" onchange="toggleEditStockFields()">
-            <span class="slider round"></span>
-          </label>
+        <div class="form-group" style="grid-column: span 1; display:flex; align-items:center; gap:8px;">
+           <input type="checkbox" id="edit-product-active" style="width:auto;">
+           <label for="edit-product-active" data-i18n="active">Active</label>
         </div>
 
-        <div class="form-group" id="edit-stock-container" style="display: none;">
-          <label for="edit-product-stock" data-i18n="stock_quantity">Current Stock:</label>
-          <input type="number" id="edit-product-stock" class="form-control" placeholder="0" readonly
-            style="background-color: #eee;">
-          <small style="color: #888;">To adjust stock, use Audit Stock feature.</small>
-        </div>
-
-        <div class="form-group"
-          style="grid-column: span 2; text-align: right; margin-top: 10px; border-top: 1px solid #eee; padding-top: 20px;">
-          <button type="button" onclick="closeEditProductModal()" class="btn btn-secondary"
-            data-i18n="cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" data-i18n="update_product">Update Product</button>
+        <div class="form-group" style="grid-column: span 2; text-align: right; border-top: 1px solid #eee; padding-top: 15px;">
+          <button type="submit" class="btn btn-primary" data-i18n="save">Save Changes</button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- Stock Audit Modal -->
-  <div id="auditModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h3 data-i18n="stock_audit">Stock Audit</h3>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th data-i18n="product_code">Code</th>
-            <th data-i18n="product">Product</th>
-            <th data-i18n="stock">Recorded</th>
-            <th data-i18n="actual_stock">Actual</th>
-            <th data-i18n="difference">Difference</th>
-          </tr>
-        </thead>
-        <tbody id="auditTableBody"></tbody>
-      </table>
-      <div style="margin-top: 10px; text-align: right;">
-        <button onclick="saveStockAudit()" class="btn btn-success" data-i18n="save">✅ Save</button>
-        <button onclick="closeStockAudit()" class="btn btn-danger" data-i18n="cancel">❌ Close</button>
-      </div>
     </div>
   </div>
 
   <script src="js/auth.js"></script>
   <script src="js/translations.js"></script>
   <script src="js/products-app.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if (currentUser?.role === 'cashier') {
-        alert('Access denied');
-        window.location.href = 'pos.html';
-        return;
-      }
-
-      // Language handling
-      const lang = localStorage.getItem('pos_language') || 'en';
-      document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.documentElement.setAttribute("dir", lang === 'ar' ? 'rtl' : 'ltr');
-      document.documentElement.setAttribute("lang", lang);
-
-      // Language switcher
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const selectedLang = btn.dataset.lang;
-          localStorage.setItem('pos_language', selectedLang);
-          location.reload();
-        });
-      });
-    });
-  </script>
 </body>
-
 </html>

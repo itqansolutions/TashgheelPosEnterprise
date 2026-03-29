@@ -4,6 +4,7 @@
 const APP_PAGES = [
   { id: 'pos.html', label: 'nav_pos' },
   { id: 'products.html', label: 'nav_products' },
+  { id: 'inventory.html', label: 'nav_inventory' },
   { id: 'purchases.html', label: 'nav_purchases' },
   { id: 'receipts.html', label: 'nav_receipts' },
   { id: 'reports.html', label: 'nav_reports' },
