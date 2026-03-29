@@ -39,6 +39,7 @@ const translations = {
         nav_reports_inventory: "📦 Inventory Reports",
 
         // Common
+        app_name: "Tashgheel POS",
         app_title: "Tasgheel POS System",
         enhanced_edition: "Enhanced Edition",
         logout: "Logout",
@@ -316,6 +317,7 @@ const translations = {
         nav_backup: "💾 النسخ الاحتياطي",
 
         // Common
+        app_name: "تسهيل POS",
         app_title: "نظام تشغيل",
         enhanced_edition: "النسخة المطورة",
         logout: "خروج",
@@ -324,6 +326,7 @@ const translations = {
         access_denied: "ممنوع الدخول",
         license_required: "هذا النظام يتطلب رخصة.",
         go_activation: "تفعيل",
+        save: "حفظ",
         confirm: "تأكيد",
         cancel: "إلغاء",
         processing: "جاري المعالجة...",

@@ -15,8 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    document.getElementById('currentUser').textContent = user.fullName || user.username;
+    const user = window.getCurrentUser ? window.getCurrentUser() : JSON.parse(localStorage.getItem('currentUser'));
+    if (user) {
+        document.getElementById('currentUser').textContent = user.fullName || user.username;
+    }
 
     // Load translations and sidebar
     if (window.i18n) {
