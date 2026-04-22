@@ -107,11 +107,22 @@
         const result = await response.json();
 
         if (response.ok) {
-          localStorage.setItem('token', result.token);
-          localStorage.setItem('currentUser', JSON.stringify(result.user));
-          msgDiv.textContent = '✅ ' + (getTranslation('register_success') || 'تم التسجيل بنجاح');
-          msgDiv.className = 'mt-3 text-sm min-h-[1.25rem] text-brand-green';
-          setTimeout(() => { window.location.href = 'pos.html'; }, 1000);
+          // Success! Show confirmation UI
+          const form = document.getElementById('registerForm');
+          const card = form.parentElement;
+          
+          card.innerHTML = `
+            <div class="py-6">
+              <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-6">
+                <div class="text-3xl mb-2">✅</div>
+                <h2 class="text-xl font-bold mb-1" data-i18n-key="register_success_title">${getTranslation('register_success_title')}</h2>
+                <p class="text-sm" data-i18n-key="register_success_msg">${getTranslation('register_success_msg')}</p>
+              </div>
+              <a href="index.html" class="block w-full py-3 bg-brand-purple text-white rounded-lg text-base font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]" data-i18n-key="go_to_login">
+                ${getTranslation('go_to_login')}
+              </a>
+            </div>
+          `;
         } else {
           msgDiv.textContent = '❌ ' + (result.msg || getTranslation('register_error') || 'حدث خطأ');
           msgDiv.className = 'mt-3 text-sm min-h-[1.25rem] text-brand-red';

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Tenant = require('../models/Tenant');
 const User = require('../models/User');
+const Store = require('../models/Store');
 
 // @route   POST /api/auth/register
 // @desc    Register a new tenant (business) and admin user
@@ -42,6 +43,18 @@ router.post('/register', async (req, res) => {
             role: 'admin'
         });
 
+        await user.save();
+
+        // Create Default Store
+        const mainStore = new Store({
+            tenantId: tenant._id,
+            name: 'المخزن الرئيسي',
+            location: 'Main'
+        });
+        await mainStore.save();
+
+        // Update User with access to this store
+        user.allowedStores = [mainStore._id];
         await user.save();
 
         // Send Email Notification

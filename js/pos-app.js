@@ -138,6 +138,7 @@ function enableReadOnlyMode(ownerName) {
 
   // Enable search and navigation, but disable actions
   enablePOS(); // First enable everything
+  isReadOnly = true;
 
   // Disable transaction buttons
   const buttonsToDisable = ['cashBtn', 'cardBtn', 'mobileBtn', 'creditBtn', 'holdBtn', 'clearCartBtn', 'closeShiftBtn', 'scanBtn'];
@@ -182,6 +183,12 @@ function enablePOS() {
   const search = document.getElementById('productSearch');
   if (search) search.disabled = false;
   if (typeof updateCartSummary === 'function') updateCartSummary();
+}
+
+function enterWithoutShift() {
+  document.getElementById('openShiftModal').style.display = 'none';
+  const noShiftMsg = getTranslation('enter_no_shift') || 'No Active Shift';
+  enableReadOnlyMode(noShiftMsg);
 }
 
 async function submitOpenShift() {
