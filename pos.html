@@ -237,6 +237,15 @@
             </div>
 
             <div style="margin-bottom:10px;">
+              <label for="orderTypeSelect">📦 <span id="orderTypeLabel" data-i18n="order_type">Order Type:</span></label>
+              <select id="orderTypeSelect" style="width:100%;padding:6px;margin-top:5px;" onchange="updateCartSummary()">
+                <option value="instore" data-i18n="order_instore">In-Store</option>
+                <option value="online" data-i18n="order_online">Online</option>
+                <option value="delivery" data-i18n="order_delivery">Delivery</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:10px;">
               <label for="customerSelect">👥 <span id="customerLabel" data-i18n="customer">Customer:</span></label>
               <select id="customerSelect" style="width:100%;padding:6px;margin-top:5px;">
                 <option value="">--</option>

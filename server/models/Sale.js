@@ -7,6 +7,7 @@ const saleSchema = new mongoose.Schema({
     shiftId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shift' },
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
     date: { type: Date, default: Date.now },
+    orderType: { type: String, enum: ['instore', 'online', 'delivery'], default: 'instore' },
     method: { type: String, enum: ['cash', 'card', 'mobile', 'split', 'credit'], required: true },
     splitPayments: [{
         method: { type: String, enum: ['cash', 'card', 'mobile'] },

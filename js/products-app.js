@@ -93,6 +93,8 @@ async function handleAddProduct(e) {
   const category = document.getElementById("product-category").value;
   const barcode = document.getElementById("product-barcode").value.trim();
   const price = parseFloat(document.getElementById("product-price").value);
+  const priceOnline = parseFloat(document.getElementById("product-price-online").value) || 0;
+  const priceDelivery = parseFloat(document.getElementById("product-price-delivery").value) || 0;
   const trackStock = document.getElementById("product-track-stock").checked;
   const active = document.getElementById("product-active").checked;
 
@@ -103,6 +105,8 @@ async function handleAddProduct(e) {
     category,
     barcode,
     price,
+    priceOnline,
+    priceDelivery,
     trackStock,
     active
   };
@@ -139,6 +143,8 @@ function editProduct(id) {
   document.getElementById("edit-product-name").value = product.name;
   document.getElementById("edit-product-barcode").value = product.barcode || "";
   document.getElementById("edit-product-price").value = product.price;
+  document.getElementById("edit-product-price-online").value = product.priceOnline || "";
+  document.getElementById("edit-product-price-delivery").value = product.priceDelivery || "";
   document.getElementById("edit-product-track-stock").checked = product.trackStock !== false;
   document.getElementById("edit-product-active").checked = product.active !== false;
 
@@ -163,10 +169,12 @@ async function handleUpdateProduct(e) {
   const barcode = document.getElementById("edit-product-barcode").value.trim();
   const category = document.getElementById("edit-product-category").value;
   const price = parseFloat(document.getElementById("edit-product-price").value);
+  const priceOnline = parseFloat(document.getElementById("edit-product-price-online").value) || 0;
+  const priceDelivery = parseFloat(document.getElementById("edit-product-price-delivery").value) || 0;
   const trackStock = document.getElementById("edit-product-track-stock").checked;
   const active = document.getElementById("edit-product-active").checked;
 
-  const updates = { name, barcode, category, price, trackStock, active };
+  const updates = { name, barcode, category, price, priceOnline, priceDelivery, trackStock, active };
 
   try {
     const token = localStorage.getItem('token');

@@ -648,6 +648,7 @@ function addToCart(product) {
   if (!existingItem) {
     cart.push({
       ...product,
+      basePrice: product.price,
       qty: 1,
       // Timer Properties
       accumulatedTime: 0, // In ms
@@ -700,7 +701,14 @@ function updateCartSummary() {
   disableActionButtons(false);
   document.getElementById('splitBtn').disabled = false; // Enable Split Button logic
 
+  const orderType = document.getElementById('orderTypeSelect')?.value || 'instore';
+
   cart.forEach((item, index) => {
+    let activePrice = item.basePrice || item.price;
+    if (orderType === 'online' && item.priceOnline > 0) activePrice = item.priceOnline;
+    if (orderType === 'delivery' && item.priceDelivery > 0) activePrice = item.priceDelivery;
+    item.price = activePrice;
+
     subtotal += item.price * item.qty;
     const div = document.createElement("div");
     div.className = "cart-item";
@@ -924,6 +932,7 @@ async function processSale(method) {
     taxRate: currentTaxRate,
     total: finalTotal,
     paymentMethod: method,
+    orderType: document.getElementById('orderTypeSelect')?.value || 'instore',
     splitPayments: window.currentSplitPayments || [], // Send split details if any
     salesman: salesmanName,
     date: new Date()

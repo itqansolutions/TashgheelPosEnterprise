@@ -330,10 +330,12 @@ router.put('/products/:id', auth, async (req, res) => {
         if (!product) return res.status(404).json({ msg: 'Product not found' });
 
         // Update fields
-        const { name, barcode, price, category, minStock, trackStock, active } = req.body;
+        const { name, barcode, price, priceOnline, priceDelivery, category, minStock, trackStock, active } = req.body;
         if (name) product.name = name;
         if (barcode !== undefined) product.barcode = barcode;
         if (price !== undefined) product.price = price;
+        if (priceOnline !== undefined) product.priceOnline = priceOnline;
+        if (priceDelivery !== undefined) product.priceDelivery = priceDelivery;
         if (category) product.category = category;
         if (minStock !== undefined) product.minStock = minStock;
         if (trackStock !== undefined) product.trackStock = trackStock;
@@ -370,7 +372,7 @@ router.delete('/products/:id', auth, async (req, res) => {
 // @access  Private
 router.post('/sales', auth, async (req, res) => {
     try {
-        const { items, total, paymentMethod, salesman } = req.body;
+        const { items, total, paymentMethod, salesman, orderType } = req.body;
 
         // Generate Receipt ID
         // Find active shift
@@ -395,6 +397,7 @@ router.post('/sales', auth, async (req, res) => {
             shiftId: shift._id,
             date: new Date(),
             method: paymentMethod, // Map paymentMethod to method
+            orderType: orderType || 'instore',
             cashier: req.user.username, // Set cashier from logged-in user
             salesman,
             customerId: req.body.customerId || undefined,
