@@ -84,7 +84,7 @@ class WooCommerceConnector {
      * Get all products from WooCommerce
      */
     async getProducts(page = 1) {
-        return this._request('GET', `/products?per_page=100&page=${page}&status=publish`);
+        return this._request('GET', `/products?per_page=100&page=${page}`);
     }
 
     /**

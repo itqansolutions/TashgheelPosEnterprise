@@ -338,6 +338,18 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                         break;
                     }
 
+                    // Add count log
+                    try {
+                        const AuditLog = require('../models/AuditLog');
+                        await AuditLog.create({
+                            tenantId: tenantId,
+                            user: 'System (Sync)',
+                            action: 'WooCommerce Data Received',
+                            details: `Page ${page}: Received ${wcProducts.length} products from WooCommerce API`,
+                            timestamp: new Date()
+                        });
+                    } catch (e) {}
+
                     for (const wcP of wcProducts) {
                         try {
                             const sku = wcP.sku || String(wcP.id);
