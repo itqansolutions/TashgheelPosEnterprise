@@ -1,111 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title data-i18n-key="expenses" data-i18n-ar="المصاريف">Expenses</title>
-  <link rel="stylesheet" href="css/expenses.css">
+  <title>Expenses - Tashgheel POS</title>
   <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
-  <script src="js/translations.js"></script>
-  <script defer src="js/expenses-app.js"></script>
 </head>
-
-<body>
-  <!-- Language Switcher -->
-  <div class="language-switcher">
-    <button class="lang-btn" onclick="setLanguage('en')" id="langEn">English</button>
-    <button class="lang-btn" onclick="setLanguage('ar')" id="langAr">العربية</button>
-  </div>
-  <div class="app">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2 id="posSystemTitle">🏪Tasgheel POS System</h2>
-        <p id="licensedVersion">Enterprise Edition</p>
-      </div>
-      <nav>
-        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item active" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
-
-      <div class="sidebar-footer">Tashgheel POS</div>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
+  <div class="flex h-full w-full overflow-hidden">
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+      <div class="sidebar-header"><h2 data-i18n="app_title">🏪 Tashgheel POS</h2><p data-i18n="enhanced_edition">Enterprise Edition</p></div>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="ecommerce.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white">🌐 E-Commerce</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
+      <div class="sidebar-footer"><button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button></div>
     </aside>
-
-    <div class="container">
-      <h1 data-i18n-key="expenses" data-i18n-ar="المصاريف">📋 Expenses</h1>
-
-      <div class="form-section">
-        <label data-i18n-key="date" data-i18n-ar="التاريخ">Date:</label>
-        <input type="date" id="expenseDate">
-
-        <label data-i18n-key="seller" data-i18n-ar="البائع">Seller:</label>
-        <select id="expenseSeller"></select>
-
-        <label data-i18n-key="description" data-i18n-ar="الوصف">Description:</label>
-        <input type="text" id="expenseDesc" placeholder="e.g. Paper, Delivery...">
-
-        <label data-i18n-key="amount" data-i18n-ar="المبلغ">Amount:</label>
-        <input type="number" id="expenseAmount" step="0.01" placeholder="0.00">
-
-        <label data-i18n-key="method" data-i18n-ar="طريقة الدفع">Payment Method:</label>
-        <select id="expenseMethod">
-          <option value="cash" data-i18n-key="cash" data-i18n-ar="نقدي">Cash</option>
-          <option value="card" data-i18n-key="card" data-i18n-ar="بطاقة">Card</option>
-          <option value="mobile" data-i18n-key="mobile" data-i18n-ar="موبايل">Mobile</option>
-        </select>
-
-        <button onclick="addExpense()" data-i18n-key="add_expense" data-i18n-ar="إضافة مصروف">➕ Add Expense</button>
-      </div>
-
-      <hr>
-
-      <div class="filter-section">
-        <label data-i18n-key="filter_date" data-i18n-ar="تاريخ الفلترة">Date:</label>
-        <input type="date" id="filterDate">
-        <label data-i18n-key="filter_seller" data-i18n-ar="بائع الفلترة">Seller:</label>
-        <select id="filterSeller"></select>
-        <button onclick="filterExpenses()" data-i18n-key="filter" data-i18n-ar="فلترة">🔍 Filter</button>
-        <button onclick="resetFilter()" data-i18n-key="reset" data-i18n-ar="إعادة تعيين">🔄 Reset</button>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th data-i18n-key="date" data-i18n-ar="التاريخ">Date</th>
-            <th data-i18n-key="seller" data-i18n-ar="البائع">Seller</th>
-            <th data-i18n-key="description" data-i18n-ar="الوصف">Description</th>
-            <th data-i18n-key="amount" data-i18n-ar="المبلغ">Amount</th>
-            <th data-i18n-key="method" data-i18n-ar="الدفع">Method</th>
-            <th data-i18n-key="actions" data-i18n-ar="الإجراءات">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="expensesTableBody">
-          <!-- Filled by JS -->
-        </tbody>
-      </table>
-
-      <p id="totalExpenses" class="total-label">💰 Total: 0</p>
-    </div>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-xl font-bold text-brand-dark" data-i18n="nav_expenses">📋 Expenses</h1>
+        <div style="display:flex;align-items:center;gap:10px;"><span id="welcomeText" data-i18n="welcome">Welcome,</span><span id="currentUserName" class="font-semibold">User</span></div>
+      </header>
+      <section class="flex-1 overflow-y-auto min-h-0 p-6 lg:p-8 flex flex-col gap-6">
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-brand-blue to-brand-purple"><h2 class="text-base font-semibold text-white" data-i18n="add_expense">Add Expense</h2></div>
+          <div class="p-6">
+            <form id="expense-form" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+              <div class="form-group"><label data-i18n="expense_name">Expense Name</label><input type="text" id="expense-name" required></div>
+              <div class="form-group"><label data-i18n="amount">Amount</label><input type="number" id="expense-amount" step="0.01" required></div>
+              <div class="form-group"><label data-i18n="category">Category</label><input type="text" id="expense-category"></div>
+              <div class="flex gap-2"><button type="submit" class="btn btn-primary flex-1" data-i18n="save">Add Expense</button></div>
+            </form>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden"><div class="overflow-x-auto"><table class="data-table w-full"><thead><tr><th data-i18n="date">Date</th><th data-i18n="name">Name</th><th data-i18n="category">Category</th><th data-i18n="amount">Amount</th><th data-i18n="actions">Actions</th></tr></thead><tbody id="expenses-body"></tbody></table></div></div>
+      </section>
+    </main>
   </div>
+  <script src="js/auth.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/expenses-app.js"></script>
 </body>
-<!-- أضف في نهاية الصفحة قبل </body> -->
-
-<script>
-  // expenses-app.js handles functionality
-  // translations.js handles language
-</script>
-
 </html>

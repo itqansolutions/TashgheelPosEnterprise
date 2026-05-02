@@ -1,151 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <title data-i18n-key="salesmen" data-i18n-ar="البائعون">Salesmen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
+  <title>Salesmen - Tashgheel POS</title>
   <link rel="stylesheet" href="css/styles.css?v=7.0">
-  <link rel="stylesheet" href="css/salesmen-app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
-  <script src="js/salesmen-app.js" defer></script>
 </head>
-
-<body>
-  <div class="language-switcher">
-    <button class="lang-btn" data-lang="en">EN</button>
-    <button class="lang-btn" data-lang="ar">AR</button>
-  </div>
-
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <img src="icon.ico" alt="Logo" class="sidebar-logo">
-        <span data-i18n-key="salesmen" data-i18n-ar="البائعون">Salesmen</span>
-      </div>
-      <nav>
-        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item active" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
-
-      <div class="sidebar-footer">Ali Karam POS</div>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
+  <div class="flex h-full w-full overflow-hidden">
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+      <div class="sidebar-header"><h2 data-i18n="app_title">🏪 Tashgheel POS</h2><p data-i18n="enhanced_edition">Enterprise Edition</p></div>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="ecommerce.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white">🌐 E-Commerce</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
+      <div class="sidebar-footer"><button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button></div>
     </aside>
-
-    <main class="main-content">
-      <header class="top-bar">
-        <h1 data-i18n-key="salesmen" data-i18n-ar="البائعون">Salesmen</h1>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-xl font-bold text-brand-dark" data-i18n="nav_salesmen">🧑‍💼 Salesmen</h1>
+        <div style="display:flex;align-items:center;gap:10px;"><span id="welcomeText" data-i18n="welcome">Welcome,</span><span id="currentUserName" class="font-semibold">User</span></div>
       </header>
-
-      <section class="content-area">
-
-        <!-- Section 1: Add Salesman -->
-        <form id="salesman-form" class="card">
-          <h2 data-i18n-key="add_salesman" data-i18n-ar="إضافة بائع">Add Salesman</h2>
-          <div class="form-group">
-            <label for="salesman-name" data-i18n-key="salesman_name" data-i18n-ar="اسم البائع">Salesman Name</label>
-            <input type="text" id="salesman-name" required />
+      <section class="flex-1 overflow-y-auto min-h-0 p-6 lg:p-8 flex flex-col gap-6">
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-brand-blue to-brand-purple"><h2 class="text-base font-semibold text-white" data-i18n="add_salesman">Add Salesman</h2></div>
+          <div class="p-6">
+            <form id="salesman-form" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+              <input type="hidden" id="salesman-id">
+              <div class="form-group"><label data-i18n="name">Name</label><input type="text" id="salesman-name" required></div>
+              <div class="form-group"><label data-i18n="phone">Phone</label><input type="text" id="salesman-phone" required></div>
+              <div class="form-group"><label data-i18n="commission">Commission (%)</label><input type="number" id="salesman-commission" step="0.1" min="0"></div>
+              <div class="flex gap-2">
+                <button type="submit" class="btn btn-primary flex-1" data-i18n="save">Save</button>
+                <button type="button" onclick="resetForm()" class="btn btn-secondary" data-i18n="cancel">Cancel</button>
+              </div>
+            </form>
           </div>
-          <button type="submit" class="btn btn-primary" data-i18n-key="save" data-i18n-ar="حفظ">Save</button>
-        </form>
-
-        <div class="card mt-20">
-          <h2 data-i18n-key="salesmen_list" data-i18n-ar="قائمة البائعين">Salesmen List</h2>
-          <table class="report-table" id="salesmen-table">
-            <thead>
-              <tr>
-                <th data-i18n-key="name" data-i18n-ar="الاسم">Name</th>
-                <th data-i18n-key="actions" data-i18n-ar="إجراءات">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="salesmen-body"></tbody>
-          </table>
         </div>
-
-        <!-- Section 2: Monthly Target -->
-        <form id="target-form" class="card mt-20">
-          <h2 data-i18n-key="add_target" data-i18n-ar="تحديد هدف شهري">Set Monthly Target</h2>
-          <div class="form-group">
-            <label for="target-salesman" data-i18n-key="salesman" data-i18n-ar="البائع">Salesman</label>
-            <select id="target-salesman" required></select>
-          </div>
-          <div class="form-group">
-            <label for="target-month" data-i18n-key="month" data-i18n-ar="الشهر">Month</label>
-            <select id="target-month" required></select>
-          </div>
-          <div class="form-group">
-            <label for="target-year" data-i18n-key="year" data-i18n-ar="السنة">Year</label>
-            <select id="target-year" required></select>
-          </div>
-          <div class="form-group">
-            <label for="target-value" data-i18n-key="target" data-i18n-ar="الهدف">Target (EGP)</label>
-            <input type="number" id="target-value" min="0" required />
-          </div>
-          <button type="submit" class="btn btn-primary" data-i18n-key="save" data-i18n-ar="حفظ">Save</button>
-        </form>
-
-        <div class="card mt-20">
-          <h2 data-i18n-key="monthly_targets" data-i18n-ar="الأهداف الشهرية">Monthly Targets</h2>
-          <table class="report-table" id="monthly-targets-table">
-            <thead>
-              <tr>
-                <th data-i18n-key="salesman" data-i18n-ar="البائع">Salesman</th>
-                <th data-i18n-key="month" data-i18n-ar="الشهر">Month</th>
-                <th data-i18n-key="year" data-i18n-ar="السنة">Year</th>
-                <th data-i18n-key="target" data-i18n-ar="الهدف">Target</th>
-              </tr>
-            </thead>
-            <tbody id="monthly-targets-body"></tbody>
-          </table>
-        </div>
-
-        <!-- Section 3: Monthly Performance -->
-        <div class="card mt-20">
-          <h2 data-i18n-key="performance" data-i18n-ar="الأداء الشهري">Monthly Performance</h2>
-          <table class="report-table" id="salesmen-performance-table">
-            <thead>
-              <tr>
-                <th data-i18n-key="salesman" data-i18n-ar="البائع">Salesman</th>
-                <th data-i18n-key="month" data-i18n-ar="الشهر">Month</th>
-                <th data-i18n-key="year" data-i18n-ar="السنة">Year</th>
-                <th data-i18n-key="target" data-i18n-ar="الهدف">Target</th>
-                <th data-i18n-key="achieved" data-i18n-ar="المحقق">Achieved</th>
-                <th data-i18n-key="percentage" data-i18n-ar="النسبة">%</th>
-              </tr>
-            </thead>
-            <tbody id="salesmen-performance-body"></tbody>
-          </table>
-        </div>
-
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden"><div class="overflow-x-auto"><table class="data-table w-full"><thead><tr><th data-i18n="name">Name</th><th data-i18n="phone">Phone</th><th data-i18n="commission">Commission (%)</th><th data-i18n="actions">Actions</th></tr></thead><tbody id="salesmen-body"></tbody></table></div></div>
       </section>
     </main>
   </div>
-
-  <footer class="footer">
-    Tashgheel POS © 2025 |
-    <a href="tel:+201126522373">+201126522373 / +201155253886</a>
-    <span id="footerText">Designed and developed by itqan</span>
-  </footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lang = localStorage.getItem('pos_language') || 'en';
-      document.body.classList.toggle('rtl', lang === 'ar');
-      document.documentElement.setAttribute("dir", lang === 'ar' ? 'rtl' : 'ltr');
-      document.documentElement.setAttribute("lang", lang);
-    });
-  </script>
+  <script src="js/auth.js"></script>
   <script src="js/translations.js"></script>
-
+  <script src="js/salesmen-app.js"></script>
 </body>
-
 </html>

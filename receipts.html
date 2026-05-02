@@ -1,128 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title data-i18n="receipts">Receipts - POS</title>
+  <title>Receipts - Tashgheel POS</title>
   <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
 </head>
-
-<body>
-  <div class="language-switcher">
-    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-    <button class="lang-btn" onclick="setLanguage('ar')">AR</button>
-  </div>
-
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-header" data-i18n="receipts">Receipts</div>
-      <nav>
-        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item active" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
-      <div class="sidebar-footer">Ali Karam POS</div>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
+  <div class="flex h-full w-full overflow-hidden">
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+      <div class="sidebar-header"><h2 data-i18n="app_title">🏪 Tashgheel POS</h2><p data-i18n="enhanced_edition">Enterprise Edition</p></div>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="ecommerce.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white">🌐 E-Commerce</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
+      <div class="sidebar-footer"><button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button></div>
     </aside>
-
-    <main class="main-content">
-      <header class="top-bar">
-        <h1 id="pageTitle" data-i18n="receipts">Receipts / مستندات</h1>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-xl font-bold text-brand-dark" data-i18n="nav_receipts">🧾 Receipts</h1>
+        <div style="display:flex;align-items:center;gap:10px;"><span id="welcomeText" data-i18n="welcome">Welcome,</span><span id="currentUserName" class="font-semibold">User</span></div>
       </header>
-
-      <section class="content-area">
-        <div class="card">
-          <div class="card-header">
-            <span data-i18n="all_receipts">All Receipts</span>
-            <div style="display: flex; gap: 10px; align-items: center;">
-              <input type="text" id="receiptSearch" class="search-box" placeholder="Search by cashier or code...">
-              <select id="statusFilter" class="search-box">
-                <option value="" data-i18n="all_status">All Status</option>
-                <option value="finished" data-i18n="finished">Finished</option>
-                <option value="partial_return" data-i18n="partial_return">Partial Return</option>
-                <option value="full_return" data-i18n="full_return">Full Return</option>
-                <option value="cancelled" data-i18n="cancelled">Cancelled</option>
-              </select>
+      <section class="flex-1 overflow-y-auto min-h-0 p-6 lg:p-8 flex flex-col gap-6">
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4 bg-gray-50/50">
+            <div class="flex items-center gap-3">
+              <input type="text" id="receipt-search" placeholder="Search receipt ID or customer..." class="search-box" style="width:300px;">
+              <button onclick="loadReceipts()" class="btn btn-secondary">🔄</button>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="date" id="date-from" class="rounded-lg border-gray-300 px-3 py-2 text-sm">
+              <span class="text-gray-400">to</span>
+              <input type="date" id="date-to" class="rounded-lg border-gray-300 px-3 py-2 text-sm">
             </div>
           </div>
-
-          <div class="card-body">
+          <div class="overflow-x-auto">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th data-i18n="id" data-i18n-ar="رقم">ID</th>
-                  <th data-i18n="date" data-i18n-ar="التاريخ">Date</th>
-                  <th data-i18n="cashier" data-i18n-ar="الكاشير">Cashier</th>
-                  <th data-i18n="payment" data-i18n-ar="الدفع">Payment</th>
-                  <th data-i18n="total_after_discount" data-i18n-ar="الإجمالي بعد الخصم">Total (After Discount)
-                  </th>
-                  <th data-i18n="status" data-i18n-ar="الحالة">Status</th>
-                  <th data-i18n="return_reason" data-i18n-ar="سبب المرتجع">Return Reason</th>
-                  <th data-i18n="actions" data-i18n-ar="إجراءات">Actions</th>
+                  <th data-i18n="date">Date</th>
+                  <th data-i18n="receipt">Receipt ID</th>
+                  <th data-i18n="customer">Customer</th>
+                  <th data-i18n="total">Total</th>
+                  <th data-i18n="method">Method</th>
+                  <th data-i18n="cashier">Cashier</th>
+                  <th data-i18n="actions">Actions</th>
                 </tr>
               </thead>
-              <tbody id="receiptsTableBody">
-                <!-- Loaded via JS -->
-              </tbody>
+              <tbody id="receipts-table-body"></tbody>
             </table>
           </div>
         </div>
       </section>
     </main>
   </div>
-
-  <footer class="footer">
-    © 2025 - Designed and developed by <strong>Ali Karam</strong> |
-    <a href="tel:+201126522373">+201126522373</a>
-  </footer>
-
-  <!-- Return Modal (for partial return) -->
-  <div id="returnModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h3 data-i18n="partial_return_modal">Partial Return</h3>
-      <div style="max-height: 300px; overflow-y: auto;">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th data-i18n="select">Select</th>
-              <th data-i18n="item">Item</th>
-              <th data-i18n="qty_sold">Sold Qty</th>
-              <th data-i18n="qty_return">Return Qty</th>
-            </tr>
-          </thead>
-          <tbody id="returnItemsTableBody"></tbody>
-        </table>
-      </div>
-      <textarea id="returnReason" placeholder="Reason..." data-i18n-placeholder="return_reason_placeholder"></textarea>
-      <div style="margin-top: 10px; text-align: right;">
-        <button type="button" onclick="confirmPartialReturn()" class="btn btn-success" data-i18n="confirm">✅
-          Confirm</button>
-        <button type="button" onclick="closeReturnModal()" class="btn btn-danger" data-i18n="cancel">❌
-          Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lang = localStorage.getItem('pos_language') || 'en';
-      document.body.classList.toggle('rtl', lang === 'ar');
-    });
-  </script>
+  <script src="js/auth.js"></script>
   <script src="js/translations.js"></script>
-  <script src="js/pos-app.js"></script>
   <script src="js/receipts-app.js"></script>
 </body>
-
 </html>
