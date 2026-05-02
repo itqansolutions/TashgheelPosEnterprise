@@ -85,7 +85,19 @@ async function linkItemsToProducts(tenantId, items) {
  */
 router.get('/', auth, async (req, res) => {
     try {
-        const configs = await EcommerceConfig.find({ tenantId: req.tenantId });
+        let configs = await EcommerceConfig.find({ tenantId: req.tenantId });
+        
+        // Bootstrap missing platforms if needed
+        const platforms = ['woocommerce', 'jumia', 'amazon'];
+        const existingPlatforms = configs.map(c => c.platform);
+        const missing = platforms.filter(p => !existingPlatforms.includes(p));
+        
+        if (missing.length > 0) {
+            const newConfigs = missing.map(p => ({ tenantId: req.tenantId, platform: p }));
+            await EcommerceConfig.insertMany(newConfigs);
+            configs = await EcommerceConfig.find({ tenantId: req.tenantId });
+        }
+
         res.json(configs.map(sanitizeConfig));
     } catch (err) {
         console.error('[integrations] GET /', err.message);
