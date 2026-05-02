@@ -218,11 +218,18 @@ async function syncAllPlatforms() {
 
     try {
         const token = localStorage.getItem('token');
+        // Fetch current statuses first to know what's enabled
+        const statusRes = await fetch(`${API_BASE}/integrations`, { headers: { 'x-auth-token': token } });
+        const configs = await statusRes.json();
+        
         for (const p of platforms) {
-            await fetch(`${API_BASE}/integrations/${p}/sync`, {
-                method: 'POST',
-                headers: { 'x-auth-token': token }
-            });
+            const isEnabled = configs.find(c => c.platform === p && c.enabled);
+            if (isEnabled) {
+                await fetch(`${API_BASE}/integrations/${p}/sync`, {
+                    method: 'POST',
+                    headers: { 'x-auth-token': token }
+                });
+            }
         }
         await loadPlatformStatuses();
         await loadPendingOrders();
