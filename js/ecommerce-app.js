@@ -35,8 +35,13 @@ async function loadPlatformStatuses() {
             const timeEl = document.getElementById(`${platform}-sync-time`);
 
             if (statusEl && conf.enabled) {
-                statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-green"></span> Connected`;
-                statusEl.classList.replace('text-gray-500', 'text-brand-green');
+                if (conf.lastSyncStatus === 'syncing') {
+                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span> Syncing...`;
+                    statusEl.style.color = '#3b82f6';
+                } else {
+                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-green"></span> Connected`;
+                    statusEl.style.color = '#22c55e';
+                }
             }
             if (countEl) countEl.textContent = conf.ordersImported || 0;
             if (timeEl && conf.lastSyncAt) {

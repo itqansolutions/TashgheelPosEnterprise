@@ -210,10 +210,13 @@ router.post('/:platform/sync', auth, async (req, res) => {
 
         const connector = getConnector(platform, config);
         
+        // Mark as syncing in DB
+        await EcommerceConfig.updateOne({ _id: config._id }, { lastSyncStatus: 'syncing' });
+        
         // Start background sync
         syncBackgroundTask(req.tenantId, platform, config, connector);
 
-        res.json({ msg: 'Synchronization started in background. Please refresh in a moment to see results.' });
+        res.json({ msg: 'Synchronization started in background.' });
     } catch (err) {
         console.error(`[integrations] POST /${platform}/sync`, err.message);
         res.status(500).json({ msg: `Sync error: ${err.message}` });
@@ -234,9 +237,10 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
         if (config.syncSettings?.pullOrders !== false) {
             try {
                 let rawOrders = [];
+                const after = config.lastSyncAt || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
                 if (platform === 'woocommerce') {
-                    rawOrders = await connector.getOrders(config.lastSyncAt);
+                    rawOrders = await connector.getOrders(after);
                 } else if (platform === 'jumia') {
                     const response = await connector.getOrders('pending', config.lastSyncAt);
                     rawOrders = response?.SuccessResponse?.Body?.Orders?.Order || [];
@@ -269,17 +273,17 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                         }
 
                         // Link items to POS products
-                        normalized.items = await linkItemsToProducts(req.tenantId, normalized.items);
+                        normalized.items = await linkItemsToProducts(tenantId, normalized.items);
 
                         // Upsert: avoid duplicate imports
                         const existing = await OnlineOrder.findOne({
-                            tenantId: req.tenantId,
+                            tenantId: tenantId,
                             platform,
                             platformOrderId: normalized.platformOrderId
                         });
 
                         if (!existing) {
-                            await OnlineOrder.create({ tenantId: req.tenantId, ...normalized });
+                            await OnlineOrder.create({ tenantId: tenantId, ...normalized });
                             results.ordersImported++;
                         }
                     } catch (e) {
@@ -298,19 +302,19 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                 for (const wcP of wcProducts) {
                     try {
                         const sku = wcP.sku || String(wcP.id);
-                        const existing = await Product.findOne({ tenantId: req.tenantId, barcode: sku });
+                        const existing = await Product.findOne({ tenantId: tenantId, barcode: sku });
                         
                         if (!existing) {
                             // Ensure Category exists
                             const catName = wcP.categories?.[0]?.name || 'Uncategorized';
-                            let category = await Category.findOne({ tenantId: req.tenantId, name: catName });
+                            let category = await Category.findOne({ tenantId: tenantId, name: catName });
                             if (!category) {
-                                category = await Category.create({ tenantId: req.tenantId, name: catName });
+                                category = await Category.create({ tenantId: tenantId, name: catName });
                             }
 
                             // Create new product in POS
                             await Product.create({
-                                tenantId: req.tenantId,
+                                tenantId: tenantId,
                                 name: wcP.name,
                                 nameEn: wcP.name,
                                 barcode: sku,
@@ -338,7 +342,7 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
         // === PUSH PRODUCTS (POS to WooCommerce) ===
         if (config.syncSettings?.pushProducts !== false && platform === 'woocommerce') {
             try {
-                const products = await Product.find({ tenantId: req.tenantId, active: true });
+                const products = await Product.find({ tenantId: tenantId, active: true });
                 for (const product of products.slice(0, 50)) { // Limit batch size
                     try {
                         await connector.pushProduct(product);
