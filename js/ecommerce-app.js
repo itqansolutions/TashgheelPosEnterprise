@@ -39,7 +39,8 @@ async function loadPlatformStatuses() {
         configs.forEach(conf => {
             const platform = conf.platform;
             const statusEl = document.getElementById(`${platform}-status`);
-            const countEl = document.getElementById(`${platform}-orders-count`);
+            const countEl = document.getElementById(`${platform}-order-count`);
+            const pCountEl = document.getElementById(`${platform}-product-count`);
             const timeEl = document.getElementById(`${platform}-sync-time`);
 
             if (statusEl && conf.enabled) {
@@ -56,6 +57,7 @@ async function loadPlatformStatuses() {
                 }
             }
             if (countEl) countEl.textContent = conf.ordersImported || 0;
+            if (pCountEl) pCountEl.textContent = conf.productsImported || 0;
             if (timeEl && conf.lastSyncAt) {
                 const date = new Date(conf.lastSyncAt);
                 timeEl.textContent = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
