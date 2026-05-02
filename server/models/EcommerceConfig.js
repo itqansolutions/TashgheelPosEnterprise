@@ -34,6 +34,7 @@ const ecommerceConfigSchema = new mongoose.Schema({
     // Sync settings
     syncSettings: {
         pushProducts: { type: Boolean, default: true },
+        pullProducts: { type: Boolean, default: true },
         pullOrders: { type: Boolean, default: true },
         defaultStoreId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
         autoAcceptOrders: { type: Boolean, default: false },
@@ -45,6 +46,7 @@ const ecommerceConfigSchema = new mongoose.Schema({
     lastSyncStatus: { type: String, enum: ['success', 'error', 'never'], default: 'never' },
     lastSyncError: String,
     ordersImported: { type: Number, default: 0 },
+    productsImported: { type: Number, default: 0 },
     productsPushed: { type: Number, default: 0 },
 
     createdAt: { type: Date, default: Date.now },

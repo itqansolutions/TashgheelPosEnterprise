@@ -268,7 +268,42 @@ router.post('/:platform/sync', auth, async (req, res) => {
             }
         }
 
-        // === PUSH PRODUCTS ===
+        // === PULL PRODUCTS (WooCommerce to POS) ===
+        if (config.syncSettings?.pullProducts !== false && platform === 'woocommerce') {
+            try {
+                const wcProducts = await connector.getProducts();
+                for (const wcP of wcProducts) {
+                    try {
+                        const sku = wcP.sku || String(wcP.id);
+                        const existing = await Product.findOne({ tenantId: req.tenantId, barcode: sku });
+                        
+                        if (!existing) {
+                            // Create new product in POS
+                            await Product.create({
+                                tenantId: req.tenantId,
+                                name: wcP.name,
+                                nameEn: wcP.name,
+                                barcode: sku,
+                                price: parseFloat(wcP.regular_price) || 0,
+                                priceOnline: parseFloat(wcP.regular_price) || 0,
+                                stock: parseInt(wcP.stock_quantity) || 0,
+                                category: wcP.categories?.[0]?.name || 'Uncategorized',
+                                categoryEn: wcP.categories?.[0]?.name || 'Uncategorized',
+                                active: wcP.status === 'publish',
+                                trackStock: wcP.manage_stock
+                            });
+                            results.productsImported = (results.productsImported || 0) + 1;
+                        }
+                    } catch (e) {
+                        results.errors.push(`Product pull error for "${wcP.name}": ${e.message}`);
+                    }
+                }
+            } catch (e) {
+                results.errors.push(`Pull products error: ${e.message}`);
+            }
+        }
+
+        // === PUSH PRODUCTS (POS to WooCommerce) ===
         if (config.syncSettings?.pushProducts !== false && platform === 'woocommerce') {
             try {
                 const products = await Product.find({ tenantId: req.tenantId, active: true });
@@ -290,6 +325,7 @@ router.post('/:platform/sync', auth, async (req, res) => {
         config.lastSyncStatus = results.errors.length === 0 ? 'success' : 'error';
         if (results.errors.length) config.lastSyncError = results.errors[0];
         config.ordersImported = (config.ordersImported || 0) + results.ordersImported;
+        config.productsImported = (config.productsImported || 0) + (results.productsImported || 0);
         config.productsPushed = (config.productsPushed || 0) + results.productsPushed;
         config.updatedAt = new Date();
         await config.save();

@@ -10,17 +10,16 @@
   <link rel="stylesheet" href="css/tailwind.css">
 </head>
 
-<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
-
+<body class="bg-brand-gray-light font-sans text-brand-dark overflow-y-auto antialiased" style="margin: 0; padding: 0; background-color: #f8fafc; min-height: 100vh;">
   <!-- Language Switcher -->
   <div class="language-switcher">
     <button class="lang-btn" onclick="setLanguage('en')" id="langEn">English</button>
     <button class="lang-btn" onclick="setLanguage('ar')" id="langAr">العربية</button>
   </div>
 
-  <div class="flex h-screen w-full overflow-hidden">
+  <div style="display: flex; flex-direction: row; min-height: 100vh; width: 100vw; margin: 0; padding: 0;">
     <!-- Sidebar -->
-    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+    <aside class="bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl z-20 shrink-0" style="width: 260px; min-width: 260px; min-height: 100vh;">
       <div class="sidebar-header">
         <h2 data-i18n="app_title">🏪 Tashgheel POS</h2>
         <p data-i18n="enhanced_edition">Enterprise Edition</p>
@@ -47,7 +46,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-h-0 overflow-hidden bg-brand-gray-light">
+    <main style="flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 100vh; background-color: #f8fafc; position: relative;">
       <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
         <h1 class="text-xl font-bold text-brand-dark" data-i18n="products">📦 Products</h1>
         <div style="display:flex;align-items:center;gap:10px;">
@@ -57,7 +56,7 @@
         </div>
       </header>
 
-      <section class="flex-1 overflow-y-auto min-h-0 p-6 lg:p-8 flex flex-col gap-6">
+      <section style="flex: 1; padding: 2rem; display: flex; flex-direction: column; gap: 2rem; background-color: #f8fafc;">
 
         <!-- Add Product Card -->
         <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
