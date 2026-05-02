@@ -49,7 +49,8 @@ class WooCommerceConnector {
                             reject(new Error(`WooCommerce API error ${res.statusCode}: ${parsed.message || data}`));
                         }
                     } catch (e) {
-                        reject(new Error(`Failed to parse WooCommerce response: ${data}`));
+                        const snippet = data.slice(0, 100).replace(/</g, '&lt;');
+                        reject(new Error(`WordPress returned HTML instead of JSON. This usually means Permalinks are disabled or a security plugin blocked the request. (Snippet: ${snippet}...)`));
                     }
                 });
             });
