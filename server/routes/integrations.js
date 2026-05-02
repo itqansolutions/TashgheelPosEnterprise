@@ -375,7 +375,7 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                                     category: catName,
                                     categoryEn: catName,
                                     imageUrl: wcP.images?.[0]?.src || '',
-                                    active: wcP.status === 'publish',
+                                    active: true, // Force active so it appears in POS
                                     trackStock: wcP.manage_stock,
                                     onlineActive: true
                                 });
@@ -387,8 +387,20 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                                     await AuditLog.create({
                                         tenantId: tenantId,
                                         user: 'System (Sync)',
-                                        action: `Imported product "${wcP.name}" from WooCommerce`,
-                                        details: `SKU: ${sku}, Price: ${wcP.regular_price}`,
+                                        action: 'Product Imported',
+                                        details: `Successfully imported "${wcP.name}" (SKU: ${sku})`,
+                                        timestamp: new Date()
+                                    });
+                                } catch (logErr) {}
+                            } else {
+                                // Log skip
+                                try {
+                                    const AuditLog = require('../models/AuditLog');
+                                    await AuditLog.create({
+                                        tenantId: tenantId,
+                                        user: 'System (Sync)',
+                                        action: 'Product Skipped',
+                                        details: `Skipped "${wcP.name}" because Barcode/SKU ${sku} already exists in POS.`,
                                         timestamp: new Date()
                                     });
                                 } catch (logErr) {}
