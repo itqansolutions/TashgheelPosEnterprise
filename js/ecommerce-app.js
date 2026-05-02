@@ -16,8 +16,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadPlatformStatuses();
     await loadPendingOrders();
 
-    // Auto-refresh every minute
+    // Auto-refresh every minute for new orders
     setInterval(loadPendingOrders, 60000);
+    
+    // Auto-refresh status every 5 seconds if a sync is running
+    setInterval(async () => {
+        const statuses = await loadPlatformStatuses();
+        if (statuses && statuses.some(s => s.lastSyncStatus === 'syncing')) {
+            await loadPendingOrders();
+        }
+    }, 5000);
 });
 
 async function loadPlatformStatuses() {
@@ -53,8 +61,10 @@ async function loadPlatformStatuses() {
                 timeEl.textContent = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
         });
+        return configs;
     } catch (err) {
         console.error('Failed to load statuses', err);
+        return [];
     }
 }
 
