@@ -100,6 +100,8 @@ async function loadEcommerceConfigs() {
         configs.forEach(c => {
             if (c.platform === 'woocommerce' && c.woocommerce) {
                 document.getElementById('wc-site-url').value = c.woocommerce.siteUrl || '';
+                document.getElementById('wc-key').value = c.woocommerce.consumerKey || '';
+                document.getElementById('wc-secret').value = c.woocommerce.consumerSecret || '';
             } else if (c.platform === 'jumia' && c.jumia) {
                 document.getElementById('jumia-user-id').value = c.jumia.userId || '';
             } else if (c.platform === 'amazon' && c.amazon) {

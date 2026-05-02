@@ -40,7 +40,8 @@ async function loadPlatformStatuses() {
             }
             if (countEl) countEl.textContent = conf.ordersImported || 0;
             if (timeEl && conf.lastSyncAt) {
-                timeEl.textContent = new Date(conf.lastSyncAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const date = new Date(conf.lastSyncAt);
+                timeEl.textContent = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
         });
     } catch (err) {
