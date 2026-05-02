@@ -230,11 +230,22 @@ router.post('/:platform/sync', auth, async (req, res) => {
 async function syncBackgroundTask(tenantId, platform, config, connector) {
     const results = { ordersImported: 0, productsImported: 0, productsPushed: 0, errors: [] };
     
+    const updateProgress = async (status, error = null) => {
+        try {
+            await EcommerceConfig.updateOne({ _id: config._id }, { 
+                lastSyncStatus: status, 
+                lastSyncError: error || results.errors[0] || '',
+                updatedAt: new Date()
+            });
+        } catch (e) { console.error('Progress update failed', e); }
+    };
+
     try {
+        await updateProgress('syncing', 'Starting background task...');
         console.log(`[sync] Starting background sync for tenant ${tenantId} on ${platform}`);
 
         // === PULL ORDERS ===
-        if (config.syncSettings?.pullOrders !== false) {
+        await updateProgress('syncing', 'Pulling orders from WooCommerce...');
             try {
                 let rawOrders = [];
                 const after = config.lastSyncAt || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
@@ -295,13 +306,18 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
             }
         }
 
+        }
+        await updateProgress('syncing', `Imported ${results.ordersImported} orders.`);
+
         // === PULL PRODUCTS (WooCommerce to POS) ===
         if (config.syncSettings?.pullProducts !== false && platform === 'woocommerce') {
+            await updateProgress('syncing', 'Fetching product list from WooCommerce...');
             try {
                 let page = 1;
                 let hasMore = true;
                 
                 while (hasMore) {
+                    await updateProgress('syncing', `Pulling products page ${page}...`);
                     const wcProducts = await connector.getProducts(page);
                     if (!wcProducts || wcProducts.length === 0) {
                         hasMore = false;
@@ -350,9 +366,11 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                 results.errors.push(`Pull products error: ${e.message}`);
             }
         }
+        await updateProgress('syncing', `Imported ${results.productsImported} products.`);
 
         // === PUSH PRODUCTS (POS to WooCommerce) ===
         if (config.syncSettings?.pushProducts !== false && platform === 'woocommerce') {
+            await updateProgress('syncing', 'Pushing local products to WooCommerce...');
             try {
                 const products = await Product.find({ tenantId: tenantId, active: true });
                 for (const product of products.slice(0, 50)) { // Limit batch size

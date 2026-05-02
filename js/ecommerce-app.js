@@ -38,6 +38,10 @@ async function loadPlatformStatuses() {
                 if (conf.lastSyncStatus === 'syncing') {
                     statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span> Syncing...`;
                     statusEl.style.color = '#3b82f6';
+                } else if (conf.lastSyncStatus === 'error') {
+                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> Error`;
+                    statusEl.style.color = '#ef4444';
+                    if (timeEl) timeEl.textContent = conf.lastSyncError ? (conf.lastSyncError.substring(0, 30) + '...') : 'Failed';
                 } else {
                     statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-green"></span> Connected`;
                     statusEl.style.color = '#22c55e';
