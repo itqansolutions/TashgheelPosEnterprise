@@ -11,54 +11,58 @@
   <script src="js/translations.js"></script>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-brand-purple-light to-brand-purple font-sans m-0">
+<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-brand-dark-2 to-brand-dark font-sans m-0 relative overflow-hidden">
+
+  <!-- Background decorative elements -->
+  <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-purple rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-brand-blue rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
 
   <!-- Language Switcher -->
-  <div class="absolute top-5 right-5 flex gap-2" id="langSwitcher">
-    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('en')">English</button>
-    <button class="lang-btn px-3 py-2 bg-brand-blue text-white border-none rounded-md text-sm cursor-pointer transition-all hover:bg-brand-blue-dark" onclick="setLanguage('ar')">العربية</button>
+  <div class="absolute top-5 right-5 flex gap-2 z-10" id="langSwitcher">
+    <button class="lang-btn px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg text-sm cursor-pointer transition-all hover:bg-white/20" onclick="setLanguage('en')">English</button>
+    <button class="lang-btn px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg text-sm cursor-pointer transition-all hover:bg-white/20" onclick="setLanguage('ar')">العربية</button>
   </div>
 
   <!-- Login Card -->
-  <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center">
-    <h1 class="text-3xl font-bold text-brand-dark mb-2" data-i18n-key="app_title">Tashgheel POS</h1>
-    <span class="inline-block px-4 py-1 mb-4 text-xs font-bold text-white rounded-full bg-gradient-to-r from-brand-purple-light to-brand-purple tracking-widest uppercase shadow-sm">✦ Enterprise Edition</span>
-    <p class="text-gray-500 mb-8 text-sm" data-i18n-key="login_subtitle">تسجيل الدخول</p>
+  <div class="bg-white/95 backdrop-blur-lg p-10 rounded-3xl shadow-premium w-full max-w-md text-center z-10 animate-slide-up border border-white/50">
+    <h1 class="text-3xl font-extrabold text-brand-dark mb-2 tracking-tight" data-i18n-key="app_title">Tashgheel POS</h1>
+    <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-white rounded-full bg-gradient-to-r from-brand-purple to-brand-blue tracking-widest uppercase shadow-md">✦ Enterprise Edition</span>
+    <p class="text-gray-500 mb-8 text-sm font-medium" data-i18n-key="login_subtitle">تسجيل الدخول</p>
 
     <form id="loginForm" class="text-right">
-      <div class="mb-4">
-        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
+      <div class="mb-5">
+        <label class="block mb-1.5 text-gray-700 text-sm font-semibold" data-i18n-key="business_email">البريد الإلكتروني للنشاط</label>
         <input
           type="email"
           id="businessEmail"
           required
           placeholder="example@business.com"
-          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+          class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-all"
         >
       </div>
-      <div class="mb-4">
-        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="username">اسم المستخدم</label>
+      <div class="mb-5">
+        <label class="block mb-1.5 text-gray-700 text-sm font-semibold" data-i18n-key="username">اسم المستخدم</label>
         <input
           type="text"
           id="username"
           required
           placeholder="admin"
-          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+          class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-all"
         >
       </div>
-      <div class="mb-4">
-        <label class="block mb-1 text-gray-600 text-sm font-medium" data-i18n-key="password">كلمة المرور</label>
+      <div class="mb-6">
+        <label class="block mb-1.5 text-gray-700 text-sm font-semibold" data-i18n-key="password">كلمة المرور</label>
         <input
           type="password"
           id="password"
           required
-          class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-brand-blue transition-colors"
+          class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-all"
         >
       </div>
 
       <button
         type="submit"
-        class="w-full py-3 bg-brand-purple text-white rounded-lg text-base font-semibold cursor-pointer hover:bg-brand-purple-dark transition-colors mt-2"
+        class="w-full py-3.5 bg-gradient-to-r from-brand-purple to-brand-blue text-white rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transform transition-all mt-2"
         data-i18n-key="login_btn"
       >دخول</button>
 

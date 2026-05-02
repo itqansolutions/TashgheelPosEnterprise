@@ -71,7 +71,7 @@
   </style>
 </head>
 
-<body>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
 
   <!-- License Check -->
   <div id="licenseCheckOverlay"
@@ -109,28 +109,28 @@
     <button class="lang-btn" onclick="setLanguage('ar')" id="langAr">العربية</button>
   </div>
 
-  <div class="app">
+  <div class="flex h-full w-full overflow-hidden">
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
       <div class="sidebar-header">
         <h2 id="posSystemTitle" data-i18n="app_title">🏪Tasgheel POS System</h2>
         <p id="licensedVersion" data-i18n="enhanced_edition">Enterprise Edition</p>
       </div>
-      <nav>
-        <a href="pos.html" class="nav-item active" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="inventory.html" class="nav-item" data-i18n="nav_inventory">📊 Inventory</a>
-        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
 
       <div class="sidebar-footer">
         <button class="btn btn-danger" onclick="confirmLogout()" id="logoutBtn" data-i18n="logout">Logout</button>
@@ -138,8 +138,8 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <header class="top-bar">
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light relative">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
         <h1 id="pageTitle" data-i18n="pos_title">Point of Sale</h1>
         <div style="display:flex;align-items:center;gap:10px;">
           <span id="welcomeText" data-i18n="welcome">Welcome,</span>
@@ -156,21 +156,20 @@
         ⚠️ Read-Only Mode: Shift opened by <span id="readOnlyUser"></span>. You cannot perform transactions.
       </div>
 
-      <section class="content-area">
-        <div class="pos-layout"
-          style="display: flex !important; flex-wrap: nowrap !important; align-items: flex-start !important; width: 100% !important; overflow-x: auto !important; overflow-y: hidden !important; gap: 20px;">
+      <section class="flex-1 overflow-hidden p-6 lg:p-8 flex flex-col">
+        <div class="flex flex-nowrap items-start w-full gap-6 h-full">
           <!-- Products Section -->
-          <div style="flex: 1 !important; min-width: 0; display: flex; flex-direction: column;">
-            <div class="card">
+          <div class="flex-1 min-w-0 flex flex-col h-full bg-white rounded-2xl shadow-premium overflow-hidden border border-gray-100">
+            <div class="flex flex-col h-full">
               <!-- Categories Section -->
               <div id="categoryContainer"
-                style="display:flex; gap:10px; overflow-x:auto; padding:10px; border-bottom:1px solid #eee; margin-bottom:10px; white-space:nowrap;">
-                <button class="btn btn-primary category-btn active" onclick="filterProducts('all')" data-id="all"
+                class="flex gap-3 overflow-x-auto p-4 border-b border-gray-100 bg-gray-50/50 whitespace-nowrap hide-scrollbar">
+                <button class="px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 category-btn active bg-brand-blue text-white shadow-md hover:bg-brand-blue-dark" onclick="filterProducts('all')" data-id="all"
                   data-i18n="all_categories">All</button>
                 <!-- Categories will be loaded here -->
               </div>
 
-              <div class="card-header" style="flex-direction: column; align-items: stretch; gap: 10px;">
+              <div class="p-4 flex flex-col gap-4 border-b border-gray-100">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <div class="tabs">
                     <button class="btn btn-primary" id="tabProducts" onclick="switchPosTab('products')">
@@ -191,101 +190,107 @@
                 </div>
               </div>
               <!-- Grid Slider -->
-              <div style="padding: 0 20px; display: flex; align-items: center; gap: 10px;">
-                <span style="font-size:0.8em; color:#666;">View:</span>
-                <input type="range" id="gridZoom" min="100" max="300" value="200" style="width: 100px;"
+              <div class="px-6 py-2 flex items-center gap-3 bg-gray-50/50">
+                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Zoom</span>
+                <input type="range" id="gridZoom" min="100" max="300" value="200" class="w-32 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-blue"
                   title="Adjust Grid Size">
               </div>
             </div>
-            <div class="card-body">
-              <div class="product-grid" id="productGrid">
-                <div style="text-align:center;padding:40px;color:#666;">
-                  <p id="loadingText" data-i18n="loading_products">Loading products...</p>
+            
+            <div class="flex-1 overflow-y-auto p-6 bg-gray-50/30">
+              <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(var(--card-width, 180px), 1fr));" id="productGrid">
+                <div class="col-span-full text-center py-12 text-gray-400 font-medium">
+                  <p id="loadingText" data-i18n="loading_products" class="animate-pulse">Loading products...</p>
                 </div>
               </div>
-              <div id="heldOrdersGrid" class="product-grid" style="display:none;">
+              <div id="heldOrdersGrid" class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); display:none;">
                 <!-- Held items rendered here -->
               </div>
             </div>
           </div>
 
 
-          <div class="cart"
-            style="flex: 0 0 40% !important; width: 40% !important; min-width: 250px !important; height: auto !important; max-height: calc(100vh - 100px); overflow-y: auto; background: white; border-left: 1px solid #ddd; flex-shrink: 0 !important;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <div class="cart w-[380px] shrink-0 h-full overflow-y-auto bg-white rounded-2xl shadow-premium border border-gray-100 flex flex-col">
+            <div class="p-6 border-b border-gray-100 sticky top-0 bg-white z-10">
+              <div class="flex justify-between items-center">
               <h3 id="cartTitle" data-i18n="cart_title">🛒 Cart</h3>
               <span id="cartCounter" class="badge">0</span>
             </div>
 
-            <p id="cartEmptyText" style="text-align:center;color:#666;" data-i18n="cart_empty">Cart is empty</p>
-            <div id="cartItems">
+            <p id="cartEmptyText" class="text-center text-gray-400 py-8" data-i18n="cart_empty">Cart is empty</p>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             </div>
 
-            <div class="cart-summary">
-              <div><span id="subtotalLabel" data-i18n="subtotal">Subtotal:</span> <span id="cartSubtotal">0.00
-                  ج.م</span></div>
-              <div><span id="discountLabel" data-i18n="discount">Discount:</span> <span id="cartDiscount">0.00
-                  ج.م</span> <button onclick="openDiscountModal()" class="btn-sm"
-                  style="font-size:0.8rem;padding:2px 5px;cursor:pointer;">✏️</button></div>
-              <div>
-                <input type="checkbox" id="taxCheckbox" onchange="updateCartSummary()">
-                <span id="taxLabel" data-i18n="tax">Tax (0%):</span>
-                <span id="cartTax">0.00 ج.م</span>
+            <div class="cart-summary p-6 bg-gray-50 border-t border-gray-100 flex flex-col gap-3">
+              <div class="flex justify-between text-sm text-gray-600"><span id="subtotalLabel" data-i18n="subtotal">Subtotal:</span> <span id="cartSubtotal" class="font-medium">0.00 ج.م</span></div>
+              <div class="flex justify-between text-sm text-gray-600 items-center">
+                <span id="discountLabel" data-i18n="discount">Discount:</span> 
+                <div class="flex items-center gap-2">
+                  <span id="cartDiscount" class="font-medium text-brand-red">0.00 ج.م</span> 
+                  <button onclick="openDiscountModal()" class="text-brand-blue hover:text-brand-blue-dark transition-colors text-xs p-1">✏️</button>
+                </div>
               </div>
-              <hr>
-              <div class="cart-total" id="cartTotal">Total: 0.00 ج.م</div>
+              <div class="flex justify-between text-sm text-gray-600 items-center">
+                <div>
+                  <input type="checkbox" id="taxCheckbox" onchange="updateCartSummary()" class="mr-2 rounded text-brand-blue focus:ring-brand-blue">
+                  <span id="taxLabel" data-i18n="tax">Tax (0%):</span>
+                </div>
+                <span id="cartTax" class="font-medium">0.00 ج.م</span>
+              </div>
+              <div class="h-px bg-gray-200 my-2"></div>
+              <div class="cart-total flex justify-between items-center text-xl font-bold text-brand-green-dark" id="cartTotal">
+                <span>Total:</span>
+                <span>0.00 ج.م</span>
+              </div>
             </div>
 
-            <div style="margin-bottom:10px;">
-              <label for="orderTypeSelect">📦 <span id="orderTypeLabel" data-i18n="order_type">Order Type:</span></label>
-              <select id="orderTypeSelect" style="width:100%;padding:6px;margin-top:5px;" onchange="updateCartSummary()">
-                <option value="instore" data-i18n="order_instore">In-Store</option>
-                <option value="online" data-i18n="order_online">Online</option>
-                <option value="delivery" data-i18n="order_delivery">Delivery</option>
-              </select>
-            </div>
+            <div class="p-6 border-t border-gray-100 bg-white">
+              <div class="mb-4">
+                <label for="orderTypeSelect" class="block text-sm font-medium text-gray-700 mb-1">📦 <span id="orderTypeLabel" data-i18n="order_type">Order Type:</span></label>
+                <select id="orderTypeSelect" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue text-sm p-2.5 border" onchange="updateCartSummary()">
+                  <option value="instore" data-i18n="order_instore">In-Store</option>
+                  <option value="online" data-i18n="order_online">Online</option>
+                  <option value="delivery" data-i18n="order_delivery">Delivery</option>
+                </select>
+              </div>
 
-            <div style="margin-bottom:10px;">
-              <label for="customerSelect">👥 <span id="customerLabel" data-i18n="customer">Customer:</span></label>
-              <select id="customerSelect" style="width:100%;padding:6px;margin-top:5px;">
-                <option value="">--</option>
-              </select>
-            </div>
+              <div class="mb-4">
+                <label for="customerSelect" class="block text-sm font-medium text-gray-700 mb-1">👥 <span id="customerLabel" data-i18n="customer">Customer:</span></label>
+                <select id="customerSelect" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue text-sm p-2.5 border">
+                  <option value="">--</option>
+                </select>
+              </div>
 
-            <div style="margin-bottom:10px;">
-              <label for="salesmanSelect">👤 <span id="salesmanLabel" data-i18n="salesman">Salesman:</span></label>
-              <select id="salesmanSelect" style="width:100%;padding:6px;margin-top:5px;"></select>
-            </div>
+              <div class="mb-6">
+                <label for="salesmanSelect" class="block text-sm font-medium text-gray-700 mb-1">👤 <span id="salesmanLabel" data-i18n="salesman">Salesman:</span></label>
+                <select id="salesmanSelect" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue text-sm p-2.5 border"></select>
+              </div>
 
-            <div class="payment-methods" style="grid-template-columns: repeat(2, 1fr);">
-              <button class="btn btn-success" onclick="processSale('cash')" id="cashBtn" disabled
-                data-i18n="pay_cash">💵
-                Cash</button>
-              <button class="btn btn-success" onclick="processSale('card')" id="cardBtn" disabled
-                data-i18n="pay_card">💳
-                Card</button>
-              <button class="btn btn-success" onclick="processSale('mobile')" id="mobileBtn" disabled
-                data-i18n="pay_mobile">📱 Mobile</button>
-              <button class="btn btn-warning" onclick="processSale('credit')" id="creditBtn" disabled
-                data-i18n="pay_credit">📝 Credit</button>
-              <button class="btn btn-primary" onclick="openSplitPaymentModal()" id="splitBtn" disabled
-                data-i18n="pay_split" style="grid-column: span 2;">🔀 Split</button>
-            </div>
+              <div class="grid grid-cols-2 gap-3 mb-6">
+                <button class="flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white transition-all duration-200 bg-brand-green hover:bg-brand-green-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-sm" onclick="processSale('cash')" id="cashBtn" disabled
+                  data-i18n="pay_cash">💵 Cash</button>
+                <button class="flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white transition-all duration-200 bg-brand-blue hover:bg-brand-blue-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-sm" onclick="processSale('card')" id="cardBtn" disabled
+                  data-i18n="pay_card">💳 Card</button>
+                <button class="flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white transition-all duration-200 bg-brand-purple hover:bg-brand-purple-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-sm" onclick="processSale('mobile')" id="mobileBtn" disabled
+                  data-i18n="pay_mobile">📱 Mobile</button>
+                <button class="flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white transition-all duration-200 bg-brand-orange hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm" onclick="processSale('credit')" id="creditBtn" disabled
+                  data-i18n="pay_credit">📝 Credit</button>
+                <button class="col-span-2 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-brand-dark transition-all duration-200 bg-gray-100 hover:bg-gray-200 border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm" onclick="openSplitPaymentModal()" id="splitBtn" disabled
+                  data-i18n="pay_split">🔀 Split Payment</button>
+              </div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
-              <button class="btn btn-warning" onclick="holdTransaction()" id="holdBtn" disabled data-i18n="hold_btn">⏸️
-                Hold</button>
-              <button class="btn btn-secondary" onclick="clearCart()" id="clearCartBtn" disabled
-                data-i18n="clear_btn">🗑️
-                Clear</button>
-            </div>
+              <div class="flex gap-3 mb-4">
+                <button class="flex-1 py-2.5 rounded-lg font-medium text-white transition-all duration-200 bg-brand-orange hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" onclick="holdTransaction()" id="holdBtn" disabled data-i18n="hold_btn">⏸️ Hold</button>
+                <button class="flex-1 py-2.5 rounded-lg font-medium text-gray-700 transition-all duration-200 bg-gray-100 hover:bg-gray-200 border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" onclick="clearCart()" id="clearCartBtn" disabled data-i18n="clear_btn">🗑️ Clear</button>
+              </div>
 
-            <button class="btn btn-danger" onclick="closeShift()" style="margin-top:10px;width:100%;">🛑 <span
-                id="closeShiftBtn" data-i18n="close_shift">Close Shift</span></button>
+              <button class="w-full py-3 rounded-xl font-medium text-white transition-all duration-200 bg-brand-red hover:bg-brand-red-dark shadow-sm flex items-center justify-center gap-2" onclick="closeShift()">🛑 <span id="closeShiftBtn" data-i18n="close_shift">Close Shift</span></button>
+            </div>
           </div>
         </div>
-  </div>
-  </section>
+      </section>
   </main>
   </div>
 

@@ -1,378 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>Admin Panel - POS</title>
+  <title>Admin - Tashgheel POS</title>
   <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
 </head>
-
-<body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-header">Admin Panel</div>
-      <nav>
-        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="inventory.html" class="nav-item" data-i18n="nav_inventory">📊 Inventory</a>
-        <a href="purchases.html" class="nav-item" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item active" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
-
-      <div class="sidebar-footer">Ali Karam POS</div>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
+  <div class="language-switcher">
+    <button class="lang-btn" onclick="setLanguage('en')" id="langEn">English</button>
+    <button class="lang-btn" onclick="setLanguage('ar')" id="langAr">العربية</button>
+  </div>
+  <div class="flex h-full w-full overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+      <div class="sidebar-header"><h2 data-i18n="app_title">🏪 Tashgheel POS</h2><p data-i18n="enhanced_edition">Enterprise Edition</p></div>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="ecommerce.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white">🌐 E-Commerce</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
+      <div class="sidebar-footer"><button class="btn btn-danger" onclick="confirmLogout()" data-i18n="logout">Logout</button></div>
     </aside>
-
-    <main class="main-content">
-      <header class="top-bar">
-        <h1 data-i18n="admin_panel">Admin Panel (v2)</h1>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-xl font-bold text-brand-dark" data-i18n="admin_panel">⚙️ Admin Panel</h1>
+        <div style="display:flex;align-items:center;gap:10px;"><span id="welcomeText" data-i18n="welcome">Welcome,</span><span id="currentUserName" class="font-semibold">User</span><span id="userRole" class="user-role">admin</span></div>
       </header>
-
-      <section class="content-area">
-        <div class="card">
-          <div class="card-header" data-i18n="shop_settings">Shop Settings</div>
-          <div class="card-body">
+      <section class="flex-1 overflow-y-auto p-6 lg:p-8 flex flex-col gap-8">
+        
+        <!-- Shop Settings Card -->
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-brand-blue to-brand-purple">
+            <h2 class="text-base font-semibold text-white" data-i18n="shop_settings">Shop Settings</h2>
+          </div>
+          <div class="p-6">
             <form id="shop-settings-form" class="form-grid">
-              <div class="form-group">
-                <label for="shop-name" data-i18n="shop_name">Shop Name:</label>
-                <input type="text" id="shop-name" name="shopName" required>
-              </div>
-              <div class="form-group">
-                <label data-i18n="shop_address">Shop Address:</label>
-                <input type="text" id="shop-address" placeholder="123 Main St, City">
-              </div>
-              <div class="form-group">
-                <label data-i18n="tax_rate_label">Tax Rate (%):</label>
-                <input type="number" id="tax-rate" placeholder="0" step="0.1" min="0">
-              </div>
-              <div class="form-group">
-                <label data-i18n="tax_name_label">Tax Name (e.g., VAT, Service):</label>
-                <input type="text" id="tax-name" placeholder="Tax">
-              </div>
-              <div class="form-group">
-                <label for="footer-message" data-i18n="footer_message">Receipt Footer Message:</label>
-                <input type="text" id="footer-message" name="footerMessage">
-              </div>
-              <div class="form-group">
-                <label for="shop-logo" data-i18n="shop_logo">Shop Logo:</label>
-                <input type="file" id="shop-logo" name="shopLogo" accept="image/*">
-              </div>
-              <div class="form-group">
-                <img id="logo-preview" src="" alt="" style="max-height: 100px; display: none;" />
-              </div>
-              <div class="form-group">
-                <button class="btn btn-success" type="submit" data-i18n="save">Save</button>
-              </div>
+              <div class="form-group"><label for="shop-name" data-i18n="shop_name">Shop Name:</label><input type="text" id="shop-name" name="shopName" required></div>
+              <div class="form-group"><label data-i18n="shop_address">Shop Address:</label><input type="text" id="shop-address" placeholder="123 Main St, City"></div>
+              <div class="form-group"><label data-i18n="tax_rate_label">Tax Rate (%):</label><input type="number" id="tax-rate" placeholder="0" step="0.1" min="0"></div>
+              <div class="form-group"><label data-i18n="tax_name_label">Tax Name:</label><input type="text" id="tax-name" placeholder="Tax"></div>
+              <div class="form-group"><label for="footer-message" data-i18n="footer_message">Receipt Footer:</label><input type="text" id="footer-message" name="footerMessage"></div>
+              <div class="form-group"><label for="shop-logo" data-i18n="shop_logo">Shop Logo:</label><input type="file" id="shop-logo" name="shopLogo" accept="image/*"></div>
+              <div class="form-group flex items-center justify-center border rounded-xl p-2 bg-gray-50"><img id="logo-preview" src="" alt="" style="max-height:80px; display:none;" /></div>
+              <div class="form-group pt-4"><button class="btn btn-success w-full py-3" type="submit" data-i18n="save">Save Settings</button></div>
             </form>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">License Information</div>
-          <div class="card-body">
-            <div id="license-loading">Loading license details...</div>
-            <div id="license-details" style="display:none;">
-              <p><strong>Status:</strong> <span id="license-status"></span></p>
-              <p><strong>Valid Until:</strong> <span id="license-date"></span></p>
-              <p><strong>Days Remaining:</strong> <span id="license-days"></span></p>
+        <!-- E-Commerce Credentials Card -->
+        <div id="ecommerce" class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
+            <h2 class="text-base font-bold text-brand-dark">🌐 Online Platform Credentials</h2>
+            <span class="text-[10px] bg-brand-blue text-white px-2 py-0.5 rounded font-bold uppercase">New Integration</span>
+          </div>
+          <div class="p-6 flex flex-col gap-8">
+            <!-- WooCommerce Section -->
+            <div class="border rounded-xl p-5 hover:border-brand-purple transition-colors">
+              <div class="flex items-center gap-3 mb-4"><i class="fab fa-wordpress text-2xl text-brand-purple"></i><h3 class="font-bold">WooCommerce</h3></div>
+              <form id="wc-config-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">WordPress Site URL</label><input type="url" id="wc-site-url" placeholder="https://mysite.com" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">Consumer Key (ck_...)</label><input type="password" id="wc-key" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">Consumer Secret (cs_...)</label><input type="password" id="wc-secret" class="!py-2"></div>
+                <div class="form-group flex items-end"><button type="submit" class="bg-brand-purple text-white px-6 py-2.5 rounded-lg text-sm font-bold w-full hover:bg-brand-purple-dark transition-all">Connect WooCommerce</button></div>
+              </form>
+            </div>
+            
+            <!-- Jumia Section -->
+            <div class="border rounded-xl p-5 hover:border-brand-orange transition-colors">
+              <div class="flex items-center gap-3 mb-4"><i class="fas fa-shopping-bag text-2xl text-brand-orange"></i><h3 class="font-bold">Jumia Seller (Egypt)</h3></div>
+              <form id="jumia-config-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">User ID (Email)</label><input type="email" id="jumia-user-id" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">API Key</label><input type="password" id="jumia-api-key" class="!py-2"></div>
+                <div class="form-group md:col-span-2 flex justify-end"><button type="submit" class="bg-brand-orange text-white px-6 py-2.5 rounded-lg text-sm font-bold w-48 hover:bg-orange-600 transition-all">Connect Jumia</button></div>
+              </form>
+            </div>
+
+            <!-- Amazon Section -->
+            <div class="border rounded-xl p-5 hover:border-brand-blue transition-colors">
+              <div class="flex items-center gap-3 mb-4"><i class="fab fa-amazon text-2xl text-brand-blue"></i><h3 class="font-bold">Amazon.eg SP-API</h3></div>
+              <form id="amazon-config-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">Seller ID</label><input type="text" id="amazon-seller-id" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">LWA Client ID</label><input type="text" id="amazon-client-id" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">LWA Client Secret</label><input type="password" id="amazon-client-secret" class="!py-2"></div>
+                <div class="form-group"><label class="text-xs font-bold text-gray-500">LWA Refresh Token</label><input type="password" id="amazon-refresh-token" class="!py-2"></div>
+                <div class="form-group md:col-span-2 flex justify-end"><button type="submit" class="bg-brand-blue text-white px-6 py-2.5 rounded-lg text-sm font-bold w-48 hover:bg-brand-blue-dark transition-all">Connect Amazon</button></div>
+              </form>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header" data-i18n="user_management">User Management</div>
-          <div class="card-body">
+        <!-- User Management Card -->
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h2 class="text-base font-bold text-brand-dark" data-i18n="user_management">User Management</h2>
+          </div>
+          <div class="p-6">
             <form id="user-form" class="form-grid">
-              <div class="form-group">
-                <label for="new-username" data-i18n="username">Username:</label>
-                <input type="text" id="new-username" required>
-              </div>
-              <div class="form-group">
-                <label for="new-password" data-i18n="password">Password:</label>
-                <input type="password" id="new-password" required>
-              </div>
-              <div class="form-group">
-                <label for="new-fullname" data-i18n="fullname">Full Name:</label>
-                <input type="text" id="new-fullname" required>
-              </div>
-              <div class="form-group">
-                <label for="user-role" data-i18n="role">Role:</label>
-                <select id="user-role">
-                  <option value="cashier" data-i18n="cashier">Cashier</option>
-                  <option value="manager" data-i18n="manager">Manager</option>
-                  <option value="admin" data-i18n="admin">Admin</option>
-                </select>
-              </div>
-
-              <div class="form-group" style="grid-column: span 2;">
-                <label data-i18n="allowed_stores">Allowed Warehouses:</label>
-                <div id="user-stores-picker" class="checkbox-grid mt-10" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                  <!-- Populated by JS -->
-                </div>
-              </div>
-
-              <div class="form-group" style="grid-column: span 2;">
-                <label data-i18n="allowed_pages">Page Permissions:</label>
-                <div id="user-pages-picker" class="checkbox-grid mt-10" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                  <!-- Populated by JS -->
-                </div>
-              </div>
-
-              <div class="form-group">
-                <button class="btn btn-primary" type="submit" data-i18n="create_user">Create User</button>
-              </div>
+              <div class="form-group"><label data-i18n="username">Username:</label><input type="text" id="new-username" required></div>
+              <div class="form-group"><label data-i18n="password">Password:</label><input type="password" id="new-password" required></div>
+              <div class="form-group"><label data-i18n="fullname">Full Name:</label><input type="text" id="new-fullname" required></div>
+              <div class="form-group"><label data-i18n="role">Role:</label><select id="user-role"><option value="cashier">Cashier</option><option value="manager">Manager</option><option value="admin">Admin</option></select></div>
+              <div class="form-group md:col-span-2 pt-2"><button class="btn btn-primary w-full py-3 font-bold" type="submit" data-i18n="create_user">Create User</button></div>
             </form>
-
-            <table class="data-table mt-20">
-              <thead>
-                <tr>
-                  <th data-i18n="username">Username</th>
-                  <th data-i18n="fullname">Full Name</th>
-                  <th data-i18n="role">Role</th>
-                  <th data-i18n="stores">Stores</th>
-                  <th data-i18n="pages">Pages</th>
-                  <th data-i18n="actions">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="user-table-body">
-                <!-- Populated by JS -->
-              </tbody>
-            </table>
+            <div class="overflow-x-auto mt-8"><table class="data-table w-full"><thead class="bg-gray-50"><tr><th data-i18n="username">Username</th><th data-i18n="fullname">Full Name</th><th data-i18n="role">Role</th><th data-i18n="actions">Actions</th></tr></thead><tbody id="user-table-body"></tbody></table></div>
           </div>
         </div>
 
-        <!-- Customer Management Removed (Moving to its own page) -->
-
-        <div class="card">
-          <div class="card-header" data-i18n="audit_logs">Audit Logs</div>
-          <div class="card-body">
-            <div style="max-height:400px;overflow-y:auto;">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th data-i18n="timestamp">Time</th>
-                    <th data-i18n="user">User</th>
-                    <th data-i18n="action">Action</th>
-                    <th data-i18n="details">Details</th>
-                  </tr>
-                </thead>
-                <tbody id="auditLogsBody"></tbody>
-              </table>
-            </div>
-            <button onclick="loadAuditLogs()" class="btn btn-primary mt-10" data-i18n="refresh_logs">🔄 Refresh
-              Logs</button>
+        <!-- Audit Logs Card -->
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h2 class="text-base font-bold text-brand-dark" data-i18n="audit_logs">Audit Logs</h2>
+            <button onclick="loadAuditLogs()" class="text-xs bg-white border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors">🔄 Refresh</button>
           </div>
+          <div class="p-0 max-h-[400px] overflow-y-auto"><table class="data-table w-full whitespace-nowrap"><thead class="bg-gray-50 sticky top-0"><tr><th data-i18n="timestamp">Time</th><th data-i18n="user">User</th><th data-i18n="action">Action</th><th data-i18n="details">Details</th></tr></thead><tbody id="auditLogsBody"></tbody></table></div>
         </div>
       </section>
     </main>
   </div>
-
-  <footer class="footer">
-    Tashgheel POS© 2025 - Designed and developed by <strong>itqan</strong> |
-    <a href="tel:+201126522373">+201126522373 / +201155253886</a>
-  </footer>
-
   <script src="js/auth.js"></script>
   <script src="js/translations.js"></script>
   <script src="js/admin-app.js"></script>
-  <script>
-    // Add Audit Log loading logic here for simplicity, or move to admin-app.js
-    async function loadAuditLogs() {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/audit-logs`, {
-          headers: { 'x-auth-token': token }
-        });
-        const logs = await response.json();
-
-        const tbody = document.getElementById('auditLogsBody');
-        tbody.innerHTML = '';
-
-        logs.forEach(log => {
-          const row = document.createElement('tr');
-          // Add Reprint Button for CLOSED_SHIFT
-          const isCloseShift = log.action === 'CLOSE_SHIFT' && log.details && log.details.shiftId;
-          const reprintBtn = isCloseShift
-            ? `<button onclick="reprintShift('${log.details.shiftId}')" class="btn-sm btn-secondary" style="margin-left:10px;padding:2px 5px;font-size:0.8em;">🖨️ Reprint</button>`
-            : '';
-
-          row.innerHTML = `
-                      <td>${new Date(log.timestamp).toLocaleString()}</td>
-                      <td>${log.user}</td>
-                      <td>${log.action}</td>
-                      <td>
-                        <div style="display:flex;align-items:center;justify-content:space-between;">
-                          <pre style="font-size:0.8em;margin:0;">${JSON.stringify(log.details, null, 2)}</pre>
-                          ${reprintBtn}
-                        </div>
-                      </td>
-                  `;
-          tbody.appendChild(row);
-        });
-      } catch (error) {
-        console.error('Error loading logs:', error);
-      }
-    }
-
-    // === REPRINT LOGIC ===
-    async function reprintShift(shiftId) {
-      if (!confirm('Reprint closing report for this shift?')) return;
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/shifts/${shiftId}`, {
-          headers: { 'x-auth-token': token }
-        });
-
-        if (response.ok) {
-          const shift = await response.json();
-          // Fetch Settings for Shop Name
-          const settingsRes = await fetch(`${API_URL}/settings`, { headers: { 'x-auth-token': token } });
-          const settings = (await settingsRes.json()) || {};
-
-          const lang = localStorage.getItem('pos_language') || 'en';
-          const t = (en, ar) => (lang === 'ar' ? ar : en);
-          const endTimeFormatted = new Date(shift.endTime).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US');
-
-          // Prepare Data for Report
-          const data = {
-            shopName: settings.shopName || "My Shop",
-            endTime: endTimeFormatted,
-            cashier: shift.cashier,
-            startCash: shift.startCash,
-            sysCash: shift.cashSales,
-            sysCard: shift.cardSales,
-            sysMobile: shift.mobileSales,
-            returns: shift.returnsTotal,
-            expenses: shift.expensesTotal,
-            actCash: shift.actualCash || 0,
-            actCard: shift.actualCard || 0,
-            actMobile: shift.actualMobile || 0,
-            diffCash: shift.actualCash - (shift.endCash || (shift.startCash + shift.cashSales - shift.expensesTotal - shift.returnsTotal)),
-            diffCard: (shift.actualCard || 0) - shift.cardSales,
-            diffMobile: (shift.actualMobile || 0) - shift.mobileSales
-          };
-
-          // Generate & Print
-          const html = generateShiftReportHTML(data);
-          printContent(html);
-
-        } else {
-          alert("Failed to load shift details");
-        }
-      } catch (error) {
-        console.error(error);
-        alert("Error reprinting shift");
-      }
-    }
-
-    function generateShiftReportHTML(data) {
-      const lang = localStorage.getItem('pos_language') || 'en';
-      const t = (en, ar) => (lang === 'ar' ? ar : en);
-
-      const style = `
-        body { font-family: 'Courier New', monospace; direction: ${lang === 'ar' ? 'rtl' : 'ltr'}; text-align: center; font-size: 12px; }
-        .header { margin-bottom: 10px; border-bottom: 1px dashed #000; padding-bottom: 5px; }
-        .line { border-bottom: 1px dashed #000; margin: 5px 0; }
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 2px 0; }
-      `;
-
-      return `
-      <html>
-        <head><style>${style}</style></head>
-        <body>
-          <div class="header">
-            <h2 style="margin:0">${data.shopName}</h2>
-            <h3 style="margin:5px 0">${t("SHIFT CLOSE REPORT", "تقرير إغلاق وردية")}</h3>
-            <p style="margin:0">** ${t("COPY", "نسخة")} **</p>
-            <p style="margin:0">${data.endTime}</p>
-            <p style="margin:0">${t("Cashier:", "الكاشير:")} ${data.cashier}</p>
-          </div>
-          
-          <div class="line"></div>
-          
-          <table style="width:100%;">
-            <tr>
-              <td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Start Cash", "بداية الدرج")}</td>
-              <td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.startCash.toFixed(2)}</td>
-            </tr>
-          </table>
-          
-          <div class="line"></div>
-          <div style="text-align:center;font-weight:bold;margin-bottom:5px;">${t("SYSTEM TOTALS", "إجماليات النظام")}</div>
-          
-          <table style="width:100%;">
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Cash Sales", "مبيعات الكاش")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.sysCash.toFixed(2)}</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Card Sales", "مبيعات البطاقة")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.sysCard.toFixed(2)}</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Mobile Sales", "مبيعات المحافظ")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.sysMobile.toFixed(2)}</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Returns", "المرتجعات")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">(${data.returns.toFixed(2)})</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Expenses", "المصاريف")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">(${data.expenses.toFixed(2)})</td></tr>
-          </table>
-          
-          <div class="line"></div>
-           <div style="text-align:center;font-weight:bold;margin-bottom:5px;">${t("ACTUAL TOTALS", "الإجماليات الفعلية")}</div>
-           
-           <table style="width:100%; font-weight: bold;">
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Act. Cash", "الكاش الفعلي")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.actCash.toFixed(2)}</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Act. Card", "البطاقة الفعلية")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.actCard.toFixed(2)}</td></tr>
-            <tr><td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Act. Mobile", "المحافظ الفعلية")}</td><td style="text-align:${lang === 'ar' ? 'left' : 'right'}">${data.actMobile.toFixed(2)}</td></tr>
-          </table>
-
-          <div class="line"></div>
-          <div style="text-align:center;font-weight:bold;margin-bottom:5px;">${t("DIFFERENCES", "الفروقات")}</div>
-          
-          <table style="width:100%;">
-            <tr>
-              <td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Cash Diff", "فرق الكاش")}</td>
-              <td style="text-align:${lang === 'ar' ? 'left' : 'right'}; ${data.diffCash < 0 ? 'color:red' : 'color:black'}">${(data.diffCash || 0).toFixed(2)}</td>
-            </tr>
-             <tr>
-              <td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Card Diff", "فرق البطاقة")}</td>
-              <td style="text-align:${lang === 'ar' ? 'left' : 'right'}; ${data.diffCard < 0 ? 'color:red' : 'color:black'}">${(data.diffCard || 0).toFixed(2)}</td>
-            </tr>
-             <tr>
-              <td style="text-align:${lang === 'ar' ? 'right' : 'left'}">${t("Mobile Diff", "فرق المحافظ")}</td>
-              <td style="text-align:${lang === 'ar' ? 'left' : 'right'}; ${data.diffMobile < 0 ? 'color:red' : 'color:black'}">${(data.diffMobile || 0).toFixed(2)}</td>
-            </tr>
-           </table>
-
-          <div class="line"></div>
-          <p style="text-align:center;">${t("Signature", "التوقيع")}: ________________</p>
-        </body>
-      </html>
-      `;
-    }
-
-    function printContent(html) {
-      const printWindow = window.open('', '', 'width=300,height=600');
-      printWindow.document.write(html);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 500);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if (currentUser?.role === 'cashier') {
-        alert('Access denied');
-        window.location.href = 'pos.html';
-      }
-      loadAuditLogs();
-    });
-  </script>
 </body>
-
 </html>

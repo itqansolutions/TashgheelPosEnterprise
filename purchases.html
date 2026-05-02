@@ -1,109 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <title data-i18n="nav_purchases">📥 Purchases</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
+  <title>Purchases - Tashgheel POS</title>
   <link rel="stylesheet" href="css/styles.css?v=7.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="css/tailwind.css">
-  <script src="js/auth.js"></script>
-  <script src="js/translations.js"></script>
-  <script src="js/purchases-app.js" defer></script>
 </head>
-
-<body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2 id="posSystemTitle" data-i18n="app_title">🏪Tasgheel POS System</h2>
-        <p id="licensedVersion" data-i18n="enhanced_edition">Enterprise Edition</p>
-      </div>
-      <nav>
-        <a href="pos.html" class="nav-item" data-i18n="nav_pos">🛒 Point of Sale</a>
-        <a href="products.html" class="nav-item" data-i18n="nav_products">📦 Products</a>
-        <a href="inventory.html" class="nav-item" data-i18n="nav_inventory">📊 Inventory</a>
-        <a href="purchases.html" class="nav-item active" data-i18n="nav_purchases">📥 Purchases</a>
-        <a href="receipts.html" class="nav-item" data-i18n="nav_receipts">🧾 Receipts</a>
-        <a href="reports.html" class="nav-item" data-i18n="nav_reports">📈 Reports</a>
-        <a href="suppliers.html" class="nav-item" data-i18n="nav_suppliers">🏢 Suppliers</a>
-        <a href="customers.html" class="nav-item" data-i18n="nav_customers">👥 Customers</a>
-        <a href="salesmen.html" class="nav-item" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
-        <a href="expenses.html" class="nav-item" data-i18n="nav_expenses">📋 Expenses</a>
-        <a href="stores.html" class="nav-item" data-i18n="nav_stores">🏢 Warehouses</a>
-        <a href="admin.html" class="nav-item" data-i18n="nav_admin">⚙️ Admin Panel</a>
-        <a href="backup.html" class="nav-item" data-i18n="nav_backup">💾 Backup</a>
-</nav>
-      <div class="sidebar-footer">
-        <button class="btn btn-danger" onclick="confirmLogout()" id="logoutBtn" data-i18n="logout">Logout</button>
-      </div>
+<body class="bg-brand-gray-light font-sans text-brand-dark h-screen overflow-hidden flex flex-col m-0 p-0 antialiased">
+  <div class="language-switcher">
+    <button class="lang-btn" onclick="setLanguage('en')" id="langEn">English</button>
+    <button class="lang-btn" onclick="setLanguage('ar')" id="langAr">العربية</button>
+  </div>
+  <div class="flex h-full w-full overflow-hidden">
+    <aside class="w-64 bg-gradient-to-b from-brand-dark-2 to-brand-dark text-white flex flex-col shadow-2xl shrink-0 z-20">
+      <div class="sidebar-header"><h2 id="posSystemTitle" data-i18n="app_title">🏪 Tashgheel POS</h2><p id="licensedVersion" data-i18n="enhanced_edition">Enterprise Edition</p></div>
+      <nav class="flex-1 overflow-y-auto py-4">
+        <a href="pos.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_pos">🛒 Point of Sale</a>
+        <a href="products.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_products">📦 Products</a>
+        <a href="inventory.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_inventory">📊 Inventory</a>
+        <a href="purchases.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-brand-blue bg-white/10 text-white" data-i18n="nav_purchases">📥 Purchases</a>
+        <a href="receipts.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_receipts">🧾 Receipts</a>
+        <a href="reports.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_reports">📈 Reports</a>
+        <a href="suppliers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_suppliers">🏢 Suppliers</a>
+        <a href="customers.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_customers">👥 Customers</a>
+        <a href="salesmen.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_salesmen">🧑‍💼 Salesmen</a>
+        <a href="expenses.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_expenses">📋 Expenses</a>
+        <a href="stores.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_stores">🏢 Warehouses</a>
+        <a href="admin.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_admin">⚙️ Admin Panel</a>
+        <a href="ecommerce.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white">🌐 E-Commerce</a>
+        <a href="backup.html" class="flex items-center px-6 py-3 text-sm font-medium transition-all duration-200 border-l-4 border-transparent hover:bg-white/5 hover:pl-7 text-gray-300 hover:text-white" data-i18n="nav_backup">💾 Backup</a>
+      </nav>
+      <div class="sidebar-footer"><button class="btn btn-danger" onclick="confirmLogout()" id="logoutBtn" data-i18n="logout">Logout</button></div>
     </aside>
-
-    <main class="main-content">
-      <header class="top-bar">
-        <h1 data-i18n="nav_purchases">Purchases</h1>
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-gray-light">
+      <header class="bg-white/80 backdrop-blur-md px-8 py-4 shadow-sm border-b border-gray-200 flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-xl font-bold text-brand-dark" data-i18n="nav_purchases">📥 Purchases</h1>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="welcomeText" data-i18n="welcome">Welcome,</span>
+          <span id="currentUserName" class="font-semibold">User</span>
+          <span id="userRole" class="user-role">cashier</span>
+        </div>
       </header>
-
-      <section class="content-area">
-        <div class="pos-layout" style="display:flex; gap:20px;">
-          <!-- Left side: Select Supplier, Store and Add Items -->
-          <div class="card" style="flex: 2;">
-            <div class="card-header">
-              <h2 data-i18n="create_purchase">Create Purchase</h2>
+      <section class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+        <div class="flex gap-6 flex-wrap">
+          <div class="flex-1 min-w-0 bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-brand-blue to-brand-purple">
+              <h2 class="text-base font-semibold text-white" data-i18n="create_purchase">Create Purchase</h2>
             </div>
-            <div class="card-body">
-              <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="p-6">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
                 <div class="form-group">
                   <label data-i18n="supplier">Supplier</label>
                   <select id="purchaseSupplier" required></select>
                 </div>
                 <div class="form-group">
-                   <label data-i18n="target_store">Destination Warehouse</label>
-                   <select id="purchaseStore" required></select>
+                  <label data-i18n="target_store">Destination Warehouse</label>
+                  <select id="purchaseStore" required></select>
                 </div>
               </div>
-              
-              <hr style="margin:20px 0;">
-
-              <h3 data-i18n="add_items">Add Items</h3>
-              <div style="display:flex; gap:10px; margin-bottom: 20px;">
-                <input type="text" id="productSearch" placeholder="Search product by name or barcode..." class="search-box" style="flex:1;">
-              </div>
-              <div id="productResults" style="max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; padding: 10px;"></div>
+              <hr style="margin:0 0 20px 0;">
+              <h3 class="font-semibold mb-3" data-i18n="add_items">Add Items</h3>
+              <input type="text" id="productSearch" placeholder="Search product by name or barcode..." class="search-box" style="width:100%; margin-bottom:12px;">
+              <div id="productResults" style="max-height:250px; overflow-y:auto; border:1px solid #eee; border-radius:8px; padding:10px;"></div>
             </div>
           </div>
-
-          <!-- Right side: Purchase Cart -->
-          <div class="cart" style="flex: 1; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-            <h3 data-i18n="purchase_cart" style="margin-top: 0;">Purchase Cart</h3>
-            <div id="purchaseItems" style="min-height: 200px; max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
-               <!-- Items populated by JS -->
+          <div class="w-80 shrink-0 bg-white rounded-2xl shadow-premium border border-gray-100 flex flex-col p-6">
+            <h3 class="font-bold text-brand-dark mb-4" data-i18n="purchase_cart">🛒 Purchase Cart</h3>
+            <div id="purchaseItems" style="min-height:160px; max-height:320px; overflow-y:auto; margin-bottom:16px;"></div>
+            <hr class="mb-4">
+            <div class="flex justify-between text-xl font-bold text-brand-green-dark mb-4">
+              <span data-i18n="total">Total:</span>
+              <span id="purchaseTotal">0.00</span>
             </div>
-            <hr>
-            <div class="cart-summary mt-20">
-              <div class="cart-total" style="font-size: 1.4em; font-weight: bold; display: flex; justify-content: space-between;">
-                 <span data-i18n="total">Total:</span> 
-                 <span id="purchaseTotal" style="color:#2ecc71">0.00</span>
-              </div>
+            <div class="form-group mb-4">
+              <label class="font-semibold text-sm block mb-1" data-i18n="cash_paid_now">Cash Paid Now (Optional)</label>
+              <input type="number" id="cashPaid" value="0" min="0" step="0.01" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
+              <p class="text-xs text-gray-500 mt-1" data-i18n="remaining_adds_debt">Remaining amount adds to supplier debt.</p>
             </div>
-            
-            <div class="form-group mt-20">
-              <label data-i18n="cash_paid_now" style="font-weight: bold;">Cash Paid Now (Optional)</label>
-              <input type="number" id="cashPaid" value="0" min="0" step="0.01" style="width: 100%; padding: 10px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px;">
-              <p data-i18n="remaining_adds_debt" style="color:#666; font-size: 0.85em; margin-top: 8px;">Remaining amount adds to supplier debt.</p>
-            </div>
-
-            <button class="btn btn-primary" style="width:100%; margin-top:20px; padding: 15px; font-size: 1.1em; font-weight: bold; background: #3498db;" onclick="submitPurchase()" data-i18n="submit_purchase">Submit Purchase</button>
+            <button class="btn btn-primary" style="width:100%; padding:14px; font-size:1em; font-weight:bold;" onclick="submitPurchase()" data-i18n="submit_purchase">Submit Purchase</button>
           </div>
         </div>
-        
-        <!-- Recend Purchases Table -->
-        <div class="card mt-20">
-          <div class="card-header">
-            <h2 data-i18n="recent_purchases">Recent Purchases</h2>
+        <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h2 class="text-base font-semibold text-brand-dark" data-i18n="recent_purchases">Recent Purchases</h2>
           </div>
-          <div class="card-body">
+          <div class="overflow-x-auto">
             <table class="data-table">
               <thead>
                 <tr>
@@ -118,9 +102,11 @@
             </table>
           </div>
         </div>
-
       </section>
     </main>
   </div>
+  <script src="js/auth.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/purchases-app.js" defer></script>
 </body>
 </html>
