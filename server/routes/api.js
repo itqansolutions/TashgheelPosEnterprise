@@ -1005,17 +1005,14 @@ router.post('/inventory/adjust', auth, async (req, res) => {
                     } catch (e) {}
                 }
 
-                    await product.save();
-
-                    adjustmentRecord.items.push({
-                        productId: product._id,
-                        productName: product.name,
-                        oldStock,
-                        newStock,
-                        difference,
-                        reason: item.reason || 'Manual Adjustment'
-                    });
-                }
+                adjustmentRecord.items.push({
+                    productId: product._id,
+                    productName: product.name,
+                    oldStock,
+                    newStock,
+                    difference,
+                    reason: item.reason || 'Manual Adjustment'
+                });
             }
         }
 
