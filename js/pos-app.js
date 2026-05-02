@@ -98,7 +98,9 @@ async function checkOpenShift() {
 
     if (!shift) {
       // No open shift, show modal
-      document.getElementById('openShiftModal').style.display = 'flex';
+      const modal = document.getElementById('openShiftModal');
+      if (modal) modal.style.display = 'flex';
+      else console.warn('openShiftModal not found');
       disablePOS();
     } else {
       // Shift exists. Check ownership.
