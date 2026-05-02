@@ -9,9 +9,10 @@ const http = require('http');
 class WooCommerceConnector {
     constructor(config) {
         this.siteUrl = (config.siteUrl || '').replace(/\/$/, '');
-        this.consumerKey = config.consumerKey;
-        this.consumerSecret = config.consumerSecret;
-        this.baseUrl = `${this.siteUrl}/wp-json/wc/v3`;
+    constructor({ siteUrl, consumerKey, consumerSecret }) {
+        this.siteUrl = siteUrl.replace(/\/$/, ''); // Remove trailing slash
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
     }
 
     _getAuthHeader() {
@@ -21,7 +22,8 @@ class WooCommerceConnector {
 
     async _request(method, path, body = null) {
         return new Promise((resolve, reject) => {
-            const url = new URL(`${this.baseUrl}${path}`);
+            const url = new URL(`${this.siteUrl}/wp-json/wc/v3${path}`);
+            console.log(`[WC] ${method} ${url}`);
             const isHttps = url.protocol === 'https:';
             const lib = isHttps ? https : http;
 
