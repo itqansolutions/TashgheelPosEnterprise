@@ -355,82 +355,47 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                         });
                     } catch (e) {}
 
-                    let index = 0;
                     for (const wcP of wcProducts) {
-                        index++;
                         try {
                             const sku = String(wcP.sku || wcP.id);
+                            const existingProduct = await Product.findOne({ tenantId: tenantId, barcode: sku });
                             
-                            // Log processing start for first few items
-                            if (index <= 3) {
-                                try {
-                                    await AuditLog.create({
-                                        tenantId: tenantId,
-                                        user: 'System (Sync)',
-                                        action: 'Processing Item',
-                                        details: `Processing ${index}/${wcProducts.length}: "${wcP.name}"`,
-                                        timestamp: new Date()
-                                    });
-                                } catch (e) {}
-                            }
+                            const sellingPrice = wcP.on_sale && wcP.sale_price ? parseFloat(wcP.sale_price) : (parseFloat(wcP.regular_price) || 0);
+                            const regPrice = parseFloat(wcP.regular_price) || 0;
+                            const imageUrl = wcP.images?.[0]?.src || '';
+                            const stockCount = parseInt(wcP.stock_quantity) || 0;
 
-                            const existing = await Product.findOne({ tenantId: tenantId, barcode: sku });
-                            
-                            if (!existing) {
-                                // Ensure Category exists
+                            if (existingProduct) {
+                                existingProduct.price = sellingPrice;
+                                existingProduct.priceOnline = regPrice;
+                                existingProduct.imageUrl = imageUrl || existingProduct.imageUrl;
+                                existingProduct.stock = stockCount;
+                                existingProduct.active = true;
+                                if (config.defaultBranchId) existingProduct.branchId = config.defaultBranchId;
+                                
+                                await existingProduct.save();
+                                results.productsImported++;
+                            } else {
                                 const catName = wcP.categories?.[0]?.name || 'Uncategorized';
                                 let category = await Category.findOne({ tenantId: tenantId, name: catName });
-                                if (!category) {
-                                    category = await Category.create({ tenantId: tenantId, name: catName });
-                                }
+                                if (!category) category = await Category.create({ tenantId: tenantId, name: catName });
 
-                                // Capture the best selling price (Sale Price if active, otherwise Regular Price)
-                                const sellingPrice = wcP.on_sale && wcP.sale_price ? parseFloat(wcP.sale_price) : (parseFloat(wcP.regular_price) || 0);
-
-                                // Create new product in POS
                                 await Product.create({
-                                    tenantId: tenantId,
-                                    name: wcP.name,
-                                    nameEn: wcP.name,
-                                    barcode: sku,
-                                    price: sellingPrice,
-                                    priceOnline: parseFloat(wcP.regular_price) || 0,
-                                    stock: parseInt(wcP.stock_quantity) || 0,
-                                    category: catName,
-                                    categoryEn: catName,
-                                    imageUrl: wcP.images?.[0]?.src || '',
-                                    active: true, 
-                                    trackStock: wcP.manage_stock,
-                                    onlineActive: true,
-                                    // Assign to main branch so it shows in POS
-                                    branchId: config.defaultBranchId || null 
+                                    tenantId, name: wcP.name, nameEn: wcP.name, barcode: sku,
+                                    price: sellingPrice, priceOnline: regPrice, stock: stockCount,
+                                    category: catName, categoryEn: catName, imageUrl, active: true,
+                                    trackStock: wcP.manage_stock, onlineActive: true,
+                                    branchId: config.defaultBranchId || null
                                 });
                                 results.productsImported++;
-
-                                // Add Audit Log
-                                try {
-                                    const AuditLog = require('../models/AuditLog');
-                                    await AuditLog.create({
-                                        tenantId: tenantId,
-                                        user: 'System (Sync)',
-                                        action: 'Product Imported',
-                                        details: `Successfully imported "${wcP.name}" (SKU: ${sku})`,
-                                        timestamp: new Date()
-                                    });
-                                } catch (logErr) {}
-                            } else {
-                                // Log skip
-                                try {
-                                    const AuditLog = require('../models/AuditLog');
-                                    await AuditLog.create({
-                                        tenantId: tenantId,
-                                        user: 'System (Sync)',
-                                        action: 'Product Skipped',
-                                        details: `Skipped "${wcP.name}" because Barcode/SKU ${sku} already exists in POS.`,
-                                        timestamp: new Date()
-                                    });
-                                } catch (logErr) {}
                             }
+
+                            try {
+                                await AuditLog.create({
+                                    tenantId, user: 'System (Sync)', action: 'Product Synced',
+                                    details: `Synced "${wcP.name}" (${sku})`, timestamp: new Date()
+                                });
+                            } catch (e) {}
                         } catch (e) {
                             results.errors.push(`Product pull error for "${wcP.name}": ${e.message}`);
                         }
