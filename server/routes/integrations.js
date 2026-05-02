@@ -298,41 +298,53 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
         // === PULL PRODUCTS (WooCommerce to POS) ===
         if (config.syncSettings?.pullProducts !== false && platform === 'woocommerce') {
             try {
-                const wcProducts = await connector.getProducts();
-                for (const wcP of wcProducts) {
-                    try {
-                        const sku = wcP.sku || String(wcP.id);
-                        const existing = await Product.findOne({ tenantId: tenantId, barcode: sku });
-                        
-                        if (!existing) {
-                            // Ensure Category exists
-                            const catName = wcP.categories?.[0]?.name || 'Uncategorized';
-                            let category = await Category.findOne({ tenantId: tenantId, name: catName });
-                            if (!category) {
-                                category = await Category.create({ tenantId: tenantId, name: catName });
-                            }
-
-                            // Create new product in POS
-                            await Product.create({
-                                tenantId: tenantId,
-                                name: wcP.name,
-                                nameEn: wcP.name,
-                                barcode: sku,
-                                price: parseFloat(wcP.regular_price) || 0,
-                                priceOnline: parseFloat(wcP.regular_price) || 0,
-                                stock: parseInt(wcP.stock_quantity) || 0,
-                                category: catName,
-                                categoryEn: catName,
-                                imageUrl: wcP.images?.[0]?.src || '',
-                                active: wcP.status === 'publish',
-                                trackStock: wcP.manage_stock,
-                                onlineActive: true
-                            });
-                            results.productsImported = (results.productsImported || 0) + 1;
-                        }
-                    } catch (e) {
-                        results.errors.push(`Product pull error for "${wcP.name}": ${e.message}`);
+                let page = 1;
+                let hasMore = true;
+                
+                while (hasMore) {
+                    const wcProducts = await connector.getProducts(page);
+                    if (!wcProducts || wcProducts.length === 0) {
+                        hasMore = false;
+                        break;
                     }
+
+                    for (const wcP of wcProducts) {
+                        try {
+                            const sku = wcP.sku || String(wcP.id);
+                            const existing = await Product.findOne({ tenantId: tenantId, barcode: sku });
+                            
+                            if (!existing) {
+                                // Ensure Category exists
+                                const catName = wcP.categories?.[0]?.name || 'Uncategorized';
+                                let category = await Category.findOne({ tenantId: tenantId, name: catName });
+                                if (!category) {
+                                    category = await Category.create({ tenantId: tenantId, name: catName });
+                                }
+
+                                // Create new product in POS
+                                await Product.create({
+                                    tenantId: tenantId,
+                                    name: wcP.name,
+                                    nameEn: wcP.name,
+                                    barcode: sku,
+                                    price: parseFloat(wcP.regular_price) || 0,
+                                    priceOnline: parseFloat(wcP.regular_price) || 0,
+                                    stock: parseInt(wcP.stock_quantity) || 0,
+                                    category: catName,
+                                    categoryEn: catName,
+                                    imageUrl: wcP.images?.[0]?.src || '',
+                                    active: wcP.status === 'publish',
+                                    trackStock: wcP.manage_stock,
+                                    onlineActive: true
+                                });
+                                results.productsImported++;
+                            }
+                        } catch (e) {
+                            results.errors.push(`Product pull error for "${wcP.name}": ${e.message}`);
+                        }
+                    }
+                    page++;
+                    if (page > 20) hasMore = false; // Safety limit (2000 products)
                 }
             } catch (e) {
                 results.errors.push(`Pull products error: ${e.message}`);
