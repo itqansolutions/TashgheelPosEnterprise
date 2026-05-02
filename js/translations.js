@@ -113,6 +113,8 @@ const translations = {
         returns: "Returns",
         expenses: "Expenses",
         expected_cash: "Expected Cash",
+        actual_card: "Actual Card Sales",
+        actual_mobile: "Actual Mobile Sales",
         // Held Orders
         held_orders: "Held Orders",
         held_for: "Held for:",
@@ -421,6 +423,8 @@ const translations = {
         returns: "المرتجعات",
         expenses: "المصاريف",
         expected_cash: "النقد المتوقع",
+        actual_card: "مبيعات البطاقة الفعلية",
+        actual_mobile: "مبيعات الموبايل الفعلية",
         // Held Orders
         held_orders: "الطلبات المعلقة",
         held_for: "معلق منذ:",

@@ -173,11 +173,12 @@ function closeShiftFromResume() {
 
 function disablePOS() {
   document.querySelectorAll('.btn').forEach(btn => {
-    if (!btn.closest('#openShiftModal') && !btn.closest('#resumeShiftModal') && !btn.closest('.sidebar-footer')) {
+    if (btn && !btn.closest('#openShiftModal') && !btn.closest('#resumeShiftModal') && !btn.closest('.sidebar-footer')) {
       btn.disabled = true;
     }
   });
-  document.getElementById('productSearch').disabled = true;
+  const search = document.getElementById('productSearch');
+  if (search) search.disabled = true;
 }
 
 function enablePOS() {
