@@ -8,6 +8,8 @@ const saleSchema = new mongoose.Schema({
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
     date: { type: Date, default: Date.now },
     orderType: { type: String, enum: ['instore', 'online', 'delivery'], default: 'instore' },
+    platform: { type: String, default: 'local' }, // local, woocommerce, jumia, amazon
+    onlineOrderId: String, // Store the remote ID for traceability
     method: { type: String, enum: ['cash', 'card', 'mobile', 'split', 'credit'], required: true },
     splitPayments: [{
         method: { type: String, enum: ['cash', 'card', 'mobile'] },

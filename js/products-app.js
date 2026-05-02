@@ -76,7 +76,8 @@ function renderProductTable(products) {
         <td>${p.barcode || "-"}</td>
         <td>${p.category || "-"}</td>
         <td>${p.price?.toFixed(2) || "0.00"}</td>
-        <td>${statusHtml}</td>
+        <td class="font-semibold text-brand-blue">${p.priceOnline?.toFixed(2) || "-"}</td>
+        <td class="font-bold">${p.stock || 0}</td>
         <td>
           <button class="btn btn-secondary btn-sm" onclick="editProduct('${p._id}')">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p._id}')">🗑️</button>

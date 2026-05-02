@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
 
-  const fromDateInput = document.getElementById('from-date');
-  const toDateInput = document.getElementById('to-date');
+  const fromDateInput = document.getElementById('report-from');
+  const toDateInput = document.getElementById('report-to');
 
   document.querySelectorAll('.report-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -26,10 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('from-date').addEventListener('change', refreshReports);
-  document.getElementById('to-date').addEventListener('change', refreshReports);
+  document.getElementById('report-from').addEventListener('change', refreshReports);
+  document.getElementById('report-to').addEventListener('change', refreshReports);
+    const generateBtn = document.getElementById('generate-report');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', generateReport);
+    }
+});
 
-  function refreshReports() {
+// Expose to global scope for HTML onclick
+window.generateReport = generateReport;
+
+async function generateReport() {
     const activeTab = document.querySelector('.report-tab.active')?.dataset.tab || 'sales';
     runReport(activeTab);
   }
@@ -98,10 +106,28 @@ document.addEventListener('DOMContentLoaded', () => {
         totalDiscount += receiptDiscount;
 
         const method = normalizeMethod(r.method || r.paymentMethod);
-        // Distribute Net Sales to Method
-        // Note: If split payment, we should ideally check split details. 
-        // For now, using primary method or if it's split, check simple logic.
         const netSale = receiptGross - receiptDiscount;
+
+        // Render to table if on sales tab
+        if (type === 'sales') {
+            const tbody = document.getElementById('reports-table-body');
+            const row = tbody.insertRow();
+            const date = new Date(r.date);
+            const typeLabel = r.orderType === 'online' ? '<span class="badge badge-primary">Online</span>' : '<span class="badge badge-success">In-Store</span>';
+            const platformLabel = r.platform === 'woocommerce' ? '<span class="text-brand-purple">🟣 WooCommerce</span>' : 
+                                 r.platform === 'jumia' ? '<span class="text-brand-orange">🟠 Jumia</span>' :
+                                 r.platform === 'amazon' ? '<span class="text-brand-blue">🔵 Amazon</span>' : 
+                                 '<span class="text-gray-400">Local</span>';
+
+            row.innerHTML = `
+                <td>${date.toLocaleDateString()}</td>
+                <td class="font-bold">${r.receiptId}</td>
+                <td>${typeLabel}</td>
+                <td>${platformLabel}</td>
+                <td class="font-bold">${netSale.toFixed(2)}</td>
+                <td class="text-green-600">${(netSale - r.items.reduce((acc, i) => acc + (i.qty * (productMap[i.barcode]?.cost || 0)), 0)).toFixed(2)}</td>
+            `;
+        }
 
         if (r.method === 'split' && r.splitPayments) {
           r.splitPayments.forEach(sp => {
@@ -116,22 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (method === 'mobile') totalMobile += netSale;
         }
 
-        // 2. Calculate Returns (if any)
+        // 2. Calculate Returns
         if (r.returns && r.returns.length > 0) {
           r.returns.forEach(ret => {
             totalReturns += ret.totalRefund || 0;
-            // Subtract return from the method totals to show "Net Revenue" per method
-            // Or should we keep Returns separate? Usually "Total Sales" means Gross/Net Sales, 
-            // and we subtract Returns to get Net Revenue.
-            // The UI has "Total Sales Cash", "Total Sales Card" etc. 
-            // Let's subtract returns from these buckets to show ACTUAL money received/kept.
-
-            // NOTE: We don't track WHICH method was refunded easily (usually cash). 
-            // Let's assume cash for now or just deduct from cash if common practice. 
-            // OR simpler: returns is just a total line. 
-            // But the user complained about data skew. 
-
-            // Let's DEDUCT returns from the method totals to represent "Actual In-Hand".
             // Since we don't know exact method returned (often cash), we might skew.
             // Safest: Deduct from CASH for now as per common retail logic unless specified.
             // OR: Just track totalReturns and display it. The user said "takes too long to finish receipt".

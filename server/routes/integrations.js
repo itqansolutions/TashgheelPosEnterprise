@@ -384,21 +384,26 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                                     category = await Category.create({ tenantId: tenantId, name: catName });
                                 }
 
+                                // Capture the best selling price (Sale Price if active, otherwise Regular Price)
+                                const sellingPrice = wcP.on_sale && wcP.sale_price ? parseFloat(wcP.sale_price) : (parseFloat(wcP.regular_price) || 0);
+
                                 // Create new product in POS
                                 await Product.create({
                                     tenantId: tenantId,
                                     name: wcP.name,
                                     nameEn: wcP.name,
                                     barcode: sku,
-                                    price: parseFloat(wcP.regular_price) || 0,
+                                    price: sellingPrice,
                                     priceOnline: parseFloat(wcP.regular_price) || 0,
                                     stock: parseInt(wcP.stock_quantity) || 0,
                                     category: catName,
                                     categoryEn: catName,
                                     imageUrl: wcP.images?.[0]?.src || '',
-                                    active: true, // Force active so it appears in POS
+                                    active: true, 
                                     trackStock: wcP.manage_stock,
-                                    onlineActive: true
+                                    onlineActive: true,
+                                    // Assign to main branch so it shows in POS
+                                    branchId: config.defaultBranchId || null 
                                 });
                                 results.productsImported++;
 

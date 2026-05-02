@@ -147,8 +147,15 @@
           <span id="currentUserName">User</span>
           <span id="userRole" class="user-role">cashier</span>
           <span style="background:#27ae60;color:white;padding:4px 8px;border-radius:12px;font-size:0.7rem;"
-            data-i18n="licensed">🔐
-            Licensed</span>
+            data-i18n="licensed">🔐 Licensed</span>
+          
+          <!-- Warehouse Selector -->
+          <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1 ml-4 shadow-sm">
+            <i class="fas fa-warehouse text-brand-blue text-xs"></i>
+            <select id="pos-warehouse-selector" class="bg-transparent border-none text-xs font-bold text-brand-dark focus:ring-0 cursor-pointer">
+              <!-- Warehouses will be populated via JS -->
+            </select>
+          </div>
         </div>
       </header>
 

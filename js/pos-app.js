@@ -75,6 +75,8 @@ async function checkOpenShift() {
     }
 
     const storeSelect = document.getElementById('storeSelect');
+    const posWarehouseSelector = document.getElementById('pos-warehouse-selector');
+    
     if (storeSelect) {
         storeSelect.innerHTML = '';
         allowedStores.forEach(s => {
@@ -83,6 +85,26 @@ async function checkOpenShift() {
             opt.textContent = s.name;
             storeSelect.appendChild(opt);
         });
+    }
+
+    if (posWarehouseSelector) {
+        posWarehouseSelector.innerHTML = '';
+        allowedStores.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s._id;
+            opt.textContent = s.name;
+            posWarehouseSelector.appendChild(opt);
+        });
+        posWarehouseSelector.addEventListener('change', () => {
+            renderProducts();
+            localStorage.setItem('pos_selected_store', posWarehouseSelector.value);
+        });
+        
+        // Restore last selected store if available
+        const savedStore = localStorage.getItem('pos_selected_store');
+        if (savedStore && allowedStores.find(s => s._id === savedStore)) {
+            posWarehouseSelector.value = savedStore;
+        }
     }
 
     // Get current user safely from storage, fallback to DOM if needed, but storage is source of truth
@@ -546,12 +568,20 @@ function renderProducts() {
     return;
   }
 
+  const selectedStoreId = document.getElementById('pos-warehouse-selector')?.value;
+
   filteredProducts.forEach((product) => {
+    let currentStock = product.stock || 0;
+    if (product.stores && selectedStoreId) {
+        const storeStock = product.stores.find(s => s.storeId.toString() === selectedStoreId.toString());
+        currentStock = storeStock ? storeStock.stock : 0;
+    }
+
     const div = document.createElement("div");
     div.className = "product-card";
-    if (product.trackStock !== false && product.stock <= 0) div.classList.add("out-of-stock");
-    div.onclick = () => addToCart(product);
-    const stockDisplay = (product.trackStock === false) ? '<span style="font-size:1.5em; color:#2ecc71;">∞</span>' : `Stock: ${product.stock}`;
+    if (product.trackStock !== false && currentStock <= 0) div.classList.add("out-of-stock");
+    div.onclick = () => addToCart({ ...product, currentStock });
+    const stockDisplay = (product.trackStock === false) ? '<span style="font-size:1.5em; color:#2ecc71;">∞</span>' : `Stock: ${currentStock}`;
 
     div.innerHTML = `
       <h4>${product.name}</h4>
