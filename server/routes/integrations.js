@@ -245,7 +245,8 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
         console.log(`[sync] Starting background sync for tenant ${tenantId} on ${platform}`);
 
         // === PULL ORDERS ===
-        await updateProgress('syncing', 'Pulling orders from WooCommerce...');
+        if (config.syncSettings?.pullOrders !== false) {
+            await updateProgress('syncing', 'Pulling orders from WooCommerce...');
             try {
                 let rawOrders = [];
                 const after = config.lastSyncAt || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
@@ -304,8 +305,6 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
             } catch (e) {
                 results.errors.push(`Pull orders error: ${e.message}`);
             }
-        }
-
         }
         await updateProgress('syncing', `Imported ${results.ordersImported} orders.`);
 
