@@ -7,10 +7,8 @@ const https = require('https');
 const http = require('http');
 
 class WooCommerceConnector {
-    constructor(config) {
-        this.siteUrl = (config.siteUrl || '').replace(/\/$/, '');
     constructor({ siteUrl, consumerKey, consumerSecret }) {
-        this.siteUrl = siteUrl.replace(/\/$/, ''); // Remove trailing slash
+        this.siteUrl = (siteUrl || '').replace(/\/$/, ''); // Remove trailing slash
         this.consumerKey = consumerKey;
         this.consumerSecret = consumerSecret;
     }
