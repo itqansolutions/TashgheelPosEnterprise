@@ -243,6 +243,11 @@ router.post('/:platform/sync', auth, async (req, res) => {
  * Handles Pull Orders, Pull Products, and Push Products without blocking the request
  */
 async function syncBackgroundTask(tenantId, platform, config, connector) {
+    const Product = require('../models/Product');
+    const Category = require('../models/Category');
+    const AuditLog = require('../models/AuditLog');
+    const OnlineOrder = require('../models/OnlineOrder');
+
     const results = { ordersImported: 0, productsImported: 0, productsPushed: 0, errors: [] };
     
     const updateProgress = async (status, error = null) => {
@@ -350,9 +355,25 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                         });
                     } catch (e) {}
 
+                    let index = 0;
                     for (const wcP of wcProducts) {
+                        index++;
                         try {
-                            const sku = wcP.sku || String(wcP.id);
+                            const sku = String(wcP.sku || wcP.id);
+                            
+                            // Log processing start for first few items
+                            if (index <= 3) {
+                                try {
+                                    await AuditLog.create({
+                                        tenantId: tenantId,
+                                        user: 'System (Sync)',
+                                        action: 'Processing Item',
+                                        details: `Processing ${index}/${wcProducts.length}: "${wcP.name}"`,
+                                        timestamp: new Date()
+                                    });
+                                } catch (e) {}
+                            }
+
                             const existing = await Product.findOne({ tenantId: tenantId, barcode: sku });
                             
                             if (!existing) {
