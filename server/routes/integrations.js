@@ -353,6 +353,18 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                                     onlineActive: true
                                 });
                                 results.productsImported++;
+
+                                // Add Audit Log
+                                try {
+                                    const AuditLog = require('../models/AuditLog');
+                                    await AuditLog.create({
+                                        tenantId: tenantId,
+                                        user: 'System (Sync)',
+                                        action: `Imported product "${wcP.name}" from WooCommerce`,
+                                        details: `SKU: ${sku}, Price: ${wcP.regular_price}`,
+                                        timestamp: new Date()
+                                    });
+                                } catch (logErr) {}
                             }
                         } catch (e) {
                             results.errors.push(`Product pull error for "${wcP.name}": ${e.message}`);
