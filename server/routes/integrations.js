@@ -66,6 +66,10 @@ async function linkItemsToProducts(tenantId, items) {
         if (item.sku) {
             product = await Product.findOne({ tenantId, barcode: item.sku });
         }
+        if (!product) {
+            // Fallback: Try matching by Name if SKU fails
+            product = await Product.findOne({ tenantId, name: new RegExp(`^${item.name}$`, 'i') });
+        }
         linked.push({ ...item, productId: product?._id || null });
     }
     return linked;
@@ -205,7 +209,26 @@ router.post('/:platform/sync', auth, async (req, res) => {
         }
 
         const connector = getConnector(platform, config);
-        const results = { ordersImported: 0, productsPushed: 0, errors: [] };
+        
+        // Start background sync
+        syncBackgroundTask(req.tenantId, platform, config, connector);
+
+        res.json({ msg: 'Synchronization started in background. Please refresh in a moment to see results.' });
+    } catch (err) {
+        console.error(`[integrations] POST /${platform}/sync`, err.message);
+        res.status(500).json({ msg: `Sync error: ${err.message}` });
+    }
+});
+
+/** 
+ * Background Sync Implementation 
+ * Handles Pull Orders, Pull Products, and Push Products without blocking the request
+ */
+async function syncBackgroundTask(tenantId, platform, config, connector) {
+    const results = { ordersImported: 0, productsImported: 0, productsPushed: 0, errors: [] };
+    
+    try {
+        console.log(`[sync] Starting background sync for tenant ${tenantId} on ${platform}`);
 
         // === PULL ORDERS ===
         if (config.syncSettings?.pullOrders !== false) {
@@ -321,21 +344,26 @@ router.post('/:platform/sync', auth, async (req, res) => {
         }
 
         // Update config stats
-        config.lastSyncAt = new Date();
-        config.lastSyncStatus = results.errors.length === 0 ? 'success' : 'error';
-        if (results.errors.length) config.lastSyncError = results.errors[0];
-        config.ordersImported = (config.ordersImported || 0) + results.ordersImported;
-        config.productsImported = (config.productsImported || 0) + (results.productsImported || 0);
-        config.productsPushed = (config.productsPushed || 0) + results.productsPushed;
-        config.updatedAt = new Date();
-        await config.save();
-
-        res.json({ msg: 'Sync complete', ...results });
+        const finalConfig = await EcommerceConfig.findOne({ _id: config._id });
+        finalConfig.lastSyncAt = new Date();
+        finalConfig.lastSyncStatus = results.errors.length === 0 ? 'success' : 'error';
+        if (results.errors.length) finalConfig.lastSyncError = results.errors[0];
+        finalConfig.ordersImported = (finalConfig.ordersImported || 0) + results.ordersImported;
+        finalConfig.productsImported = (finalConfig.productsImported || 0) + (results.productsImported || 0);
+        finalConfig.productsPushed = (finalConfig.productsPushed || 0) + results.productsPushed;
+        finalConfig.updatedAt = new Date();
+        await finalConfig.save();
+        console.log(`[sync] Background sync finished for tenant ${tenantId}`);
     } catch (err) {
-        console.error(`[integrations] POST /${platform}/sync`, err.message);
-        res.status(500).json({ msg: `Sync error: ${err.message}` });
+        console.error(`[sync] Background sync fatal error:`, err.message);
+        try {
+           await EcommerceConfig.updateOne({ _id: config._id }, { 
+               lastSyncStatus: 'error', 
+               lastSyncError: `Fatal background error: ${err.message}` 
+           });
+        } catch (e) {}
     }
-});
+}
 
 // ─────────────────────────────────────────────
 // PENDING ORDERS ROUTES
