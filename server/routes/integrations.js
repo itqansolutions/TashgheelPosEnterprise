@@ -141,12 +141,15 @@ router.post('/:platform/connect', auth, async (req, res) => {
 
         // Update credentials
         if (platform === 'woocommerce') {
-            config.woocommerce = {
-                siteUrl: credentials.siteUrl,
-                consumerKey: credentials.consumerKey,
-                consumerSecret: credentials.consumerSecret,
-                webhookSecret: credentials.webhookSecret || config.woocommerce?.webhookSecret
-            };
+            // Only update if not masked
+            if (credentials.consumerKey && credentials.consumerKey !== '********') {
+                config.woocommerce.consumerKey = credentials.consumerKey;
+            }
+            if (credentials.consumerSecret && credentials.consumerSecret !== '********') {
+                config.woocommerce.consumerSecret = credentials.consumerSecret;
+            }
+            config.woocommerce.siteUrl = credentials.siteUrl || config.woocommerce.siteUrl;
+            config.woocommerce.webhookSecret = credentials.webhookSecret || config.woocommerce.webhookSecret;
         } else if (platform === 'jumia') {
             config.jumia = {
                 apiKey: credentials.apiKey,
