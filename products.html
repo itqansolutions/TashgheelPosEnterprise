@@ -80,26 +80,40 @@
                   <button type="button" onclick="openCategoryModal()" class="btn btn-secondary">📂</button>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="product-price" data-i18n="price">Sales Price:</label>
-                <input type="number" id="product-price" step="0.01" required placeholder="0.00">
-              </div>
-              <div class="form-group">
-                <label for="product-price-online" data-i18n="price_online">Online Price:</label>
-                <input type="number" id="product-price-online" step="0.01" placeholder="0.00">
-              </div>
-              <div class="form-group">
-                <label for="product-price-delivery" data-i18n="price_delivery">Delivery Price:</label>
-                <input type="number" id="product-price-delivery" step="0.01" placeholder="0.00">
-              </div>
-              <div class="form-group" style="display:flex; align-items:center; gap:20px; padding: 10px; background: #f8f9fa; border-radius: 8px; grid-column: span 2;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <input type="checkbox" id="product-track-stock" checked style="width:auto; margin:0;">
-                  <label for="product-track-stock" data-i18n="track_inventory" style="margin:0; font-weight:bold;">Track Inventory</label>
+
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 col-span-2">
+                <div class="form-group">
+                  <label class="text-xs font-bold text-gray-500 uppercase mb-2 block" data-i18n="price">In-Store Price</label>
+                  <input type="number" step="0.01" id="product-price" class="premium-input" placeholder="0.00">
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <input type="checkbox" id="product-active" checked style="width:auto; margin:0;">
-                  <label for="product-active" data-i18n="active" style="margin:0; font-weight:bold;">Active</label>
+                <div class="form-group">
+                  <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Online Price</label>
+                  <input type="number" step="0.01" id="product-price-online" class="premium-input" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                  <label class="text-xs font-bold text-gray-500 uppercase mb-2 block" data-i18n="cost">Cost Price</label>
+                  <input type="number" step="0.01" id="product-cost" class="premium-input" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                  <label class="text-xs font-bold text-gray-500 uppercase mb-2 block" data-i18n="stock">Initial Stock</label>
+                  <input type="number" id="product-stock" class="premium-input" placeholder="0">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 col-span-2">
+                <div class="form-group">
+                  <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Product Image URL</label>
+                  <input type="text" id="product-image-url" class="premium-input" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="flex items-center gap-6 mt-8">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="product-track-stock" checked class="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue">
+                    <span class="text-sm font-medium text-gray-700" data-i18n="track_stock">Track Stock</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="product-online-active" checked class="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue">
+                    <span class="text-sm font-medium text-brand-blue font-bold">Sync to Online</span>
+                  </label>
                 </div>
               </div>
               <div class="form-group" style="grid-column: span 2; margin-top: 10px;">
@@ -189,13 +203,17 @@
           <label for="edit-product-price-delivery" data-i18n="price_delivery">Delivery Price:</label>
           <input type="number" id="edit-product-price-delivery" step="0.01">
         </div>
-        <div class="form-group" style="grid-column: span 1; display:flex; align-items:center; gap:8px;">
-          <input type="checkbox" id="edit-product-track-stock" style="width:auto;">
-          <label for="edit-product-track-stock" data-i18n="track_inventory">Track Inventory</label>
+        <div class="form-group" style="grid-column: span 2;">
+          <label for="edit-product-image-url">Image URL:</label>
+          <input type="text" id="edit-product-image-url" placeholder="https://example.com/image.jpg">
         </div>
         <div class="form-group" style="grid-column: span 1; display:flex; align-items:center; gap:8px;">
-          <input type="checkbox" id="edit-product-active" style="width:auto;">
-          <label for="edit-product-active" data-i18n="active">Active</label>
+          <input type="checkbox" id="edit-product-track-stock" style="width:auto;">
+          <label for="edit-product-track-stock" data-i18n="track_inventory">Track Stock</label>
+        </div>
+        <div class="form-group" style="grid-column: span 1; display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="edit-product-online-active" style="width:auto;">
+          <label for="edit-product-online-active">Online Sync</label>
         </div>
         <div class="form-group" style="grid-column: span 2; text-align: right; border-top: 1px solid #eee; padding-top: 15px;">
           <button type="submit" class="btn btn-primary" data-i18n="save">Save Changes</button>

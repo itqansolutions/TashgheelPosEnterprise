@@ -19,6 +19,8 @@ const productSchema = new mongoose.Schema({
     active: { type: Boolean, default: true },
     category: String,
     categoryEn: String,
+    imageUrl: String,
+    onlineActive: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now }
 });
 

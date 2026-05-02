@@ -96,7 +96,8 @@ async function handleAddProduct(e) {
   const priceOnline = parseFloat(document.getElementById("product-price-online").value) || 0;
   const priceDelivery = parseFloat(document.getElementById("product-price-delivery").value) || 0;
   const trackStock = document.getElementById("product-track-stock").checked;
-  const active = document.getElementById("product-active").checked;
+  const onlineActive = document.getElementById("product-online-active").checked;
+  const imageUrl = document.getElementById("product-image-url").value.trim();
 
   if (!name || isNaN(price)) return alert("Please fill required fields");
 
@@ -108,7 +109,9 @@ async function handleAddProduct(e) {
     priceOnline,
     priceDelivery,
     trackStock,
-    active
+    onlineActive,
+    imageUrl,
+    active: true
   };
 
   try {
@@ -146,7 +149,8 @@ function editProduct(id) {
   document.getElementById("edit-product-price-online").value = product.priceOnline || "";
   document.getElementById("edit-product-price-delivery").value = product.priceDelivery || "";
   document.getElementById("edit-product-track-stock").checked = product.trackStock !== false;
-  document.getElementById("edit-product-active").checked = product.active !== false;
+  document.getElementById("edit-product-online-active").checked = product.onlineActive !== false;
+  document.getElementById("edit-product-image-url").value = product.imageUrl || "";
 
   // Category
   const editCat = document.getElementById("edit-product-category");
@@ -172,9 +176,10 @@ async function handleUpdateProduct(e) {
   const priceOnline = parseFloat(document.getElementById("edit-product-price-online").value) || 0;
   const priceDelivery = parseFloat(document.getElementById("edit-product-price-delivery").value) || 0;
   const trackStock = document.getElementById("edit-product-track-stock").checked;
-  const active = document.getElementById("edit-product-active").checked;
+  const onlineActive = document.getElementById("edit-product-online-active").checked;
+  const imageUrl = document.getElementById("edit-product-image-url").value.trim();
 
-  const updates = { name, barcode, category, price, priceOnline, priceDelivery, trackStock, active };
+  const updates = { name, barcode, category, price, priceOnline, priceDelivery, trackStock, onlineActive, imageUrl };
 
   try {
     const token = localStorage.getItem('token');

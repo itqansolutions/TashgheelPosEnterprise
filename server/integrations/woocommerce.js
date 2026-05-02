@@ -98,8 +98,9 @@ class WooCommerceConnector {
             regular_price: String(product.priceOnline || product.price),
             manage_stock: product.trackStock,
             stock_quantity: product.stock,
-            status: product.active ? 'publish' : 'draft',
-            categories: product.categoryEn ? [{ name: product.categoryEn }] : []
+            status: (product.active && product.onlineActive !== false) ? 'publish' : 'private',
+            categories: product.categoryEn ? [{ name: product.categoryEn }] : [],
+            images: product.imageUrl ? [{ src: product.imageUrl }] : []
         };
 
         // Check if product exists by SKU
