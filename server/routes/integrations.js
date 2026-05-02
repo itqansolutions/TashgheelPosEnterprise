@@ -301,6 +301,13 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                         const existing = await Product.findOne({ tenantId: req.tenantId, barcode: sku });
                         
                         if (!existing) {
+                            // Ensure Category exists
+                            const catName = wcP.categories?.[0]?.name || 'Uncategorized';
+                            let category = await Category.findOne({ tenantId: req.tenantId, name: catName });
+                            if (!category) {
+                                category = await Category.create({ tenantId: req.tenantId, name: catName });
+                            }
+
                             // Create new product in POS
                             await Product.create({
                                 tenantId: req.tenantId,
@@ -310,10 +317,12 @@ async function syncBackgroundTask(tenantId, platform, config, connector) {
                                 price: parseFloat(wcP.regular_price) || 0,
                                 priceOnline: parseFloat(wcP.regular_price) || 0,
                                 stock: parseInt(wcP.stock_quantity) || 0,
-                                category: wcP.categories?.[0]?.name || 'Uncategorized',
-                                categoryEn: wcP.categories?.[0]?.name || 'Uncategorized',
+                                category: catName,
+                                categoryEn: catName,
+                                imageUrl: wcP.images?.[0]?.src || '',
                                 active: wcP.status === 'publish',
-                                trackStock: wcP.manage_stock
+                                trackStock: wcP.manage_stock,
+                                onlineActive: true
                             });
                             results.productsImported = (results.productsImported || 0) + 1;
                         }
