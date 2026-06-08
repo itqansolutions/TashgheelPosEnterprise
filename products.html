@@ -204,8 +204,11 @@
                   <th data-i18n="product">Product</th>
                   <th data-i18n="barcode">Barcode</th>
                   <th data-i18n="category">Category</th>
-                  <th data-i18n="price">Price</th>
-                  <th class="text-brand-blue">Online Price</th>
+                  <th data-i18n="price" class="text-brand-green">Local Price</th>
+                  <th class="text-brand-orange">Amazon</th>
+                  <th class="text-brand-blue">Noon</th>
+                  <th class="text-brand-purple">Jumia</th>
+                  <th class="text-gray-600">WooCommerce</th>
                   <th data-i18n="stock">Stock</th>
                   <th data-i18n="actions">Actions</th>
                 </tr>
@@ -261,7 +264,7 @@
           <select id="edit-product-category"></select>
         </div>
         <div class="form-group">
-          <label for="edit-product-price" data-i18n="price">Price:</label>
+          <label for="edit-product-price" data-i18n="price">In-Store Price:</label>
           <input type="number" id="edit-product-price" step="0.01" required>
         </div>
         <div class="form-group">
@@ -269,8 +272,20 @@
           <input type="number" id="edit-product-price-online" step="0.01">
         </div>
         <div class="form-group">
-          <label for="edit-product-price-delivery" data-i18n="price_delivery">Delivery Price:</label>
-          <input type="number" id="edit-product-price-delivery" step="0.01">
+          <label for="edit-product-price-amazon">Amazon Price:</label>
+          <input type="number" id="edit-product-price-amazon" step="0.01">
+        </div>
+        <div class="form-group">
+          <label for="edit-product-price-noon">Noon Price:</label>
+          <input type="number" id="edit-product-price-noon" step="0.01">
+        </div>
+        <div class="form-group">
+          <label for="edit-product-price-jumia">Jumia Price:</label>
+          <input type="number" id="edit-product-price-jumia" step="0.01">
+        </div>
+        <div class="form-group">
+          <label for="edit-product-price-woo">WooCommerce Price:</label>
+          <input type="number" id="edit-product-price-woo" step="0.01">
         </div>
         <div class="form-group" style="grid-column: span 2;">
           <label for="edit-product-image-url">Image URL:</label>

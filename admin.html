@@ -41,8 +41,54 @@
         <h1 class="text-xl font-bold text-brand-dark" data-i18n="admin_panel">⚙️ Admin Panel</h1>
         <div style="display:flex;align-items:center;gap:10px;"><span id="welcomeText" data-i18n="welcome">Welcome,</span><span id="currentUserName" class="font-semibold">User</span><span id="userRole" class="user-role">admin</span></div>
       </header>
-      <section id="scrollableSection" style="flex: 1 !important; padding: 30px !important; display: flex !important; flex-direction: column !important; gap: 30px !important; background-color: #f8fafc !important;">
+      <section id="scrollableSection" style="flex: 1 !important; padding: 30px !important; display: flex !important; flex-direction: column !important; gap: 30px !important; background-color: #f4f7f9 !important;">
         
+        <!-- Dashboard Metrics (Image 3 Style) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 shrink-0">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between" style="border-top: 4px solid #3b82f6;">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Total Revenue</p>
+                <h3 class="text-2xl font-bold text-brand-dark">$124,563.00</h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="mt-4 flex items-center text-sm"><span class="text-green-500 font-bold mr-2"><i class="fas fa-arrow-up"></i> 14.5%</span><span class="text-gray-400">vs last month</span></div>
+          </div>
+          
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between" style="border-top: 4px solid #10b981;">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">In-store Orders</p>
+                <h3 class="text-2xl font-bold text-brand-dark">1,429</h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-500"><i class="fas fa-store"></i></div>
+            </div>
+            <div class="mt-4 flex items-center text-sm"><span class="text-green-500 font-bold mr-2"><i class="fas fa-arrow-up"></i> 8.2%</span><span class="text-gray-400">vs last month</span></div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between" style="border-top: 4px solid #f59e0b;">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Pick-up Orders</p>
+                <h3 class="text-2xl font-bold text-brand-dark">384</h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-box"></i></div>
+            </div>
+            <div class="mt-4 flex items-center text-sm"><span class="text-red-500 font-bold mr-2"><i class="fas fa-arrow-down"></i> 2.1%</span><span class="text-gray-400">vs last month</span></div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between" style="border-top: 4px solid #8b5cf6;">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Online Orders</p>
+                <h3 class="text-2xl font-bold text-brand-dark">892</h3>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-500"><i class="fas fa-globe"></i></div>
+            </div>
+            <div class="mt-4 flex items-center text-sm"><span class="text-green-500 font-bold mr-2"><i class="fas fa-arrow-up"></i> 24.5%</span><span class="text-gray-400">vs last month</span></div>
+          </div>
+        </div>
         <!-- Shop Settings Card -->
         <div class="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-brand-blue to-brand-purple">

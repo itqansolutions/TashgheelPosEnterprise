@@ -123,8 +123,11 @@ function renderProductTable(products) {
         </td>
         <td>${p.barcode || "-"}</td>
         <td>${p.category || "-"}</td>
-        <td>${p.price?.toFixed(2) || "0.00"}</td>
-        <td class="font-semibold text-brand-blue">${p.priceOnline?.toFixed(2) || "-"}</td>
+        <td class="text-brand-green font-bold">${p.price?.toFixed(2) || "0.00"}</td>
+        <td class="text-brand-orange font-semibold">${p.priceAmazon?.toFixed(2) || "-"}</td>
+        <td class="text-brand-blue font-semibold">${p.priceNoon?.toFixed(2) || "-"}</td>
+        <td class="text-brand-purple font-semibold">${p.priceJumia?.toFixed(2) || "-"}</td>
+        <td class="text-gray-600 font-semibold">${p.priceWooCommerce?.toFixed(2) || "-"}</td>
         <td class="font-bold">${p.stock || 0}</td>
         <td>
           <button class="btn btn-secondary btn-sm" onclick="editProduct('${p._id}')">✏️</button>
