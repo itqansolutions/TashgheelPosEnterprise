@@ -323,7 +323,8 @@ router.put('/products/:id', auth, async (req, res) => {
         if (!product) return res.status(404).json({ msg: 'Product not found' });
 
         const { name, barcode, price, priceOnline, priceDelivery, category, categoryEn, nameEn,
-                minStock, trackStock, active, imageUrl, onlineActive, hasVariants, variants } = req.body;
+                minStock, trackStock, active, imageUrl, onlineActive, hasVariants, variants,
+                priceAmazon, priceNoon, priceJumia, priceWooCommerce } = req.body;
 
         const updated = await prisma.product.update({
             where: { id: req.params.id },
@@ -333,6 +334,10 @@ router.put('/products/:id', auth, async (req, res) => {
                 ...(price !== undefined && { price }),
                 ...(priceOnline !== undefined && { priceOnline }),
                 ...(priceDelivery !== undefined && { priceDelivery }),
+                ...(priceAmazon !== undefined && { priceAmazon }),
+                ...(priceNoon !== undefined && { priceNoon }),
+                ...(priceJumia !== undefined && { priceJumia }),
+                ...(priceWooCommerce !== undefined && { priceWooCommerce }),
                 ...(category !== undefined && { category }),
                 ...(categoryEn !== undefined && { categoryEn }),
                 ...(nameEn !== undefined && { nameEn }),

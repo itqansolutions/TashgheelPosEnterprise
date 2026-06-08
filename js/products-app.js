@@ -66,8 +66,12 @@ function generateVariants() {
             </td>
             <td class="px-4 py-2"><input type="text" class="v-sku premium-input !py-1 !text-xs" placeholder="SKU/Barcode"></td>
             <td class="px-4 py-2"><input type="number" step="0.01" class="v-price premium-input !py-1 !text-xs" value="${basePrice}"></td>
-            <td class="px-4 py-2"><input type="number" step="0.01" class="v-cost premium-input !py-1 !text-xs" value="${baseCost}"></td>
-            <td class="px-4 py-2"><input type="number" class="v-stock premium-input !py-1 !text-xs" value="0"></td>
+            <td class="px-4 py-2"><input type="number" class="v-stock premium-input !py-1 !text-xs" value="0" style="width:60px"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price premium-input !py-1 !text-xs text-brand-green" value="${basePrice}" style="width:80px"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price-amazon premium-input !py-1 !text-xs text-brand-orange" value="0.00" style="width:80px"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price-noon premium-input !py-1 !text-xs text-brand-blue" value="0.00" style="width:80px"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price-jumia premium-input !py-1 !text-xs text-brand-purple" value="0.00" style="width:80px"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price-woo premium-input !py-1 !text-xs text-gray-600" value="0.00" style="width:80px"></td>
             <td class="px-4 py-2"><input type="text" class="v-image premium-input !py-1 !text-xs" placeholder="Image URL"></td>
             <td class="px-4 py-2"><button type="button" onclick="this.closest('tr').remove()" class="text-red-500 hover:text-red-700 font-bold">X</button></td>
         `;
@@ -138,8 +142,14 @@ async function handleAddProduct(e) {
   const category = document.getElementById("product-category").value;
   const barcode = document.getElementById("product-barcode").value.trim();
   const price = parseFloat(document.getElementById("product-price").value);
-  const priceOnline = parseFloat(document.getElementById("product-price-online").value) || 0;
+  const priceOnline = parseFloat(document.getElementById("product-price-online")?.value) || 0;
   const priceDelivery = parseFloat(document.getElementById("product-price-delivery")?.value) || 0;
+  
+  const priceAmazon = parseFloat(document.getElementById("product-price-amazon")?.value) || 0;
+  const priceNoon = parseFloat(document.getElementById("product-price-noon")?.value) || 0;
+  const priceJumia = parseFloat(document.getElementById("product-price-jumia")?.value) || 0;
+  const priceWooCommerce = parseFloat(document.getElementById("product-price-woo")?.value) || 0;
+
   const trackStock = document.getElementById("product-track-stock").checked;
   const onlineActive = document.getElementById("product-online-active").checked;
   const hasVariants = document.getElementById("product-has-variants") ? document.getElementById("product-has-variants").checked : false;
@@ -155,10 +165,14 @@ async function handleAddProduct(e) {
               id: crypto.randomUUID(), // Local generate ID
               sku: row.querySelector('.v-sku').value.trim(),
               barcode: row.querySelector('.v-sku').value.trim(),
-              price: parseFloat(row.querySelector('.v-price').value) || price,
-              cost: parseFloat(row.querySelector('.v-cost').value) || 0,
-              stock: parseInt(row.querySelector('.v-stock').value) || 0,
-              imageUrl: row.querySelector('.v-image').value.trim(),
+              price: parseFloat(row.querySelector('.v-price')?.value) || price,
+              priceAmazon: parseFloat(row.querySelector('.v-price-amazon')?.value) || 0,
+              priceNoon: parseFloat(row.querySelector('.v-price-noon')?.value) || 0,
+              priceJumia: parseFloat(row.querySelector('.v-price-jumia')?.value) || 0,
+              priceWooCommerce: parseFloat(row.querySelector('.v-price-woo')?.value) || 0,
+              cost: parseFloat(row.querySelector('.v-cost')?.value) || 0,
+              stock: parseInt(row.querySelector('.v-stock')?.value) || 0,
+              imageUrl: row.querySelector('.v-image')?.value.trim() || '',
               attributes: {
                   [row.querySelector('.v-opt-name').value]: row.querySelector('.v-opt-value').value
               }
@@ -173,6 +187,10 @@ async function handleAddProduct(e) {
     price,
     priceOnline,
     priceDelivery,
+    priceAmazon,
+    priceNoon,
+    priceJumia,
+    priceWooCommerce,
     trackStock,
     onlineActive,
     imageUrl,
@@ -215,6 +233,17 @@ function editProduct(id) {
   document.getElementById("edit-product-price").value = product.price;
   document.getElementById("edit-product-price-online").value = product.priceOnline || "";
   document.getElementById("edit-product-price-delivery").value = product.priceDelivery || "";
+  
+  // Try to set values for edit modal if they exist, else null check avoids crash if edit modal isn't updated yet
+  const editAmz = document.getElementById("edit-product-price-amazon");
+  if (editAmz) editAmz.value = product.priceAmazon || "";
+  const editNoon = document.getElementById("edit-product-price-noon");
+  if (editNoon) editNoon.value = product.priceNoon || "";
+  const editJumia = document.getElementById("edit-product-price-jumia");
+  if (editJumia) editJumia.value = product.priceJumia || "";
+  const editWoo = document.getElementById("edit-product-price-woo");
+  if (editWoo) editWoo.value = product.priceWooCommerce || "";
+
   document.getElementById("edit-product-track-stock").checked = product.trackStock !== false;
   document.getElementById("edit-product-online-active").checked = product.onlineActive !== false;
   document.getElementById("edit-product-image-url").value = product.imageUrl || "";
@@ -242,11 +271,18 @@ async function handleUpdateProduct(e) {
   const price = parseFloat(document.getElementById("edit-product-price").value);
   const priceOnline = parseFloat(document.getElementById("edit-product-price-online").value) || 0;
   const priceDelivery = parseFloat(document.getElementById("edit-product-price-delivery").value) || 0;
+  
+  const priceAmazon = parseFloat(document.getElementById("edit-product-price-amazon")?.value) || 0;
+  const priceNoon = parseFloat(document.getElementById("edit-product-price-noon")?.value) || 0;
+  const priceJumia = parseFloat(document.getElementById("edit-product-price-jumia")?.value) || 0;
+  const priceWooCommerce = parseFloat(document.getElementById("edit-product-price-woo")?.value) || 0;
+
   const trackStock = document.getElementById("edit-product-track-stock").checked;
   const onlineActive = document.getElementById("edit-product-online-active").checked;
   const imageUrl = document.getElementById("edit-product-image-url").value.trim();
 
-  const updates = { name, barcode, category, price, priceOnline, priceDelivery, trackStock, onlineActive, imageUrl };
+  // We are not updating variants in edit right now, but we will pass the basic fields
+  const updates = { name, barcode, category, price, priceOnline, priceDelivery, priceAmazon, priceNoon, priceJumia, priceWooCommerce, trackStock, onlineActive, imageUrl };
 
   try {
     const token = localStorage.getItem('token');

@@ -100,6 +100,27 @@
                 </div>
               </div>
 
+              <!-- Multi-Platform Pricing -->
+              <h4 class="text-sm font-bold text-gray-500 uppercase mt-2 mb-4 col-span-2">Platform Pricing</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 col-span-2">
+                  <div class="form-group">
+                    <label class="text-xs font-bold text-brand-orange uppercase mb-2 block">Amazon Price</label>
+                    <input type="number" step="0.01" id="product-price-amazon" class="premium-input" placeholder="0.00">
+                  </div>
+                  <div class="form-group">
+                    <label class="text-xs font-bold text-brand-blue uppercase mb-2 block">Noon Price</label>
+                    <input type="number" step="0.01" id="product-price-noon" class="premium-input" placeholder="0.00">
+                  </div>
+                  <div class="form-group">
+                    <label class="text-xs font-bold text-brand-purple uppercase mb-2 block">Jumia Price</label>
+                    <input type="number" step="0.01" id="product-price-jumia" class="premium-input" placeholder="0.00">
+                  </div>
+                  <div class="form-group">
+                    <label class="text-xs font-bold text-gray-600 uppercase mb-2 block">WooCommerce Price</label>
+                    <input type="number" step="0.01" id="product-price-woo" class="premium-input" placeholder="0.00">
+                  </div>
+              </div>
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 col-span-2">
                 <div class="form-group">
                   <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Product Image URL</label>
@@ -143,10 +164,14 @@
                       <thead class="text-xs text-gray-500 uppercase bg-white/50">
                         <tr>
                           <th class="px-4 py-2">Variant</th>
-                          <th class="px-4 py-2">Barcode/SKU</th>
-                          <th class="px-4 py-2">Price</th>
+                          <th class="px-4 py-2">Barcode</th>
                           <th class="px-4 py-2">Cost</th>
                           <th class="px-4 py-2">Stock</th>
+                          <th class="px-4 py-2 text-brand-green">Local Price</th>
+                          <th class="px-4 py-2 text-brand-orange">Amazon</th>
+                          <th class="px-4 py-2 text-brand-blue">Noon</th>
+                          <th class="px-4 py-2 text-brand-purple">Jumia</th>
+                          <th class="px-4 py-2 text-gray-600">WooCommerce</th>
                           <th class="px-4 py-2">Image URL</th>
                           <th class="px-4 py-2"></th>
                         </tr>

@@ -105,12 +105,19 @@ model Product {
   price         Float
   priceOnline   Float    @default(0)
   priceDelivery Float    @default(0)
-  cost          Float    @default(0)
-  stock         Float    @default(0)
-  minStock      Float    @default(0)
-  hasVariants   Boolean  @default(false)
-  variants      Json     @default("[]") // [{ id, sku, barcode, price, cost, stock, imageUrl, attributes: { Size, Color } }]
-  stores        Json     @default("[]") // [{ storeId, stock }]
+  cost             Float    @default(0)
+  stock            Float    @default(0)
+  minStock         Float    @default(0)
+  
+  // Platform Pricing
+  priceAmazon      Float    @default(0)
+  priceNoon        Float    @default(0)
+  priceJumia       Float    @default(0)
+  priceWooCommerce Float    @default(0)
+
+  hasVariants      Boolean  @default(false)
+  variants         Json     @default("[]") // [{ id, sku, barcode, price, priceAmazon, priceNoon, priceJumia, priceWooCommerce, cost, stock, imageUrl, attributes: { Size, Color } }]
+  stores           Json     @default("[]") // [{ storeId, stock }]
   trackStock    Boolean  @default(true)
   active        Boolean  @default(true)
   category      String?
