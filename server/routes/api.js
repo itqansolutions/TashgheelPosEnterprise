@@ -323,7 +323,7 @@ router.put('/products/:id', auth, async (req, res) => {
         if (!product) return res.status(404).json({ msg: 'Product not found' });
 
         const { name, barcode, price, priceOnline, priceDelivery, category, categoryEn, nameEn,
-                minStock, trackStock, active, imageUrl, onlineActive } = req.body;
+                minStock, trackStock, active, imageUrl, onlineActive, hasVariants, variants } = req.body;
 
         const updated = await prisma.product.update({
             where: { id: req.params.id },
@@ -340,7 +340,9 @@ router.put('/products/:id', auth, async (req, res) => {
                 ...(trackStock !== undefined && { trackStock }),
                 ...(active !== undefined && { active }),
                 ...(imageUrl !== undefined && { imageUrl }),
-                ...(onlineActive !== undefined && { onlineActive })
+                ...(onlineActive !== undefined && { onlineActive }),
+                ...(hasVariants !== undefined && { hasVariants }),
+                ...(variants !== undefined && { variants })
             }
         });
         res.json(updated);
@@ -374,14 +376,30 @@ async function updateProductStock(tenantId, productId, barcode, qtyChange, store
     if (productId) {
         product = await prisma.product.findFirst({ where: { id: productId, tenantId } });
     }
+    // If not found by ID, try top-level barcode
     if (!product && barcode) {
         product = await prisma.product.findFirst({ where: { barcode, tenantId } });
     }
+    
+    // If still not found, we might need to search JSON array (PostgreSQL raw query or fetching all products with variants).
+    // But usually frontend sends productId from the cart, so it should be found above.
 
     if (product && product.trackStock !== false) {
-        const newStock = product.stock + qtyChange;
-        const stores = Array.isArray(product.stores) ? product.stores : [];
+        let newStock = product.stock;
+        let variants = Array.isArray(product.variants) ? product.variants : [];
 
+        if (product.hasVariants && barcode) {
+            // Deduct from variant stock
+            const vIndex = variants.findIndex(v => v.barcode === barcode || v.sku === barcode);
+            if (vIndex >= 0) {
+                variants[vIndex].stock = (variants[vIndex].stock || 0) + qtyChange;
+            }
+        } else {
+            // Deduct from main stock
+            newStock = product.stock + qtyChange;
+        }
+
+        const stores = Array.isArray(product.stores) ? product.stores : [];
         if (storeId) {
             const storeIdx = stores.findIndex(s => s.storeId === storeId);
             if (storeIdx >= 0) {
@@ -393,7 +411,7 @@ async function updateProductStock(tenantId, productId, barcode, qtyChange, store
 
         await prisma.product.update({
             where: { id: product.id },
-            data: { stock: newStock, stores }
+            data: { stock: newStock, stores, variants }
         });
     }
     return product;

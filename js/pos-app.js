@@ -657,10 +657,68 @@ async function loadCustomers() {
   }
 }
 
-// ===================== CART LOGIC =====================
+// ===================== VARIANTS & CART LOGIC =====================
+window.closeVariantModal = function() {
+    document.getElementById('variantModal').style.display = 'none';
+};
+
+window.selectVariant = function(productId, variantSku) {
+    const product = allProducts.find(p => p._id === productId);
+    if (!product) return;
+    const variant = product.variants.find(v => v.sku === variantSku || v.barcode === variantSku);
+    if (!variant) return;
+
+    closeVariantModal();
+
+    const variantProduct = {
+        ...product,
+        _id: variant.id, // Treat variant as unique cart item
+        productId: product._id, // Keep reference to main product
+        name: `${product.name} - ${Object.values(variant.attributes).join(' / ')}`,
+        price: variant.price || product.price,
+        code: variant.barcode || variant.sku || product.code,
+        barcode: variant.barcode || variant.sku || product.barcode,
+        stock: variant.stock,
+        trackStock: product.trackStock
+    };
+
+    addToCartDirect(variantProduct);
+};
+
 function addToCart(product) {
   console.log('Adding to cart:', product);
 
+  if (product.hasVariants && Array.isArray(product.variants) && product.variants.length > 0) {
+      // Open Variant Modal
+      const modal = document.getElementById('variantModal');
+      const title = document.getElementById('variantModalTitle');
+      const options = document.getElementById('variantOptions');
+      
+      title.textContent = `Select Option for ${product.name}`;
+      options.innerHTML = '';
+      
+      product.variants.forEach(v => {
+          const btn = document.createElement('button');
+          btn.className = 'w-full text-left p-4 rounded-xl border border-gray-200 hover:border-brand-blue hover:bg-blue-50 transition-all font-bold';
+          btn.innerHTML = `
+            <div class="flex justify-between items-center">
+                <span>${Object.values(v.attributes).join(' / ')}</span>
+                <span class="text-brand-blue">${(v.price || product.price).toFixed(2)}</span>
+            </div>
+            <div class="text-xs text-gray-500 font-normal mt-1">Stock: ${v.stock} | Barcode: ${v.barcode || v.sku}</div>
+          `;
+          btn.onclick = () => selectVariant(product._id, v.sku || v.barcode);
+          options.appendChild(btn);
+      });
+      
+      modal.style.display = 'flex';
+      return;
+  }
+
+  addToCartDirect(product);
+}
+
+function addToCartDirect(product) {
   // Check stock (if tracked)
   if (product.trackStock !== false && product.stock <= 0) {
     alert("Out of stock!");

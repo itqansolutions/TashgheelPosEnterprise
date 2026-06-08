@@ -108,6 +108,8 @@ model Product {
   cost          Float    @default(0)
   stock         Float    @default(0)
   minStock      Float    @default(0)
+  hasVariants   Boolean  @default(false)
+  variants      Json     @default("[]") // [{ id, sku, barcode, price, cost, stock, imageUrl, attributes: { Size, Color } }]
   stores        Json     @default("[]") // [{ storeId, stock }]
   trackStock    Boolean  @default(true)
   active        Boolean  @default(true)

@@ -105,7 +105,7 @@
                   <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Product Image URL</label>
                   <input type="text" id="product-image-url" class="premium-input" placeholder="https://example.com/image.jpg">
                 </div>
-                <div class="flex items-center gap-6 mt-8">
+                <div class="flex items-center gap-6 mt-8 mb-4">
                   <label class="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" id="product-track-stock" checked class="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue">
                     <span class="text-sm font-medium text-gray-700" data-i18n="track_stock">Track Stock</span>
@@ -114,7 +114,50 @@
                     <input type="checkbox" id="product-online-active" checked class="w-5 h-5 rounded text-brand-blue focus:ring-brand-blue">
                     <span class="text-sm font-medium text-brand-blue font-bold">Sync to Online</span>
                   </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="product-has-variants" class="w-5 h-5 rounded text-brand-purple focus:ring-brand-purple">
+                    <span class="text-sm font-medium text-brand-purple font-bold">Has Variants (Colors/Sizes)</span>
+                  </label>
                 </div>
+
+                <!-- Variants Configuration Area -->
+                <div id="variants-section" class="col-span-2 hidden bg-brand-purple/5 border border-brand-purple/20 p-6 rounded-2xl mb-8">
+                  <h4 class="text-sm font-bold text-brand-dark mb-4">Product Variants</h4>
+                  
+                  <div class="flex gap-4 mb-4">
+                    <div class="flex-1">
+                      <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Option Name (e.g. Color)</label>
+                      <input type="text" id="variant-opt-name" class="premium-input" placeholder="Size, Color, etc.">
+                    </div>
+                    <div class="flex-[2]">
+                      <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Values (comma separated)</label>
+                      <input type="text" id="variant-opt-values" class="premium-input" placeholder="Red, Blue, Green">
+                    </div>
+                    <div class="flex items-end">
+                      <button type="button" onclick="generateVariants()" class="bg-brand-purple text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-700">Generate</button>
+                    </div>
+                  </div>
+
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                      <thead class="text-xs text-gray-500 uppercase bg-white/50">
+                        <tr>
+                          <th class="px-4 py-2">Variant</th>
+                          <th class="px-4 py-2">Barcode/SKU</th>
+                          <th class="px-4 py-2">Price</th>
+                          <th class="px-4 py-2">Cost</th>
+                          <th class="px-4 py-2">Stock</th>
+                          <th class="px-4 py-2">Image URL</th>
+                          <th class="px-4 py-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="variants-table-body" class="divide-y divide-gray-200">
+                        <!-- Generated variants go here -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
               </div>
               <div class="form-group" style="grid-column: span 2; margin-top: 10px;">
                 <button type="submit" class="btn btn-success" data-i18n="add_product">Add Product</button>

@@ -15,12 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
       searchInput.addEventListener("input", filterProducts);
   }
 
+  // Variants Toggle
+  const variantsToggle = document.getElementById("product-has-variants");
+  if (variantsToggle) {
+      variantsToggle.addEventListener("change", (e) => {
+          document.getElementById("variants-section").style.display = e.target.checked ? "block" : "none";
+      });
+  }
+
   // Expose functions globally
   window.openCategoryModal = openCategoryModal;
   window.closeCategoryModal = closeCategoryModal;
   window.deleteCategory = deleteCategory;
   window.deleteProduct = deleteProduct;
   window.editProduct = editProduct;
+  window.generateVariants = generateVariants;
 });
 
 // --- SEARCH ---
@@ -31,6 +40,41 @@ function filterProducts() {
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(term) ? "" : "none";
     });
+}
+
+// --- VARIANTS ---
+function generateVariants() {
+    const optName = document.getElementById("variant-opt-name").value.trim() || "Option";
+    const valuesStr = document.getElementById("variant-opt-values").value.trim();
+    if (!valuesStr) return alert("Enter variant values (e.g. Red, Blue)");
+    
+    const values = valuesStr.split(",").map(v => v.trim()).filter(v => v);
+    const tbody = document.getElementById("variants-table-body");
+    
+    // Default base values
+    const basePrice = document.getElementById("product-price").value || "0";
+    const baseCost = document.getElementById("product-cost").value || "0";
+
+    values.forEach(val => {
+        const tr = document.createElement("tr");
+        tr.className = "variant-row";
+        tr.innerHTML = `
+            <td class="px-4 py-2 font-bold text-brand-dark">
+               <input type="hidden" class="v-opt-name" value="${optName}">
+               <input type="hidden" class="v-opt-value" value="${val}">
+               ${val}
+            </td>
+            <td class="px-4 py-2"><input type="text" class="v-sku premium-input !py-1 !text-xs" placeholder="SKU/Barcode"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-price premium-input !py-1 !text-xs" value="${basePrice}"></td>
+            <td class="px-4 py-2"><input type="number" step="0.01" class="v-cost premium-input !py-1 !text-xs" value="${baseCost}"></td>
+            <td class="px-4 py-2"><input type="number" class="v-stock premium-input !py-1 !text-xs" value="0"></td>
+            <td class="px-4 py-2"><input type="text" class="v-image premium-input !py-1 !text-xs" placeholder="Image URL"></td>
+            <td class="px-4 py-2"><button type="button" onclick="this.closest('tr').remove()" class="text-red-500 hover:text-red-700 font-bold">X</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    document.getElementById("variant-opt-values").value = "";
 }
 
 // --- PRODUCTS ---
@@ -95,12 +139,32 @@ async function handleAddProduct(e) {
   const barcode = document.getElementById("product-barcode").value.trim();
   const price = parseFloat(document.getElementById("product-price").value);
   const priceOnline = parseFloat(document.getElementById("product-price-online").value) || 0;
-  const priceDelivery = parseFloat(document.getElementById("product-price-delivery").value) || 0;
+  const priceDelivery = parseFloat(document.getElementById("product-price-delivery")?.value) || 0;
   const trackStock = document.getElementById("product-track-stock").checked;
   const onlineActive = document.getElementById("product-online-active").checked;
+  const hasVariants = document.getElementById("product-has-variants") ? document.getElementById("product-has-variants").checked : false;
   const imageUrl = document.getElementById("product-image-url").value.trim();
 
   if (!name || isNaN(price)) return alert("Please fill required fields");
+
+  let variants = [];
+  if (hasVariants) {
+      const rows = document.querySelectorAll(".variant-row");
+      rows.forEach(row => {
+          variants.push({
+              id: crypto.randomUUID(), // Local generate ID
+              sku: row.querySelector('.v-sku').value.trim(),
+              barcode: row.querySelector('.v-sku').value.trim(),
+              price: parseFloat(row.querySelector('.v-price').value) || price,
+              cost: parseFloat(row.querySelector('.v-cost').value) || 0,
+              stock: parseInt(row.querySelector('.v-stock').value) || 0,
+              imageUrl: row.querySelector('.v-image').value.trim(),
+              attributes: {
+                  [row.querySelector('.v-opt-name').value]: row.querySelector('.v-opt-value').value
+              }
+          });
+      });
+  }
 
   const product = {
     name,
@@ -112,6 +176,8 @@ async function handleAddProduct(e) {
     trackStock,
     onlineActive,
     imageUrl,
+    hasVariants,
+    variants,
     active: true
   };
 
